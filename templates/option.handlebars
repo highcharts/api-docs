@@ -1,0 +1,31 @@
+<div style="border-bottom:1px solid #b5b5b5;">
+
+<h1>
+{{#if meta.hasChildren}}
+<a href="{{{meta.fullname}}}.html">
+{{/if}}
+{{meta.name}}
+{{#if meta.hasChildren}}
+</a>
+{{/if}}
+</h1>
+
+{{{doclet.description}}}
+
+
+{{#if meta.default}}
+Default: <code>{{{meta.default}}}</code><br/>
+{{/if}}
+
+{{#if doclet.samples}}
+<br/>
+<br/>
+<b>Samples</b>
+<ul>
+{{#each doclet.samples}}
+<li><a href="#{{@this}}">{{@key}}</a></li>
+{{/each}}
+</ul>
+{{/if}}
+
+</div>
