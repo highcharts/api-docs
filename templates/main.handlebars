@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script type="text/javascript" src="api.js"></script>
+</head>
+<body>
+
+<div class="header box-size">
+
+</div>
+
+<div class="navigation">
+
+</div>
+
+<div class="body" id="body"> 
+
+</div>
+
+<div class="footer box-size">
+Copyright &copy; 2017, Highsoft AS. All rights reserved.
+<br/><br/>
+
+v{{meta.version}} - 
+Generated from branch <a href="https://github.com/highcharts/highcharts/tree/{{meta.branch}}">{{meta.branch}}</a> (commit <a href="https://github.com/highcharts/highcharts/commit/{{meta.commit}}">{{meta.commit}}</a>), on {{meta.date}}
+</div>
+
+</body>
+<script type="text/javascript">
+    hapi.ajax({
+        url: 'plotOptions.html',
+        dataType: 'html',
+        success: function (res) {
+            document.getElementById('body').innerHTML = res;
+        }
+    });
+</script>
+</html>

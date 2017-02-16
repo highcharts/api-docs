@@ -2,10 +2,14 @@
     "name": "highcharts-api-doc-gen",
     "author": "",
     "private": true,
+    "bin": {
+        "hc-gen-api-docs": "node ./bin/gen.docs.js"
+    },
     "dependencies": {
         "handlebars": "*",
         "colors": "*",
         "mkdirp": "*",
-        "marked": "*"
+        "marked": "*",
+        "express": "*"        
     }
 }

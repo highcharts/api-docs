@@ -11,6 +11,8 @@
 const args = process.argv;
 const generate = require('./../lib/index.js');
 const fs = require('fs');
+const express = require('express');
+const app = express();
 
 console.log('API Docs Generator'.green);
 
@@ -26,6 +28,17 @@ if (args.length < 4) {
 
 console.log('Generating into', args[2], 'from', args[3]);
 
-generate(JSON.parse(fs.readFileSync(args[2], 'utf8')), args[3], function () {
-    console.log('All done!'.green);
-});
+function doGen() {
+    generate(JSON.parse(fs.readFileSync(args[2], 'utf8')), args[3], function () {
+        console.log('All done!'.green);
+    });    
+}
+
+doGen();
+
+fs.watch(__dirname + '/../include', doGen);
+fs.watch(__dirname + '/../templates', doGen);
+
+app.use('/', express.static(__dirname + '/../docs'));
+
+app.listen(9700);
