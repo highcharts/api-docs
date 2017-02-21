@@ -10,6 +10,7 @@
         "colors": "*",
         "mkdirp": "*",
         "marked": "*",
-        "express": "*"        
+        "express": "*",
+        "async": "*"
     }
 }
