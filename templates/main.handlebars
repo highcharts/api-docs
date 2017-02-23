@@ -1,41 +1,46 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <head>
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="style.css">
 
-    <script type="text/javascript" src="api.js"></script>
-</head>
-<body>
+        <script type="text/javascript" src="api.js"></script>
+    </head>
+    <body>
 
-<div class="header box-size">
+        <div class="header box-size">
+            {{#if toc}}
+                <select onchange="hapi.switchVersion(this);">
+                {{#each toc}}
+                    <optgroup label="{{@key}}">
+                    {{#each @this}}
+                        <option {{selected @key ../../productVersionStr}}value="{{@this}}">{{@key}}</option>
+                    {{/each}}
+                    </optgroup>
+                {{/each}}
+                </select>
+            {{/if}}
+        </div>
 
-</div>
+        <div class="navigation">
 
-<div class="navigation">
+        </div>
 
-</div>
+        <div class="body" id="body"> 
+            {{{node.doclet.description}}}
+            {{#each node.children}}
+                {{> option}}
+            {{/each}}
+        </div>
 
-<div class="body" id="body"> 
+        <div class="footer box-size">
+            Copyright &copy; 2017, Highsoft AS. All rights reserved.
+            <br/><br/>
 
-</div>
+            {{{product}}} v{{version}} - 
+            Generated from branch <a href="https://github.com/highcharts/highcharts/tree/{{versionProps.branch}}">{{versionProps.branch}}</a> (commit <a href="https://github.com/highcharts/highcharts/commit/{{versionProps.commit}}">{{versionProps.commit}}</a>), on {{date}}
+        </div>
 
-<div class="footer box-size">
-Copyright &copy; 2017, Highsoft AS. All rights reserved.
-<br/><br/>
+    </body>
 
-v{{meta.version}} - 
-Generated from branch <a href="https://github.com/highcharts/highcharts/tree/{{meta.branch}}">{{meta.branch}}</a> (commit <a href="https://github.com/highcharts/highcharts/commit/{{meta.commit}}">{{meta.commit}}</a>), on {{meta.date}}
-</div>
-
-</body>
-<script type="text/javascript">
-    hapi.ajax({
-        url: 'plotOptions.html',
-        dataType: 'html',
-        success: function (res) {
-            document.getElementById('body').innerHTML = res;
-        }
-    });
-</script>
 </html>

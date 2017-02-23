@@ -52,6 +52,13 @@ hapi.ajax = function (p) {
     r.send(true); 
 };
 
+hapi.switchVersion = function (dropdown, e) {
+    var sel = dropdown.options[dropdown.selectedIndex];
+    if (sel.value && sel.value.length > 0) {
+        window.location = sel.value;
+    }
+};
+
 
 (function () {
 

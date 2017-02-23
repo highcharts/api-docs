@@ -1,10 +1,10 @@
-<div class="member" style="border-bottom:1px solid #b5b5b5;padding-bottom:20px;">
+<div class="member">
 
 <h2 class="title">
 {{#if node.meta.hasChildren}}
 <a href="{{{node.meta.fullname}}}.html">
 {{/if}}
-{{node.meta.name}}: {{doclet.type}}
+{{node.meta.name}}{{#if node.doclet.type}}: {{#each node.doclet.type.names}}{{#if @index}}, {{/if}}{{@this}}{{/each}}{{/if}}{{#if node.meta.default}} = {{node.meta.default}}{{/if}}
 {{#if node.meta.hasChildren}}
 </a>
 {{/if}}
@@ -49,7 +49,12 @@ Default: <code>{{{node.meta.default}}}</code><br/>
 {{/if}}
 
 {{#if node.doclet.see}}
-
+    <h4>See:</h4>
+    <ul>
+    {{#each node.doclet.see}}
+        <li>{{{@this}}}</li>
+    {{/each}}
+    </ul>
 {{/if}}
 
 {{#if node.meta.filename}}

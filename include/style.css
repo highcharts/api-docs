@@ -46,8 +46,8 @@ a:hover {
 }
 
 .header {    
-    position: absolute;
-    top: 0px;
+
+    z-index: 10;
     width:100%;
     background: #3A3A4F;
     color: #eeeaea;

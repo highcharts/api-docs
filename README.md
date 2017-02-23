@@ -21,3 +21,43 @@ the docs if there are any. This only works if the ouput folder is a folder - `do
 
 This is to decrease turn-around time when working on design etc.
 
+
+## Generated files
+
+Files are generated in a heirarchy as such:
+  
+  - product_name
+    - version 1
+    - version 2
+
+The root `product_name` folder contains the documentation for the latest sources.
+
+Each property with one or more child properties get its own HTML file.
+
+In addition, JSON files for each property with children gets a slim JSON file
+in the `nav/` folder, for use with the navigation tree.
+
+Each folder also gets its own `products.json`, which contains the required information
+for implementing a version picker in the UI:
+        
+         {
+          "activeProduct": "highcharts",
+          "activeVersion": "current",
+          "library": {
+            "highcharts": {
+              "current": "./",
+              "1.2.4": "./../1.2.4/",
+              "1.2.3": "./../1.2.3/"
+            },
+            "highstock": {
+              "current": "./../highstock/",
+              "1.2.4": "./../highstock/1.2.4/",
+              "1.2.3": "./../highstock/1.2.3/"
+            },
+            "highmaps": {
+              "current": "./../highmaps/"
+            }
+          }
+        }
+
+The version paths are relative to the current folder.

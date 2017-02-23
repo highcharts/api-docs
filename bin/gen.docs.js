@@ -26,9 +26,14 @@ if (args.length < 4) {
     process.exit(1);
 }
 
-console.log('Generating into', args[2], 'from', args[3]);
+console.log('Generating into', args[3], 'from', args[2]);
+console.log();
 
-function doGen() {
+function doGen(a, e) {
+    if (typeof e !== 'undefinefd') {
+        console.log('Files refreshed, regenerating'.yellow);
+    }
+
     generate(JSON.parse(fs.readFileSync(args[2], 'utf8')), args[3], function () {
         console.log('All done!'.green);
     });    
