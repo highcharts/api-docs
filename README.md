@@ -24,7 +24,7 @@ This is to decrease turn-around time when working on design etc.
 
 ## Generated files
 
-Files are generated in a heirarchy as such:
+Files are generated in a hierarchy as such:
   
   - product_name
     - version 1
