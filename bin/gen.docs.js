@@ -20,7 +20,7 @@ if (args.length < 4) {
     console.log(
         'Usage:'.bold, 
         '<input file>',
-        '[output folder]'
+        '[output folder]'        
     );
 
     process.exit(1);
@@ -34,7 +34,7 @@ function doGen(a, e) {
         console.log('Files refreshed, regenerating'.yellow);
     }
 
-    generate(JSON.parse(fs.readFileSync(args[2], 'utf8')), args[3], function () {
+    generate(JSON.parse(fs.readFileSync(args[2], 'utf8')), args[3], args[4] || false, function () {
         console.log('All done!'.green);
     });    
 }
