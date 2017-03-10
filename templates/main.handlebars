@@ -25,33 +25,39 @@
             </div>
             <div class="row row-2">
                 {{#if toc}}
-                <div id="product-selector" class="menu">
-                    <a href="#" class="dropdown-link">Products <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                    <ul class="dropdown-menu" expanded="false">
+                    <div id="product-selector" class="menu">
+                        <a href="#" class="dropdown-link">Products <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                        <ul class="dropdown-menu" expanded="false">
                         {{#each toc}}
                             <li class="product">
                                 <a id="{{@key}}-link" href="{{#if versions.current}}{{versions.current}}{{else}}#{{/if}}">{{displayName}}</a>
                             </li>
                         {{/each}}
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
                 {{/if}}
                 {{#if toc}}
                     <div id="version-selector" class="menu">
-                        <select onchange="hapi.switchVersion(this);">
+                        <a href="#" class="dropdown-link">v{{version}} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                        <ul class="dropdown-menu" expanded="false">
                         {{#each toc}}
-                            <optgroup label="{{displayName}}">
-                            {{#each versions}}
-                                <option {{selected @key ../../productVersionStr}}value="{{@this}}">{{@key}}</option>
-                            {{/each}}
-                            </optgroup>
+                            <li class="group">
+                                <p>{{displayName}}</p>
+                                <ul class="group-list">
+                                {{#each versions}}
+                                    <li class="version">
+                                        <a href="{{@this}}" onclick="hapi.switchVersion(this);">{{@key}}</a> 
+                                    </li>
+                                {{/each}}
+                                </ul>
+                            </li>
                         {{/each}}
-                        </select>
+                        </ul>
                     </div>
                 {{/if}}
-                {{#if progLangs}}
                     <div id="prog-lang-selector" class="menu">
                         <a href="#" class="dropdown-link">Language: {{language}} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                        {{#if progLangs}}
                         <ul class="dropdown-menu" expanded="false">
                             {{#each progLangs}}
                                 <li class="prog-lang">
@@ -59,8 +65,8 @@
                                 </li>
                             {{/each}}
                         </ul>
-                    </div>
-                {{/if}}
+                    {{/if}}
+                </div>
             </div>
         </div>
 
