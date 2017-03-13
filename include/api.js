@@ -90,18 +90,47 @@ hapi.ajax = function(p) {
 
     function createNode(parent, def, state) {
 
-        var title = cr('div', 'title', def.name),
-            nextLevel = cr('div', 'node'),
+        var node = cr('div', 'node ' + (def.isLeaf ? 'leaf' : 'parent')),
+            arrowLink,
+            arrow,
+            title = cr('a', 'title', def.name + ':'),
+            postfix,
+            nextLevel,
             expanded = false,
             hasNext = false;
 
+        if (!def.isLeaf) {
+            arrowLink = cr('a', 'arrow-link');
+            arrow = cr('i', 'fa fa-caret-right');
+            nextLevel = cr('div');
+
+            if (def.typeMap && def.typeMap.array) {
+                postfix = cr('span', 'dots', '[{...}]');
+            } else {
+                postfix = cr('span', 'dots', '{...}');
+            }
+        } else {
+            postfix = cr(
+                'span',
+                'default type-' + (def.typeList.names ?
+                    def.typeList.names[0].toLowerCase() :
+                    'undefined'),
+                def.default || 'undefined');
+        }
+
         ap(parent,
-            title,
-            nextLevel
+            ap(node,
+                ap(arrowLink,
+                    arrow
+                ),
+                title,
+                postfix,
+                nextLevel
+            )
         );
 
         function expand() {
-            nextLevel.className = 'node-level collapsed';
+            nextLevel.className = 'children collapsed';
 
             if (!hasNext) {
                 getNext();
@@ -112,7 +141,7 @@ hapi.ajax = function(p) {
         }
 
         function collapse() {
-            nextLevel.className = 'node-level expanded';
+            nextLevel.className = 'children expanded';
             expanded = false;
         }
 
