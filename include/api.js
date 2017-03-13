@@ -88,31 +88,45 @@ hapi.ajax = function(p) {
         return target;
     }
 
-    function createNode(parent, def, state) {
+    function updateHistory(path) {
+        if (location.href !== path + '.html') {
+            history.pushState(null, path, path + '.html');
+        }
+    }
 
-        var node = cr('div', 'node ' + (def.isLeaf ? 'leaf' : 'parent')),
-            arrowLink,
+    function createNode(parent, def, state) {
+        var node = cr('div', 'node collapsed ' + (def.isLeaf ? 'leaf' : 'parent')),
             arrow,
             title = cr('a', 'title', def.name + ':'),
             postfix,
-            nextLevel,
+            startBracket,
+            dots,
+            children,
+            endBracket1,
+            endBracket2,
             expanded = false,
             hasNext = false;
 
+        title.href = def.fullname + '.html'
+
         if (!def.isLeaf) {
-            arrowLink = cr('a', 'arrow-link');
             arrow = cr('i', 'fa fa-caret-right');
-            nextLevel = cr('div');
+            children = cr('div', 'children');
+            dots = cr('span', 'dots', '...');
 
             if (def.typeMap && def.typeMap.array) {
-                postfix = cr('span', 'dots', '[{...}]');
+                startBracket = cr('span', 'bracket start', '[{');
+                endBracket1 = cr('span', 'bracket end first', '}]');
+                endBracket2 = cr('span', 'bracket end second', '}]');
             } else {
-                postfix = cr('span', 'dots', '{...}');
+                startBracket = cr('span', 'bracket start', '{');
+                endBracket1 = cr('span', 'bracket end first', '}');
+                endBracket2 = cr('span', 'bracket end second', '}');
             }
         } else {
             postfix = cr(
                 'span',
-                'default type-' + (def.typeList.names ?
+                'default type-' + (def.typeList && def.typeList.names ?
                     def.typeList.names[0].toLowerCase() :
                     'undefined'),
                 def.default || 'undefined');
@@ -120,32 +134,34 @@ hapi.ajax = function(p) {
 
         ap(parent,
             ap(node,
-                ap(arrowLink,
+                ap(title,
                     arrow
                 ),
-                title,
                 postfix,
-                nextLevel
+                startBracket,
+                dots,
+                endBracket1,
+                children,
+                endBracket2
             )
         );
 
         function expand() {
-            nextLevel.className = 'children collapsed';
-
             if (!hasNext) {
                 getNext();
             }
-
+            updateHistory(def.fullname);
+            node.className = node.className.replace('collapsed', 'expanded');
             expanded = true;
-
         }
 
         function collapse() {
-            nextLevel.className = 'children expanded';
+            node.className = node.className.replace('expanded', 'collapsed');
             expanded = false;
         }
 
-        function toggle() {
+        function toggle(e) {
+            e.preventDefault();
             expanded = !expanded;
             if (expanded) return expand();
             collapse();
@@ -157,7 +173,7 @@ hapi.ajax = function(p) {
                 dataType: 'json',
                 success: function(def) {
                     def.forEach(function(def) {
-                        createNode(nextLevel, def, state);
+                        createNode(children, def, state);
                     });
                     hasNext = true;
                 }
@@ -165,11 +181,16 @@ hapi.ajax = function(p) {
         }
         if (!def.isLeaf) {
             on(title, 'click', toggle);
+        } else {
+            on(title, 'click', function (e) {
+                e.preventDefault();
+                updateHistory(def.fullname);
+            });
         }
 
         if (state && state.length && state[0] === def.name) {
             expand();
-            state.slice(0, 1);
+            state.shift();
         }
     }
 

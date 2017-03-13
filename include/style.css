@@ -237,6 +237,50 @@ a:hover {
     cursor: default;
 }
 
+/* Navigation styling */
+.tree {
+    padding-left: 15px;
+}
+
+.node {
+    position: relative;
+}
+
+.node .title {
+    margin-right: 5px;
+}
+
+.node .title i {
+    position: absolute;
+    left: -12px;
+    top: 3px;
+}
+.children {
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+    padding-left: 15px;
+}
+
+.node.collapsed>.children {
+    max-height: 0;
+}
+
+.node.collapsed>.bracket.end.second{
+    display: none;
+}
+
+.node.expanded>.children {
+    max-height: 100vh;
+}
+
+.node.expanded>.dots {
+    display: none;
+}
+
+.node.expanded>.bracket.end.first {
+    display: none;
+}
+
 /* Member styling */
 .member {
     padding: 30px;
