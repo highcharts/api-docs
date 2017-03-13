@@ -1,59 +1,57 @@
-
 var hapi = {};
 
 
-hapi.ajax = function (p) {
+hapi.ajax = function(p) {
     var props = {
-        url: p.url || false,
-        type: p.type || 'GET',
-        dataType: p.dataType || 'json',
-        success: p.success || function () {}, 
-        error: p.error || function () {}
-      },
-      headers = {
-        json: 'application/json',
-        xml: 'application/xml',
-        text: 'text/plain',
-        octet: 'application/octet-stream'
-      },
-      r = new XMLHttpRequest()
-    ;
+            url: p.url || false,
+            type: p.type || 'GET',
+            dataType: p.dataType || 'json',
+            success: p.success || function() {},
+            error: p.error || function() {}
+        },
+        headers = {
+            json: 'application/json',
+            xml: 'application/xml',
+            text: 'text/plain',
+            octet: 'application/octet-stream'
+        },
+        r = new XMLHttpRequest();
 
     if (!props.url) return false;
 
     r.open(props.type, props.url, true);
     r.setRequestHeader('Content-Type', headers[props.dataType] || headers.text);
 
-    r.onreadystatechange = function () {        
-        if (r.readyState === 4 && r.status === 200) {         
-          if (props.dataType === 'json') {        
-            try {
-              var json = JSON.parse(r.responseText);
-              if (props.success) {
-                props.success(json);        
-              }              
-            } catch(e) {
-              if (props.error) {
-                props.error(e.toString(), r.responseText);
-              }              
-            }      
-          } else {
-            if (props.success) {
-              props.success(r.responseText);
-            }                    
-          }         
-        } else if (r.readyState === 4) {          
-          if (props.error) {
-            props.error(r.status, r.statusText);
-          }
+    r.onreadystatechange = function() {
+        if (r.readyState === 4 && r.status === 200) {
+            if (props.dataType === 'json') {
+                try {
+                    var json = JSON.parse(r.responseText);
+                    if (props.success) {
+                        props.success(json);
+                    }
+                } catch (e) {
+                    if (props.error) {
+                        props.error(e.toString(), r.responseText);
+                    }
+                }
+            } else {
+                if (props.success) {
+                    props.success(r.responseText);
+                }
+            }
+        } else if (r.readyState === 4) {
+            if (props.error) {
+                props.error(r.status, r.statusText);
+            }
         }
     };
 
-    r.send(true); 
+    r.send(true);
 };
 
 
-(function () {
+(function() {
 
     function cr(name, className, inner) {
         var el = document.createElement(name);
@@ -66,25 +64,25 @@ hapi.ajax = function (p) {
         var s = [];
 
         if (!target) {
-            return function () {};
+            return function() {};
         }
 
         if (target.addEventListener) {
             target.addEventListener(event, callback, false);
         } else {
             target.attachEvent('on' + event, callback, false);
-        }   
+        }
     }
 
     function ap(target) {
         var children = (Array.prototype.slice.call(arguments));
         children.splice(0, 1);
-      
+
         if (target && typeof target.appendChild !== 'undefined') {
-            children.forEach(function (child) {
+            children.forEach(function(child) {
                 if (typeof child !== 'undefined' && typeof child.appendChild !== 'undefined') {
-                    target.appendChild(child);                  
-                } 
+                    target.appendChild(child);
+                }
             });
         }
         return target;
@@ -95,8 +93,7 @@ hapi.ajax = function (p) {
         var title = cr('div', 'title', def.name),
             nextLevel = cr('div', 'node'),
             expanded = false,
-            hasNext = false
-        ;
+            hasNext = false;
 
         ap(parent,
             title,
@@ -106,13 +103,13 @@ hapi.ajax = function (p) {
         function expand() {
             nextLevel.className = 'node-level collapsed';
 
-        if (!hasNext) {
-            getNext();
-        }
-        
-        expanded = true;
+            if (!hasNext) {
+                getNext();
+            }
 
-    }
+            expanded = true;
+
+        }
 
         function collapse() {
             nextLevel.className = 'node-level expanded';
@@ -129,15 +126,15 @@ hapi.ajax = function (p) {
             hapi.ajax({
                 url: 'nav/' + def.fullname + '.json',
                 dataType: 'json',
-                success: function (def) {
-                    def.forEach(function (def) {
+                success: function(def) {
+                    def.forEach(function(def) {
                         createNode(nextLevel, def, state);
                     });
                     hasNext = true;
                 }
             })
         }
-        if (!def.isLeaf){
+        if (!def.isLeaf) {
             on(title, 'click', toggle);
         }
 
@@ -148,11 +145,11 @@ hapi.ajax = function (p) {
     }
 
 
-    hapi.createNavigation = function (target, initial, state) {
+    hapi.createNavigation = function(target, initial, state) {
         function buildInitial(data) {
-            data.forEach(function (def) {
+            data.forEach(function(def) {
                 createNode(target, def, state.split('.'));
-            });     
+            });
         }
 
         if (initial) {
@@ -161,8 +158,8 @@ hapi.ajax = function (p) {
 
         hapi.ajax({
             url: 'nav/undefined.json', //undefined.json
-            success: function (initial) {
-                buildInitial(initial);      
+            success: function(initial) {
+                buildInitial(initial);
             }
         });
     };
