@@ -88,13 +88,24 @@ hapi.ajax = function(p) {
         return target;
     }
 
-    function updateHistory(path) {
-        if (location.href !== path + '.html') {
-            history.pushState(null, path, path + '.html');
+    function addClass(target, cls) {
+        if (!target.className.indexOf(cls)) {
+            target.className += ' ' + cls;
+        }
+    }
+    
+    function removeClass(target, cls) {
+        target.className = target.className.replace(' ' + cls, '');
+    }
+
+    function updateHistory(def, product) {
+        if (location.href !== def.fullname + '.html') {
+            document.title = def.fullname + ' | ' + product + ' API Reference';
+            history.pushState(null, '', def.fullname + '.html');
         }
     }
 
-    function createNode(parent, def, state, origState) {
+    function createNode(parent, def, state, origState, product) {
         var isCurrent = def.fullname === origState,
             node = cr('div', 'node collapsed'),
             arrow,
@@ -158,7 +169,7 @@ hapi.ajax = function(p) {
             if (!hasNext && !def.isLeaf) {
                 getNext();
             }
-            updateHistory(def.fullname);
+            updateHistory(def, product);
             node.className = node.className.replace('collapsed', 'expanded');
             expanded = true;
         }
@@ -181,7 +192,7 @@ hapi.ajax = function(p) {
                 dataType: 'json',
                 success: function(data) {
                     data.children.forEach(function(def) {
-                        createNode(children, def, state, origState);
+                        createNode(children, def, state, origState, product);
                     });
                     hasNext = true;
                 }
@@ -192,7 +203,7 @@ hapi.ajax = function(p) {
         } else {
             on(title, 'click', function (e) {
                 e.preventDefault();
-                updateHistory(def.fullname);
+                updateHistory(def, product);
             });
         }
 
@@ -291,10 +302,10 @@ hapi.ajax = function(p) {
     }
 
 
-    hapi.createNavigation = function(target, initial, state) {
+    hapi.createNavigation = function(target, initial, state, product) {
         function build(data) {
             data.children.forEach(function(def) {
-                createNode(target, def, state.split('.'), state);
+                createNode(target, def, state.split('.'), state, product);
             });
         }
 
@@ -311,38 +322,40 @@ hapi.ajax = function(p) {
     };
     
     hapi.createBody = function (target, initial, state, hasChildren) {
-        var origState = state;
-        if (!hasChildren) {
-            state = state.substr(0, state.lastIndexOf('.'));
-        }
-        function build(data) {
-            var option = cr('div', 'option-header'),
+        if (state.length > 0) {
+            var origState = state;
+            if (!hasChildren) {
+                state = state.substr(0, state.lastIndexOf('.'));
+            }
+            function build(data) {
+                var option = cr('div', 'option-header'),
                 title = cr('h1', 'title', state),
                 description = cr('p', 'description', data.description);
-            ap(target,
-                ap(option,
-                    title,
-                    description
-                )
-            )
-            if (target.className.indexOf('loaded') < 0) {
-                target.className += ' loaded';
+                ap(target,
+                    ap(option,
+                        title,
+                        description
+                    )
+                );
+                data.children.forEach(function(def) {
+                    createOption(target, def, state, origState);
+                });
             }
-            data.children.forEach(function(def) {
-                createOption(target, def, state, origState);
+            
+            if (initial) {
+                return build(initial);
+            }
+            
+            hapi.ajax({
+                url: 'nav/' + state + '.json', //undefined.json
+                success: function(data) {
+                    build(data);
+                }
             });
+            addClass(target, 'loaded');
+        } else {
+            removeClass(target, 'loaded');
         }
-
-        if (initial) {
-            return build(initial);
-        }
-
-        hapi.ajax({
-            url: 'nav/' + state + '.json', //undefined.json
-            success: function(data) {
-                build(data);
-            }
-        });
     }
 
 })();
