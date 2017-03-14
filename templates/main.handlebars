@@ -115,10 +115,14 @@
             </p>
         </div>
     <script>
-        var state = '{{{node.meta.fullname}}}';
+        var state = '{{{node.meta.fullname}}}',
+            hasChildren = true;
+        {{#unless node.meta.hasChildren}}
+        hasChildren = false;
+        {{/unless}}
         hapi.createNavigation(document.getElementById('options'), {{{initial}}}, state);
         if (state.length > 0) {
-            hapi.createBody(document.getElementById('body'), {{{initial}}}, state);
+            hapi.createBody(document.getElementById('body'), {{{initial}}}, state, hasChildren);
         }
     </script>
     </body>

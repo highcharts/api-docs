@@ -94,8 +94,9 @@ hapi.ajax = function(p) {
         }
     }
 
-    function createNode(parent, def, state) {
-        var node = cr('div', 'node collapsed ' + (def.isLeaf ? 'leaf' : 'parent')),
+    function createNode(parent, def, state, origState) {
+        var isCurrent = def.fullname === origState,
+            node = cr('div', 'node collapsed'),
             arrow,
             title = cr('a', 'title', def.name + ':'),
             postfix,
@@ -108,6 +109,13 @@ hapi.ajax = function(p) {
             hasNext = false;
 
         title.href = def.fullname + '.html'
+
+        if (isCurrent) {
+            node.className += ' current';
+            node.scrollIntoView();
+        }
+        
+        node.className += def.isLeaf ? ' leaf' : ' parent';
 
         if (!def.isLeaf) {
             arrow = cr('i', 'fa fa-caret-right');
@@ -147,7 +155,7 @@ hapi.ajax = function(p) {
         );
 
         function expand() {
-            if (!hasNext) {
+            if (!hasNext && !def.isLeaf) {
                 getNext();
             }
             updateHistory(def.fullname);
@@ -173,7 +181,7 @@ hapi.ajax = function(p) {
                 dataType: 'json',
                 success: function(data) {
                     data.children.forEach(function(def) {
-                        createNode(children, def, state);
+                        createNode(children, def, state, origState);
                     });
                     hasNext = true;
                 }
@@ -194,8 +202,9 @@ hapi.ajax = function(p) {
         }
     }
     
-    function createOption(target, def, state) {
-        var option = cr('div', 'option'),
+    function createOption(target, def, state, origState) {
+        var isCurrent = def.fullname === origState,
+            option = cr('div', 'option'),
             title = cr('h2', 'title'),
             titleLink,
             titleText = cr('span', null, def.fullname),
@@ -210,7 +219,12 @@ hapi.ajax = function(p) {
             see = cr('div', 'see'),
             definedIn,
             definedInLink;
-        
+
+        if (isCurrent) {
+            option.className += ' current';
+            option.scrollIntoView();
+        }
+
         if (!def.isLeaf) {
             titleLink = cr('a');
             titleLink.href = def.fullname + '.html';
@@ -280,7 +294,7 @@ hapi.ajax = function(p) {
     hapi.createNavigation = function(target, initial, state) {
         function build(data) {
             data.children.forEach(function(def) {
-                createNode(target, def, state.split('.'));
+                createNode(target, def, state.split('.'), state);
             });
         }
 
@@ -296,7 +310,11 @@ hapi.ajax = function(p) {
         });
     };
     
-    hapi.createBody = function (target, initial, state) {
+    hapi.createBody = function (target, initial, state, hasChildren) {
+        var origState = state;
+        if (!hasChildren) {
+            state = state.substr(0, state.lastIndexOf('.'));
+        }
         function build(data) {
             var option = cr('div', 'option-header'),
                 title = cr('h1', 'title', state),
@@ -311,7 +329,7 @@ hapi.ajax = function(p) {
                 target.className += ' loaded';
             }
             data.children.forEach(function(def) {
-                createOption(target, def, state);
+                createOption(target, def, state, origState);
             });
         }
 
