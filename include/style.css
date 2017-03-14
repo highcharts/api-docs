@@ -281,6 +281,11 @@ a:hover {
     display: none;
 }
 
+/* Body */
+.body h1 {
+    font-weight: 100;
+}
+
 /* Member styling */
 .member {
     padding: 30px;

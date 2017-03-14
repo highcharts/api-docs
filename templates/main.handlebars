@@ -92,11 +92,12 @@
             </div>
         </div>
 
-        <div class="body" id="body"> 
-            {{{node.doclet.description}}}
-            {{#each node.children}}
-                {{> option}}
-            {{/each}}
+        <div id="body" class="body"> 
+            <div id="splashText">
+                <h1>Welcome to the <strong>{{{product}}}</strong> Options Reference</h1>
+                <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
+                <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
+            </div>
         </div>
 
         <div class="footer box-size">
@@ -114,7 +115,11 @@
             </p>
         </div>
     <script>
-        hapi.createNavigation(document.getElementById('options'), {{{initial}}}, '{{{node.meta.fullname}}}');
+        var state = '{{{node.meta.fullname}}}';
+        hapi.createNavigation(document.getElementById('options'), {{{initial}}}, state);
+        if (state.length > 0) {
+            hapi.createBody(document.getElementById('body'), {{{initial}}}, state);
+        }
     </script>
     </body>
 

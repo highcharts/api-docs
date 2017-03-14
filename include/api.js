@@ -193,25 +193,122 @@ hapi.ajax = function(p) {
             state.shift();
         }
     }
+    
+    function createOption(target, def, state) {
+        var option = cr('div', 'option'),
+            title = cr('h2', 'title'),
+            titleLink,
+            titleText = cr('span', null, def.fullname),
+            types,
+            typeStr,
+            defaultvalue,
+            description = cr('p', 'description', def.description),
+            extend,
+            inheritedFrom,
+            since,
+            samples = cr('div', 'samples'),
+            see = cr('div', 'see'),
+            definedIn,
+            definedInLink;
+        
+        if (!def.isLeaf) {
+            titleLink = cr('a');
+            titleLink.href = def.fullname + '.html';
+            titleText = ap(titleLink, titleText);
+        } else {
+            if (def.typeList) {
+                types = cr('span', 'type-list', ': ');
+                def.typeList.names.forEach(function (type, index) {
+                    typeStr = index ? ', ' + type : type;
+                    ap(types, cr('span', 'type type-' + type.toLowerCase(), typeStr));
+                });
+            }
+            def.default = def.default.trim();
+            if (def.default && def.default.length && def.default !== 'undefined') {
+                defaultvalue = cr(
+                    'span',
+                    'default type-' + (def.typeList && def.typeList.names ?
+                        def.typeList.names[0].toLowerCase() :
+                        'undefined'),
+                    'Defaults to ' + def.default);
+            }
+        }
+        
+        if (def.extends) {
+            extend = cr('p', 'extends', 'Extends: ' + def.extends);
+        }
+        
+        if (def.inheritedFrom) {
+            inheritedFrom = cr('p', 'inherited-from', 'Inherited from ' + def.inheritedFrom);
+        }
+        
+        if (def.since) {
+            since = cr('p', 'since', 'Since ' + def.since);
+        }
+        
+        if (def.filename) {
+            definedIn = cr('i', 'defined-in', 'Defined in ');
+            definedInLink = cr('a', null, def.filename + ':' + def.line);
+        }
+        
+
+        ap(target,
+            ap(option,
+                ap(title,
+                    titleText,
+                    types
+                ),
+                description,
+                defaultvalue,
+                extend,
+                inheritedFrom,
+                since,
+                samples,
+                see,
+                ap(definedIn,
+                    definedInLink
+                )
+            )
+        );
+    }
 
 
     hapi.createNavigation = function(target, initial, state) {
-        function buildInitial(data) {
+        function build(data) {
             data.forEach(function(def) {
                 createNode(target, def, state.split('.'));
             });
         }
 
         if (initial) {
-            return buildInitial(initial);
+            return build(initial);
         }
 
         hapi.ajax({
             url: 'nav/undefined.json', //undefined.json
-            success: function(initial) {
-                buildInitial(initial);
+            success: function(data) {
+                build(data);
             }
         });
     };
+    
+    hapi.createBody = function (target, initial, state) {
+        function build(data) {
+            data.forEach(function(def) {
+                createOption(target, def, state);
+            });
+        }
+
+        if (initial) {
+            return build(initial);
+        }
+
+        hapi.ajax({
+            url: 'nav/' + state + '.json', //undefined.json
+            success: function(data) {
+                build(data);
+            }
+        });
+    }
 
 })();
