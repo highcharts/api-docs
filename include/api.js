@@ -249,6 +249,10 @@ hapi.ajax = function(p) {
         if (def.filename) {
             definedIn = cr('i', 'defined-in', 'Defined in ');
             definedInLink = cr('a', null, def.filename + ':' + def.line);
+            definedInLink.href = 'https://github.com/highcharts/highcharts/blob/' +
+                def.version + '/' + // TODO: version (see dumpNav() version param in index.js)
+                def.filename + '#L' +
+                def.line;
         }
         
 
