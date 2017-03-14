@@ -10,6 +10,14 @@
     |____O____|
 */
 
+html {
+    background: #3A3A4F;
+}
+
+body {
+    background: #fff;
+}
+
 html, body {
     font-family: sans-serif;
     padding:0px;
@@ -62,7 +70,6 @@ a:hover {
 .header {
     z-index: 10;
     width:100%;
-    background: #3A3A4F;
     color: #eeeaea;
     font-size:10px;
 }
@@ -134,6 +141,7 @@ a:hover {
 
 .header .row-2 {
     height: 37px;
+    background: #3A3A4F;
 }
 
 .header .row-2 .menu {
@@ -270,7 +278,7 @@ a:hover {
 }
 
 .node.expanded>.children {
-    max-height: 100vh;
+    max-height: 1000px;
 }
 
 .node.expanded>.dots {
