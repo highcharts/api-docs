@@ -289,7 +289,7 @@ hapi.ajax = function(p) {
         }
 
         hapi.ajax({
-            url: 'nav/undefined.json', //undefined.json
+            url: 'nav/index.json',
             success: function(data) {
                 build(data);
             }
