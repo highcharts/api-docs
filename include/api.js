@@ -171,8 +171,8 @@ hapi.ajax = function(p) {
             hapi.ajax({
                 url: 'nav/' + def.fullname + '.json',
                 dataType: 'json',
-                success: function(def) {
-                    def.forEach(function(def) {
+                success: function(data) {
+                    data.children.forEach(function(def) {
                         createNode(children, def, state);
                     });
                     hasNext = true;
@@ -223,7 +223,7 @@ hapi.ajax = function(p) {
                     ap(types, cr('span', 'type type-' + type.toLowerCase(), typeStr));
                 });
             }
-            def.default = def.default.trim();
+
             if (def.default && def.default.length && def.default !== 'undefined') {
                 defaultvalue = cr(
                     'span',
@@ -279,7 +279,7 @@ hapi.ajax = function(p) {
 
     hapi.createNavigation = function(target, initial, state) {
         function build(data) {
-            data.forEach(function(def) {
+            data.children.forEach(function(def) {
                 createNode(target, def, state.split('.'));
             });
         }
@@ -298,7 +298,19 @@ hapi.ajax = function(p) {
     
     hapi.createBody = function (target, initial, state) {
         function build(data) {
-            data.forEach(function(def) {
+            var option = cr('div', 'option-header'),
+                title = cr('h1', 'title', state),
+                description = cr('p', 'description', data.description);
+            ap(target,
+                ap(option,
+                    title,
+                    description
+                )
+            )
+            if (target.className.indexOf('loaded') < 0) {
+                target.className += ' loaded';
+            }
+            data.children.forEach(function(def) {
                 createOption(target, def, state);
             });
         }
