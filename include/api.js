@@ -364,5 +364,20 @@ hapi.ajax = function(p) {
             removeClass(target, 'loaded');
         }
     }
+    
+    hapi.initializeDropdowns = function (dropdownCls, linkCls, menuCls) {
+        Array.prototype.forEach.call(
+            document.getElementsByClassName(dropdownCls), function (dropdown) {
+            var link = dropdown.getElementsByClassName(linkCls)[0],
+                menu = dropdown.getElementsByClassName(menuCls)[0],
+                expanded = false;
+
+            on(link, 'click', function (e) {
+                e.preventDefault();
+                expanded = !expanded;
+                menu.setAttribute('expanded', expanded);
+            });
+        });
+    }
 
 })();
