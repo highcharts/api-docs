@@ -47,12 +47,6 @@ a:hover {
     color: #90ee7e;
 }
 
-.box-size {
-    box-sizing: border-box !important;
-    -moz-box-sizing: border-box !important;
-    -webkit-box-sizing: border-box !important;
-}
-
 .header {
     z-index: 999999;
     width: 100%;
@@ -62,22 +56,30 @@ a:hover {
     top: 0;
 }
 
-.navigation {
+.wrapper {
+    background: #fff;
     margin-top: 87px;
+}
+
+.navigation {
+    background: #fff;
     height: 100%;
+    border-right: 1px solid silver;
 }
 
 .body {
-    margin-top: 87px;
+    background: #fff;
     overflow-y: scroll;
     max-height: 100vh;
+    border-left: 1px solid silver;
 }
 
 .footer {
-    padding: 10px;
+    padding: 10px 0;
     width: 100%;
     background: #373648;
     color: #eeeaea;
+    display: inline-block;
     text-align: center;
     font-size: 10px;
 }
@@ -267,8 +269,6 @@ a:hover {
     top: 0;
     min-height: 100%;
     overflow-x: scroll;
-    background: #fff;
-    border-right: 1px solid silver;
     transition: left 0.2s ease;
     z-index: 99;
     width: 260px;
@@ -334,6 +334,10 @@ a:hover {
 
 .body h1 {
     font-weight: 100;
+}
+
+#splashText h1 {
+    text-align: center;
 }
 
 .body.loaded #splashText {
@@ -424,25 +428,103 @@ a:hover {
     #page-title h1 {
         font-size: 20px;
     }
+
     #product-selector, #product-selector .dropdown-menu {
         width: 60%;
     }
+
     #version-selector, #version-selector .dropdown-menu, #prog-lang-selector, #prog-lang-selector .dropdown-menu {
         width: 20%;
     }
+
     #product-selector .dropdown-link {
         display: none;
     }
+
     #product-selector .dropdown-menu {
         display: block;
     }
+
     #product-selector .dropdown-menu ul {
         padding: 0;
         background: none;
         border: 0;
         margin: 0;
     }
+
     #product-selector .dropdown-menu ul li {
         display: inline-block;
+    }
+}
+
+
+/*
+==============================
+=== Larger tablets / Computers
+==============================
+*/
+
+@media screen and (min-width: 767px) {
+    /* Hide the sidebar-link */
+    #sidebar-link {
+        display: none;
+    }
+
+    /* If sidr sidebar is visible while scaling up,
+	the page breaks. To avoid this, we counteract
+	the effects sidr is having on the body element: */
+    /*body {
+        left: 0 !important;
+        width: 100% !important;
+    }*/
+
+    .header .row {
+        padding: 0 15px;
+    }
+
+    #highcharts-logo {
+        width: 25%;
+    }
+
+    #highcharts-logo a {
+        margin: 0;
+    }
+
+    #highcharts-logo img {
+        height: 130%;
+    }
+
+    #page-title {
+        width: 50%;
+        text-align: center;
+        float: none;
+        padding: 0;
+    }
+
+    /* Make navigation and wrapper share width 30/70 */
+    .navigation,
+    .body {
+        float: left;
+        margin: 0;
+        padding: 0;
+        margin-left: -1px; /* Couteract border */
+    }
+    
+    .navigation {
+        width: 30%;
+        position: static;
+    }
+
+    .body {
+        width: 70%;
+    }
+
+    /* Left-align splash page title */
+    #splashText h1 {
+        text-align: left;
+    }
+
+    #option-list {
+        padding-top: 25px;
     }
 }
