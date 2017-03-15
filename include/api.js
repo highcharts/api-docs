@@ -365,17 +365,40 @@ hapi.ajax = function(p) {
         }
     }
     
-    hapi.initializeDropdowns = function (dropdownCls, linkCls, menuCls) {
+    hapi.initializeDropdowns = function (dropdownCls, linkCls) {
         Array.prototype.forEach.call(
             document.getElementsByClassName(dropdownCls), function (dropdown) {
             var link = dropdown.getElementsByClassName(linkCls)[0],
-                menu = dropdown.getElementsByClassName(menuCls)[0],
                 expanded = false;
+
+            dropdown.setAttribute('expanded', expanded);
 
             on(link, 'click', function (e) {
                 e.preventDefault();
                 expanded = !expanded;
-                menu.setAttribute('expanded', expanded);
+                dropdown.setAttribute('expanded', expanded);
+            });
+        });
+    }
+    
+    hapi.initializeSidebars = function (sidebarID, linkID, resetCls) {
+        var sidebar = document.getElementById(sidebarID),
+            link = document.getElementById(linkID),
+            resets = document.getElementsByClassName(resetCls),
+            expanded = false;
+
+        sidebar.setAttribute('expanded', expanded);
+
+        on(link, 'click', function (e) {
+            e.preventDefault();
+            expanded = !expanded;
+            sidebar.setAttribute('expanded', expanded);
+        });
+        
+        Array.prototype.forEach.call(resets, function (reset) {
+            on(reset, 'click', function () {
+                expanded = false;
+                sidebar.setAttribute('expanded', expanded);
             });
         });
     }

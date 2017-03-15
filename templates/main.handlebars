@@ -25,9 +25,9 @@
             </div>
             <div class="row row-2">
                 {{#if toc}}
-                    <div id="product-selector" class="menu">
+                    <div id="product-selector" class="menu" expanded="false">
                         <a href="#" class="dropdown-link">Products <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                        <div class="dropdown-menu" expanded="false">
+                        <div class="dropdown-menu">
                             <ul>
                                 {{#each toc}}
                                 <li class="product">
@@ -39,9 +39,9 @@
                     </div>
                 {{/if}}
                 {{#if toc}}
-                    <div id="version-selector" class="menu">
+                    <div id="version-selector" class="menu" expanded="false">
                         <a href="#" class="dropdown-link">v{{version}} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                        <div class="dropdown-menu" expanded="false">
+                        <div class="dropdown-menu">
                             <ul>
                                 {{#each toc}}
                                 <li class="group">
@@ -60,9 +60,9 @@
                     </div>
                 {{/if}}
                 {{#if progLangs}}
-                    <div id="prog-lang-selector" class="menu">
+                    <div id="prog-lang-selector" class="menu" expanded="false">
                         <a href="#" class="dropdown-link">Language: {{language}} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                        <div class="dropdown-menu" expanded="false">
+                        <div class="dropdown-menu">
                             <ul>
                                 {{#each progLangs}}
                                 <li class="prog-lang">
@@ -76,35 +76,37 @@
             </div>
         </div>
 
-        <div class="navigation">
-            <div id="search">
-                <i class="fa fa-search"></i>
-                <input id="search"/>
-            </div>
-            <div id="option-trees-wrapper">
-                <h3 id="options-header">Configuration options</h3>
-                <p>For initial declarative chart setup. View as <a href="tree.json">JSON</a>.</p>
-                <div id="global-options-tree">
-                    <code>{{{product}}}.setOptions({</code>
-                    <div id="global-options" class="tree"></div>
-                    <code>});
-                    </code>
+        <div id="wrapper">
+            <div id="sidebar" class="navigation sidebar" expanded="false">
+                <div id="search">
+                    <i class="fa fa-search"></i>
+                    <input id="search"/>
                 </div>
-                <div id="options-tree">
-                    <code>{{{product}}}.{{constr}}({</code>
-                    <div id="options" class="tree"></div>
-                    <code>});</code>
+                <div id="option-trees-wrapper">
+                    <h3 id="options-header">Configuration options</h3>
+                    <p>For initial declarative chart setup. View as <a href="tree.json">JSON</a>.</p>
+                    <div id="global-options-tree">
+                        <code>{{{product}}}.setOptions({</code>
+                        <div id="global-options" class="tree"></div>
+                        <code>});
+                        </code>
+                    </div>
+                    <div id="options-tree">
+                        <code>{{{product}}}.{{constr}}({</code>
+                        <div id="options" class="tree"></div>
+                        <code>});</code>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div id="body" class="body"> 
-            <div id="splashText">
-                <h1>Welcome to the <strong>{{{product}}}</strong> Options Reference</h1>
-                <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
-                <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
+            <div id="body" class="body"> 
+                <div id="splashText">
+                    <h1>Welcome to the <strong>{{{product}}}</strong> Options Reference</h1>
+                    <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
+                    <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
+                </div>
+                <div id="option-list"></div>
             </div>
-            <div id="option-list"></div>
         </div>
 
         <div class="footer box-size">
@@ -130,7 +132,8 @@
         {{/unless}}
         hapi.createNavigation(document.getElementById('options'), {{{initial}}}, state, product);
         hapi.createBody(document.getElementById('body'), {{{initial}}}, state, hasChildren);
-        hapi.initializeDropdowns('menu', 'dropdown-link', 'dropdown-menu');
+        hapi.initializeDropdowns('menu', 'dropdown-link');
+        hapi.initializeSidebars('sidebar', 'sidebar-link', 'body');
     </script>
     </body>
 
