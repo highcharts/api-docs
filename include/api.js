@@ -89,7 +89,7 @@ hapi.ajax = function(p) {
     }
 
     function addClass(target, cls) {
-        if (!target.className.indexOf(cls)) {
+        if (target.className.indexOf(cls) < 0) {
             target.className += ' ' + cls;
         }
     }
@@ -101,6 +101,7 @@ hapi.ajax = function(p) {
     function updateHistory(def, product) {
         if (location.href !== def.fullname + '.html') {
             document.title = def.fullname + ' | ' + product + ' API Reference';
+            hapi.createBody(document.getElementById('body'), false, def.fullname, !def.isLeaf);
             history.pushState(null, '', def.fullname + '.html');
         }
     }
@@ -328,17 +329,24 @@ hapi.ajax = function(p) {
                 state = state.substr(0, state.lastIndexOf('.'));
             }
             function build(data) {
-                var option = cr('div', 'option-header'),
-                title = cr('h1', 'title', state),
-                description = cr('p', 'description', data.description);
+                var optionList = document.getElementById('option-list'),
+                    option = cr('div', 'option-header'),
+                    title = cr('h1', 'title', state),
+                    description = cr('p', 'description', data.description);
+                
+                optionList.innerHTML = '';
+                addClass(target, 'loaded');
+                    
                 ap(target,
-                    ap(option,
-                        title,
-                        description
+                    ap(optionList,
+                        ap(option,
+                            title,
+                            description
+                        )
                     )
                 );
                 data.children.forEach(function(def) {
-                    createOption(target, def, state, origState);
+                    createOption(optionList, def, state, origState);
                 });
             }
             
@@ -348,11 +356,10 @@ hapi.ajax = function(p) {
             
             hapi.ajax({
                 url: 'nav/' + state + '.json', //undefined.json
-                success: function(data) {
+                success: function (data) {
                     build(data);
                 }
             });
-            addClass(target, 'loaded');
         } else {
             removeClass(target, 'loaded');
         }
