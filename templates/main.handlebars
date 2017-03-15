@@ -27,46 +27,52 @@
                 {{#if toc}}
                     <div id="product-selector" class="menu">
                         <a href="#" class="dropdown-link">Products <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                        <ul class="dropdown-menu" expanded="false">
-                            {{#each toc}}
-                            <li class="product">
-                                <a id="{{@key}}-link" href="{{#if versions.current}}{{versions.current}}{{else}}#{{/if}}">{{displayName}}</a>
-                            </li>
-                            {{/each}}
-                        </ul>
+                        <div class="dropdown-menu" expanded="false">
+                            <ul>
+                                {{#each toc}}
+                                <li class="product">
+                                    <a id="{{@key}}-link" href="{{#if versions.current}}{{versions.current}}{{else}}#{{/if}}">{{displayName}}</a>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
                     </div>
                 {{/if}}
                 {{#if toc}}
                     <div id="version-selector" class="menu">
                         <a href="#" class="dropdown-link">v{{version}} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                        <ul class="dropdown-menu" expanded="false">
-                            {{#each toc}}
-                            <li class="group">
-                                <p>{{displayName}}</p>
-                                <ul class="group-list">
-                                    {{#each versions}}
-                                    <li class="version">
-                                        <a href="{{@this}}" onclick="hapi.switchVersion(this);">{{@key}}</a> 
-                                    </li>
-                                    {{/each}}
-                                </ul>
-                            </li>
-                            {{/each}}
-                        </ul>
+                        <div class="dropdown-menu" expanded="false">
+                            <ul>
+                                {{#each toc}}
+                                <li class="group">
+                                    <p>{{displayName}}</p>
+                                    <ul class="group-list">
+                                        {{#each versions}}
+                                        <li class="version">
+                                            <a href="{{@this}}" onclick="hapi.switchVersion(this);">{{@key}}</a> 
+                                        </li>
+                                        {{/each}}
+                                    </ul>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
                     </div>
                 {{/if}}
+                {{#if progLangs}}
                     <div id="prog-lang-selector" class="menu">
                         <a href="#" class="dropdown-link">Language: {{language}} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                        <ul class="dropdown-menu" expanded="false">
-                            {{#if progLangs}}
-                            {{#each progLangs}}
-                            <li class="prog-lang">
-                                <a id="{{@key}}-link" href="{{#if current}}{{current}}{{else}}#{{/if}}">{{@key}}</a>
-                            </li>
-                            {{/each}}
-                            {{/if}}
-                        </ul>
-                </div>
+                        <div class="dropdown-menu" expanded="false">
+                            <ul>
+                                {{#each progLangs}}
+                                <li class="prog-lang">
+                                    <a id="{{@key}}-link" href="{{#if current}}{{current}}{{else}}#{{/if}}">{{@key}}</a>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                {{/if}}
             </div>
         </div>
 

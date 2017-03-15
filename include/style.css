@@ -11,7 +11,7 @@
 */
 
 html {
-    background: #3A3A4F;
+    background: #373648;
 }
 
 body {
@@ -60,7 +60,7 @@ a:hover {
 
 .footer {
     width:100%;
-    background: #3A3A4F;
+    background: #373648;
     color: #eeeaea;
     padding:10px;
     text-align:center;
@@ -141,7 +141,7 @@ a:hover {
 
 .header .row-2 {
     height: 37px;
-    background: #3A3A4F;
+    background: #373648;
 }
 
 .header .row-2 .menu {
@@ -180,15 +180,19 @@ a:hover {
 
 .dropdown-menu {
     position: absolute;
-    background: #373648;
-    list-style: none;
     z-index: 999999999;
     display: block;
-    min-width: 100px;
+    width: 33.33%;
+}
+
+.dropdown-menu ul {
+    display: inline-block;
     margin: -1px 2px 2px -1px;
     padding: 5px 0;
+    background: #373648;
     border: 1px solid rgba(0,0,0,.15);
     font-size: 14px;
+    min-width: 100px;
     text-align: left;
 }
 
