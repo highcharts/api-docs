@@ -89,7 +89,7 @@ a:hover {
     overflow: hidden;
 }
 
-.header .row a {
+.header a {
     color: #eeeaea;
     font-weight: 300;
 }
@@ -214,7 +214,7 @@ a:hover {
     padding: 10px 20px;
     display: block;
     line-height: 20px;
-    color: #a09fb4
+    color: #a09fb4;
 }
 
 .dropdown-menu li.current a {
@@ -401,4 +401,48 @@ a:hover {
 .description code {
     color: #666;
     font-weight: normal;
+}
+
+
+/*
+		Scale up
+		   /\
+		  /  \
+		 /    \
+		/      \
+	   /		\
+*/
+
+
+/*
+==================================================
+=== Fablets / Vertical tablets / Horizontal phones
+==================================================
+*/
+
+@media screen and (min-width: 550px) {
+    #page-title h1 {
+        font-size: 20px;
+    }
+    #product-selector, #product-selector .dropdown-menu {
+        width: 60%;
+    }
+    #version-selector, #version-selector .dropdown-menu, #prog-lang-selector, #prog-lang-selector .dropdown-menu {
+        width: 20%;
+    }
+    #product-selector .dropdown-link {
+        display: none;
+    }
+    #product-selector .dropdown-menu {
+        display: block;
+    }
+    #product-selector .dropdown-menu ul {
+        padding: 0;
+        background: none;
+        border: 0;
+        margin: 0;
+    }
+    #product-selector .dropdown-menu ul li {
+        display: inline-block;
+    }
 }
