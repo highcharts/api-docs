@@ -53,6 +53,12 @@ hapi.ajax = function(p) {
 
 (function() {
 
+    function each(array, callback) {
+        for (var i = 0; i < array.length; i++) {
+            callback(array[i], i);
+        }
+    }
+
     function cr(name, className, inner) {
         var el = document.createElement(name);
         el.className = className || '';
@@ -146,9 +152,12 @@ hapi.ajax = function(p) {
         } else {
             postfix = cr(
                 'span',
-                'default type-' + (def.typeList && def.typeList.names ?
-                    def.typeList.names[0].toLowerCase() :
-                    'undefined'),
+                'default type-' + (
+                    def.default && def.default !== 'undefined' &&
+                    def.typeList && def.typeList.names ?
+                        def.typeList.names[0].toLowerCase() :
+                        'undefined'
+                ),
                 def.default || 'undefined');
         }
 
@@ -171,12 +180,17 @@ hapi.ajax = function(p) {
                 getNext();
             }
             updateHistory(def, product);
+            children.style = 'max-height: 1000vh;';
             node.className = node.className.replace('collapsed', 'expanded');
             expanded = true;
         }
 
         function collapse() {
+            children.style = ''
+            console.log(children.clientHeight);
+            children.style = 'max-height: ' + children.clientHeight + 'px;';
             node.className = node.className.replace('expanded', 'collapsed');
+            children.style = '';
             expanded = false;
         }
 
@@ -219,7 +233,7 @@ hapi.ajax = function(p) {
             option = cr('div', 'option'),
             title = cr('h2', 'title'),
             titleLink,
-            titleText = cr('span', null, def.fullname),
+            titleText = cr('span', null, def.name),
             types,
             typeStr,
             defaultvalue,
@@ -331,9 +345,15 @@ hapi.ajax = function(p) {
             function build(data) {
                 var optionList = document.getElementById('option-list'),
                     option = cr('div', 'option-header'),
-                    title = cr('h1', 'title', state),
+                    title = cr('h1', 'title'),
                     description = cr('p', 'description', data.description);
-                
+
+                each(state.split('.'), function (titlePart, i) {
+                    ap(title,
+                        cr('span', null, (i > 0 ? '.' : '') + titlePart)
+                    );
+                });
+
                 optionList.innerHTML = '';
                 addClass(target, 'loaded');
                     

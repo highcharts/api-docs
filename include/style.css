@@ -65,6 +65,7 @@ a:hover {
     background: #fff;
     height: 100%;
     border-right: 1px solid silver;
+    margin-top: 87px;
 }
 
 .body {
@@ -82,6 +83,10 @@ a:hover {
     display: inline-block;
     text-align: center;
     font-size: 10px;
+}
+
+.footer p {
+    padding: 0 30px;
 }
 
 
@@ -263,8 +268,31 @@ a:hover {
 
 /* Sidebar styling */
 
+#search {
+    margin: 30px;
+    border: 1px solid #252530;
+}
+
+#search i {
+    margin: 5px;
+    color: #252530;
+    font-size: 14px;
+}
+
+#search input {
+    width: 80%;
+    margin: 0;
+    height: 18px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.9em;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: #252530;
+}
+
 .sidebar {
-    position: absolute;
+    position: fixed;
     display: block;
     top: 0;
     min-height: 100%;
@@ -286,11 +314,12 @@ a:hover {
 /* Navigation styling */
 
 .tree {
-    padding-left: 15px;
+    padding-left: 24px;
 }
 
 .node {
     position: relative;
+    margin: 5px 0;
 }
 
 .node .title {
@@ -304,21 +333,17 @@ a:hover {
 }
 
 .children {
-    overflow: hidden;
+    margin-left: 16px;
     transition: max-height 0.5s ease-in-out;
-    padding-left: 15px;
 }
 
 .node.collapsed>.children {
     max-height: 0;
+    overflow: hidden;
 }
 
 .node.collapsed>.bracket.end.second {
     display: none;
-}
-
-.node.expanded>.children {
-    max-height: 1000px;
 }
 
 .node.expanded>.dots {
@@ -329,6 +354,48 @@ a:hover {
     display: none;
 }
 
+#option-trees-wrapper {
+    padding: 5px;
+    margin-bottom: 87px;
+}
+
+.options-tree,
+.options-tree a {
+    font-family: "Courier New", Courier, monospace;
+}
+
+.options-tree code {
+    color: #8085e8;
+    font-weight: bold;
+}
+
+.node a.title {
+    color: #252530;
+}
+
+.options-tree .default {
+	color: silver;
+	white-space: nowrap;
+	padding: 5px 0;
+	margin: 1px;
+}
+
+.options-tree .default.type-string:before,
+.options-tree .default.type-string:after,
+.options-tree .default.type-color:before,
+.options-tree .default.type-color:after {
+    content: '"'
+}
+
+.options-tree .default.type-string,
+.options-tree .default.type-color {
+	color: #39A832;
+}
+
+.options-tree .default.type-number {
+	color: #297EA8;
+}
+
 
 /* Body */
 
@@ -336,10 +403,15 @@ a:hover {
     font-weight: 100;
 }
 
+#splashText {
+    padding: 30px;
+}
+
 #splashText h1 {
     text-align: center;
 }
 
+/* Hide when options are visible */
 .body.loaded #splashText {
     display: none;
 }
@@ -347,10 +419,21 @@ a:hover {
 
 /* Option styling */
 
+.option-header h1 {
+    display: inline-block;
+}
+
+.option-header h1 span {
+    float: left;
+}
+
+.option-header,
 .option {
     padding: 30px;
-    overflow-y: hidden;
     position: relative;
+}
+.option {
+    overflow-y: hidden;
     border-top: 1px solid silver;
 }
 
