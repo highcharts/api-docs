@@ -268,18 +268,18 @@ a:hover {
 
 /* Sidebar styling */
 
-#search {
+#search-wrapper {
     margin: 30px;
     border: 1px solid #252530;
 }
 
-#search i {
+#search-wrapper i {
     margin: 5px;
     color: #252530;
     font-size: 14px;
 }
 
-#search input {
+#search-wrapper input {
     width: 80%;
     margin: 0;
     height: 18px;
@@ -289,6 +289,10 @@ a:hover {
     border: none;
     outline: none;
     color: #252530;
+}
+
+.match .sub-match {
+    background: #90ee7e;
 }
 
 .sidebar {

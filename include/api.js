@@ -422,5 +422,43 @@ hapi.ajax = function(p) {
             });
         });
     }
+    
+    hapi.initializeSearchBar = function (searchBarID, resultsID, indexUrl, minLength, maxElements) {
+        var searchBar = document.querySelector(searchBarID),
+            results = document.querySelector(resultsID),
+            minLength = minLength || 2,
+            maxElements = maxElements || 15,
+            members = [],
+            query = '';
+        
+        function markMatch(string, query) {
+            re = new RegExp(query, 'g');
+            return string.replace(re, '<span class="sub-match">$&</span>');
+        }
+        
+        function checkResult(member) {
+            if (member.indexOf(query) >= 0 && results.childElementCount <= maxElements) {
+                ap(results,
+                    cr('li', 'match', markMatch(member, query))
+                );
+            }
+        }
+        
+        function search() {
+            results.innerHTML = '';
+            query = searchBar.value;
+            if (query.length >= minLength) {
+                each(members, checkResult);
+            }
+        }
+        
+        hapi.ajax({
+            url: indexUrl,
+            success: function (data) {
+                members = data;
+                on(searchBar, 'input', search);
+            }
+        });
+    }
 
 })();
