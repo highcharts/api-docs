@@ -268,18 +268,19 @@ a:hover {
 
 /* Sidebar styling */
 
-#search-wrapper {
+.search-wrapper {
     margin: 30px;
-    border: 1px solid #252530;
+    border: 2px solid #ddd;
+    position: relative;
 }
 
-#search-wrapper i {
+.search-wrapper i {
     margin: 5px;
     color: #252530;
     font-size: 14px;
 }
 
-#search-wrapper input {
+.search-wrapper input {
     width: 80%;
     margin: 0;
     height: 18px;
@@ -289,6 +290,43 @@ a:hover {
     border: none;
     outline: none;
     color: #252530;
+}
+
+.results {
+    position: absolute;
+    list-style: none;
+    margin: 0 0 0 -2px;
+    padding: 0;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-bottom: none;
+    min-width: 100%;
+    z-index: 99;
+    overflow-x: scroll;
+}
+
+.match {
+    border-bottom: 1px solid #ddd;
+}
+
+.match a {
+    display: block;
+    padding: 5px 10px;
+}
+
+.match a:hover {
+    background: #ddd;
+}
+
+.match *,
+.match *:hover {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14px;
+    color: #222;
+}
+
+.match:last-child {
+    border-bottom: 2px solid #ddd;
 }
 
 .match .sub-match {
@@ -596,7 +634,7 @@ a:hover {
         padding: 0;
         margin-left: -1px; /* Couteract border */
     }
-    
+
     .navigation {
         width: 30%;
         position: static;

@@ -435,11 +435,21 @@ hapi.ajax = function(p) {
             re = new RegExp(query, 'g');
             return string.replace(re, '<span class="sub-match">$&</span>');
         }
-        
+
+        function createMatch(member, query) {
+            var a = cr('a', null, markMatch(member, query));
+
+            a.href = member + '.html';
+
+            return ap(cr('li', 'match'),
+                a
+            );
+        }
+
         function checkResult(member) {
             if (member.indexOf(query) >= 0 && results.childElementCount <= maxElements) {
                 ap(results,
-                    cr('li', 'match', markMatch(member, query))
+                    createMatch(member, query)
                 );
             }
         }

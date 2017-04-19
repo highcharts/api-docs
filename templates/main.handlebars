@@ -78,10 +78,10 @@
 
         <div class="wrapper">
             <div id="sidebar" class="navigation sidebar" expanded="false">
-                <div id="search-wrapper">
+                <div class="search-wrapper">
                     <i class="fa fa-search"></i>
-                    <input id="search"/>
-                    <ul id="results"></ul>
+                    <input class="search"/>
+                    <ul class="results"></ul>
                 </div>
                 <div id="option-trees-wrapper">
                     <h3 id="options-header">Configuration options</h3>
@@ -135,7 +135,7 @@
         hapi.createBody(document.getElementById('body'), {{{initial}}}, state, hasChildren);
         hapi.initializeDropdowns('menu', 'dropdown-link');
         hapi.initializeSidebars('sidebar', 'sidebar-link', 'body');
-        hapi.initializeSearchBar('#search', '#results', 'search.json');
+        hapi.initializeSearchBar('.search', '.results', 'search.json');
     </script>
     </body>
 
