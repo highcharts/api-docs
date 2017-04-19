@@ -21,7 +21,7 @@
                 <div id="page-title" class="cell">
                     <h1>Option Reference</h1>
                 </div>
-                
+
             </div>
             <div class="row row-2">
                 {{#if toc}}
@@ -49,7 +49,7 @@
                                     <ul class="group-list">
                                         {{#each versions}}
                                         <li class="version">
-                                            <a href="{{@this}}" onclick="hapi.switchVersion(this);">{{@key}}</a> 
+                                            <a href="{{@this}}" onclick="hapi.switchVersion(this);">{{@key}}</a>
                                         </li>
                                         {{/each}}
                                     </ul>
@@ -100,7 +100,7 @@
                 </div>
             </div>
 
-            <div id="body" class="body"> 
+            <div id="body" class="body">
                 <div id="splashText">
                     <h1>Welcome to the <strong>{{{product}}}</strong> Options Reference</h1>
                     <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
@@ -120,7 +120,7 @@
             </div>
 
             <p>
-                {{{product}}} v{{version}} - 
+                {{{product}}} v{{version}} -
                 Generated from branch <a href="https://github.com/highcharts/highcharts/tree/{{versionProps.branch}}">{{versionProps.branch}}</a> (commit <a href="https://github.com/highcharts/highcharts/commit/{{versionProps.commit}}">{{versionProps.commit}}</a>), on {{date}}
             </p>
         </div>

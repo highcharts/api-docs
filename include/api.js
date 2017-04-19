@@ -99,7 +99,7 @@ hapi.ajax = function(p) {
             target.className += ' ' + cls;
         }
     }
-    
+
     function removeClass(target, cls) {
         target.className = target.className.replace(' ' + cls, '');
     }
@@ -132,7 +132,7 @@ hapi.ajax = function(p) {
             node.className += ' current';
             node.scrollIntoView();
         }
-        
+
         node.className += def.isLeaf ? ' leaf' : ' parent';
 
         if (!def.isLeaf) {
@@ -227,7 +227,7 @@ hapi.ajax = function(p) {
             state.shift();
         }
     }
-    
+
     function createOption(target, def, state, origState) {
         var isCurrent = def.fullname === origState,
             option = cr('div', 'option'),
@@ -273,19 +273,19 @@ hapi.ajax = function(p) {
                     'Defaults to ' + def.default);
             }
         }
-        
+
         if (def.extends) {
             extend = cr('p', 'extends', 'Extends: ' + def.extends);
         }
-        
+
         if (def.inheritedFrom) {
             inheritedFrom = cr('p', 'inherited-from', 'Inherited from ' + def.inheritedFrom);
         }
-        
+
         if (def.since) {
             since = cr('p', 'since', 'Since ' + def.since);
         }
-        
+
         if (def.filename) {
             definedIn = cr('i', 'defined-in', 'Defined in ');
             definedInLink = cr('a', null, def.filename + ':' + def.line);
@@ -294,7 +294,7 @@ hapi.ajax = function(p) {
                 def.filename + '#L' +
                 def.line;
         }
-        
+
 
         ap(target,
             ap(option,
@@ -335,7 +335,7 @@ hapi.ajax = function(p) {
             }
         });
     };
-    
+
     hapi.createBody = function (target, initial, state, hasChildren) {
         if (state.length > 0) {
             var origState = state;
@@ -356,7 +356,7 @@ hapi.ajax = function(p) {
 
                 optionList.innerHTML = '';
                 addClass(target, 'loaded');
-                    
+
                 ap(target,
                     ap(optionList,
                         ap(option,
@@ -369,11 +369,11 @@ hapi.ajax = function(p) {
                     createOption(optionList, def, state, origState);
                 });
             }
-            
+
             if (initial) {
                 return build(initial);
             }
-            
+
             hapi.ajax({
                 url: 'nav/' + state + '.json', //undefined.json
                 success: function (data) {
@@ -384,7 +384,7 @@ hapi.ajax = function(p) {
             removeClass(target, 'loaded');
         }
     }
-    
+
     hapi.initializeDropdowns = function (dropdownCls, linkCls) {
         Array.prototype.forEach.call(
             document.getElementsByClassName(dropdownCls), function (dropdown) {
@@ -400,7 +400,7 @@ hapi.ajax = function(p) {
             });
         });
     }
-    
+
     hapi.initializeSidebars = function (sidebarID, linkID, resetCls) {
         var sidebar = document.getElementById(sidebarID),
             link = document.getElementById(linkID),
@@ -414,7 +414,7 @@ hapi.ajax = function(p) {
             expanded = !expanded;
             sidebar.setAttribute('expanded', expanded);
         });
-        
+
         Array.prototype.forEach.call(resets, function (reset) {
             on(reset, 'click', function () {
                 expanded = false;
@@ -422,7 +422,7 @@ hapi.ajax = function(p) {
             });
         });
     }
-    
+
     hapi.initializeSearchBar = function (searchBarID, resultsID, indexUrl, minLength, maxElements) {
         var searchBar = document.querySelector(searchBarID),
             results = document.querySelector(resultsID),
@@ -430,7 +430,7 @@ hapi.ajax = function(p) {
             maxElements = maxElements || 15,
             members = [],
             query = '';
-        
+
         function markMatch(string, query) {
             re = new RegExp(query, 'g');
             return string.replace(re, '<span class="sub-match">$&</span>');
@@ -453,7 +453,7 @@ hapi.ajax = function(p) {
                 );
             }
         }
-        
+
         function search() {
             results.innerHTML = '';
             query = searchBar.value;
@@ -461,7 +461,7 @@ hapi.ajax = function(p) {
                 each(members, checkResult);
             }
         }
-        
+
         hapi.ajax({
             url: indexUrl,
             success: function (data) {
