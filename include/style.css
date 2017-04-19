@@ -314,7 +314,9 @@ a:hover {
     padding: 5px 10px;
 }
 
-.match a:hover {
+.match a:hover,
+.match a:focus {
+    outline: none;
     background: #ddd;
 }
 
