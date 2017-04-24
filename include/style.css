@@ -74,8 +74,6 @@ a:hover {
 
 .body {
     background: #fff;
-    overflow-y: scroll;
-    max-height: 100vh;
     border-left: 1px solid silver;
 }
 
@@ -648,18 +646,22 @@ a:hover {
     .navigation,
     .body {
         float: left;
-        margin: 0;
         padding: 0;
+        margin-right: 0;
         margin-left: -1px; /* Couteract border */
     }
 
     .navigation {
         width: 30%;
-        position: static;
     }
 
     .body {
         width: 70%;
+        margin-left: calc(30% - 1px);
+    }
+
+    .sidebar[expanded="false"] {
+        left: 0;
     }
 
     /* Left-align splash page title */
