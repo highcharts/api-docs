@@ -43,6 +43,10 @@ a {
     font-weight: bold;
 }
 
+code {
+    font-family: "Courier New", Courier, monospace;
+}
+
 a:hover {
     color: #90ee7e;
 }
@@ -468,6 +472,7 @@ a:hover {
 }
 
 .option-header h1 span {
+    font-family: "Courier New", Courier, monospace;
     float: left;
 }
 
@@ -494,11 +499,13 @@ a:hover {
 }
 
 .option .title, .option .title a, .option .returnType {
-    font-family: "Courier New", Courier, monospace;
-    font-size: 1.1em;
-    font-weight: bold;
     margin-bottom: 5px;
     display: inline-block;
+}
+.option .title span, .option .title .type-list {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.9em;
+    font-weight: bold;
 }
 
 .option .title a {
