@@ -43,7 +43,7 @@ a {
     font-weight: bold;
 }
 
-code {
+code, pre {
     font-family: "Courier New", Courier, monospace;
 }
 
@@ -388,6 +388,9 @@ a:hover {
 .node.collapsed>.bracket.end.second {
     display: none;
 }
+.node.collapsed .fa-caret-down {
+    display: none;
+}
 
 .node.expanded>.dots {
     display: none;
@@ -396,6 +399,11 @@ a:hover {
 .node.expanded>.bracket.end.first {
     display: none;
 }
+
+.node.expanded .fa-caret-right {
+    display: none;
+}
+
 
 #option-trees-wrapper {
     padding: 5px 5px 5px 30px;
