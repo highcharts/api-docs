@@ -409,47 +409,55 @@ hapi.ajax = function(p) {
         }
     }
 
-    hapi.initializeDropdowns = function (dropdownCls, linkCls) {
-        Array.prototype.forEach.call(
-            document.getElementsByClassName(dropdownCls), function (dropdown) {
-            var link = dropdown.getElementsByClassName(linkCls)[0],
+    hapi.initializeDropdowns = function (dropdownQ, linkQ) {
+        var dropdowns = document.querySelectorAll(dropdownQ);
+        dropdowns.forEach(function (dropdown) {
+            var link = dropdown.querySelector(linkQ),
                 expanded = false;
 
             dropdown.setAttribute('expanded', expanded);
 
             on(link, 'click', function (e) {
                 e.preventDefault();
+                e.stopPropagation();
                 expanded = !expanded;
+                dropdown.setAttribute('expanded', expanded);
+            });
+            
+            on(document, 'click', function (e) {
+                expanded = false;
                 dropdown.setAttribute('expanded', expanded);
             });
         });
     }
 
-    hapi.initializeSidebars = function (sidebarID, linkID, resetCls) {
-        var sidebar = document.getElementById(sidebarID),
-            link = document.getElementById(linkID),
-            resets = document.getElementsByClassName(resetCls),
+    hapi.initializeSidebar = function (sidebarQ, linkQ) {
+        var sidebar = document.querySelector(sidebarQ),
+            link = document.querySelector(linkQ),
             expanded = false;
 
         sidebar.setAttribute('expanded', expanded);
 
         on(link, 'click', function (e) {
             e.preventDefault();
+            e.stopPropagation();
             expanded = !expanded;
             sidebar.setAttribute('expanded', expanded);
         });
 
-        Array.prototype.forEach.call(resets, function (reset) {
-            on(reset, 'click', function () {
-                expanded = false;
-                sidebar.setAttribute('expanded', expanded);
-            });
+        on(sidebar, 'click', function (e) {
+            e.stopPropagation();
+        });
+
+        on(window, 'click', function () {
+            expanded = false;
+            sidebar.setAttribute('expanded', expanded);
         });
     }
 
-    hapi.initializeSearchBar = function (searchBarID, resultsID, indexUrl, minLength, maxElements) {
-        var searchBar = document.querySelector(searchBarID),
-            results = document.querySelector(resultsID),
+    hapi.initializeSearchBar = function (searchBarQ, resultsQ, indexUrl, minLength, maxElements) {
+        var searchBar = document.querySelector(searchBarQ),
+            results = document.querySelector(resultsQ),
             minLength = minLength || 2,
             maxElements = maxElements || 15,
             members = [],
