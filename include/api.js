@@ -341,10 +341,16 @@ hapi.ajax = function(p) {
     }
 
 
-    hapi.createNavigation = function(target, initial, state, product) {
+    hapi.createNavigation = function(options, globals, initial, state, product) {
+        options = document.querySelector(options);
+        globals = document.querySelector(globals);
         function build(data) {
             data.children.forEach(function(def) {
-                createNode(target, def, state.split('.'), state, product);
+                if (['global', 'lang'].indexOf(def.fullname) >= 0) {
+                    createNode(globals, def, state.split('.'), state, product);
+                } else {
+                    createNode(options, def, state.split('.'), state, product);
+                }
             });
         }
 

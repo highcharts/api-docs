@@ -131,8 +131,8 @@
         {{#unless node.meta.hasChildren}}
         hasChildren = false;
         {{/unless}}
-        hapi.createNavigation(document.getElementById('options'), {{{initial}}}, state, product);
-        hapi.createBody(document.getElementById('body'), {{{initial}}}, state, hasChildren);
+        hapi.createNavigation('#options', '#global-options', {{{initial}}}, state, product);
+        hapi.createBody('#body', {{{initial}}}, state, hasChildren);
         hapi.initializeDropdowns('.menu', '.dropdown-link', '.body');
         hapi.initializeSidebar('.sidebar', '.sidebar-link', '.body');
         hapi.initializeSearchBar('.search', '.results', 'search.json');
