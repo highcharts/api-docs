@@ -179,7 +179,7 @@ hapi.ajax = function(p) {
 
             function slideUp() {
                 children.style.maxHeight =
-                    (children.childNodes.length * 1.5) + 'em';
+                    (children.childNodes.length * 1.5) + 0.5 + 'em';
                 node.className = node.className.replace('collapsed', 'expanded');
             }
 
