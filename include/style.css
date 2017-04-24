@@ -403,7 +403,7 @@ a:hover {
 }
 
 #option-trees-wrapper {
-    padding: 5px;
+    padding: 5px 5px 5px 30px;
     margin-bottom: 87px;
 }
 
@@ -426,6 +426,7 @@ a:hover {
 	white-space: nowrap;
 	padding: 5px 0;
 	margin: 1px;
+    font-family: "Courier New", Courier, monospace;    
 }
 
 .options-tree .default.type-string:before,
