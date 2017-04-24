@@ -367,7 +367,7 @@ a:hover {
 
 .node {
     position: relative;
-    margin: 5px 0;
+    margin: 0.2em 0;
 }
 
 .node .title {
@@ -382,12 +382,12 @@ a:hover {
 
 .children {
     margin-left: 16px;
+    overflow: hidden;
     transition: max-height 0.5s ease-in-out;
 }
 
 .node.collapsed>.children {
     max-height: 0;
-    overflow: hidden;
 }
 
 .node.collapsed>.bracket.end.second {

@@ -176,22 +176,38 @@ hapi.ajax = function(p) {
         );
 
         function expand() {
+
+            function slideUp() {
+                children.style.maxHeight =
+                    (children.childNodes.length * 1.5) + 'em';
+                node.className = node.className.replace('collapsed', 'expanded');
+            }
+
             if (!hasNext && !def.isLeaf) {
-                getNext();
+                getNext(slideUp);
+            } else {
+                slideUp();
             }
             updateHistory(def, product);
-            children.style = 'max-height: 1000vh;';
-            node.className = node.className.replace('collapsed', 'expanded');
+            
             expanded = true;
         }
 
         function collapse() {
-            children.style = ''
-            console.log(children.clientHeight);
-            children.style = 'max-height: ' + children.clientHeight + 'px;';
-            node.className = node.className.replace('expanded', 'collapsed');
-            children.style = '';
+            children.style.maxHeight = 0;
+
             expanded = false;
+            setTimeout(
+                function () {
+                    node.className = node.className.replace(
+                        'expanded',
+                        'collapsed'
+                    );
+                },
+                1000 * parseFloat(
+                    getComputedStyle(children)['transitionDuration']
+                )
+            );
         }
 
         function toggle(e) {
@@ -201,7 +217,7 @@ hapi.ajax = function(p) {
             collapse();
         }
 
-        function getNext() {
+        function getNext(callback) {
             hapi.ajax({
                 url: 'nav/' + def.fullname + '.json',
                 dataType: 'json',
@@ -210,6 +226,10 @@ hapi.ajax = function(p) {
                         createNode(children, def, state, origState, product);
                     });
                     hasNext = true;
+
+                    if (callback) {
+                        callback();
+                    }
                 }
             })
         }
