@@ -115,7 +115,8 @@ hapi.ajax = function(p) {
     function createNode(parent, def, state, origState, product) {
         var isCurrent = def.fullname === origState,
             node = cr('div', 'node collapsed'),
-            arrow,
+            collArrow,
+            expArrow,
             title = cr('a', 'title', def.name + ':'),
             postfix,
             startBracket,
@@ -136,7 +137,8 @@ hapi.ajax = function(p) {
         node.className += def.isLeaf ? ' leaf' : ' parent';
 
         if (!def.isLeaf) {
-            arrow = cr('i', 'fa fa-caret-right');
+            collArrow = cr('i', 'fa fa-caret-right');
+            expArrow = cr('i', 'fa fa-caret-down');
             children = cr('div', 'children');
             dots = cr('span', 'dots', '...');
 
@@ -163,8 +165,10 @@ hapi.ajax = function(p) {
 
         ap(parent,
             ap(node,
-                ap(title,
-                    arrow
+                ap(
+                    title,
+                    collArrow,
+                    expArrow
                 ),
                 postfix,
                 startBracket,
