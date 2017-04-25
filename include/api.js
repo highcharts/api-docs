@@ -115,7 +115,8 @@ hapi.ajax = function(p) {
     function createNode(parent, def, state, origState, product) {
         var isCurrent = def.fullname === origState,
             node = cr('div', 'node collapsed'),
-            arrow,
+            collArrow,
+            expArrow,
             title = cr('a', 'title', def.name + ':'),
             postfix,
             startBracket,
@@ -136,7 +137,8 @@ hapi.ajax = function(p) {
         node.className += def.isLeaf ? ' leaf' : ' parent';
 
         if (!def.isLeaf) {
-            arrow = cr('i', 'fa fa-caret-right');
+            collArrow = cr('i', 'fa fa-caret-right');
+            expArrow = cr('i', 'fa fa-caret-down');
             children = cr('div', 'children');
             dots = cr('span', 'dots', '...');
 
@@ -163,8 +165,10 @@ hapi.ajax = function(p) {
 
         ap(parent,
             ap(node,
-                ap(title,
-                    arrow
+                ap(
+                    title,
+                    collArrow,
+                    expArrow
                 ),
                 postfix,
                 startBracket,
@@ -179,7 +183,7 @@ hapi.ajax = function(p) {
 
             function slideUp() {
                 children.style.maxHeight =
-                    (children.childNodes.length * 1.5) + 'em';
+                    (children.childNodes.length * 1.5) + 0.5 + 'em';
                 node.className = node.className.replace('collapsed', 'expanded');
             }
 
@@ -337,10 +341,16 @@ hapi.ajax = function(p) {
     }
 
 
-    hapi.createNavigation = function(target, initial, state, product) {
+    hapi.createNavigation = function(options, globals, initial, state, product) {
+        options = document.querySelector(options);
+        globals = document.querySelector(globals);
         function build(data) {
             data.children.forEach(function(def) {
-                createNode(target, def, state.split('.'), state, product);
+                if (['global', 'lang'].indexOf(def.fullname) >= 0) {
+                    createNode(globals, def, state.split('.'), state, product);
+                } else {
+                    createNode(options, def, state.split('.'), state, product);
+                }
             });
         }
 
@@ -405,47 +415,55 @@ hapi.ajax = function(p) {
         }
     }
 
-    hapi.initializeDropdowns = function (dropdownCls, linkCls) {
-        Array.prototype.forEach.call(
-            document.getElementsByClassName(dropdownCls), function (dropdown) {
-            var link = dropdown.getElementsByClassName(linkCls)[0],
+    hapi.initializeDropdowns = function (dropdownQ, linkQ) {
+        var dropdowns = document.querySelectorAll(dropdownQ);
+        dropdowns.forEach(function (dropdown) {
+            var link = dropdown.querySelector(linkQ),
                 expanded = false;
 
             dropdown.setAttribute('expanded', expanded);
 
             on(link, 'click', function (e) {
                 e.preventDefault();
+                e.stopPropagation();
                 expanded = !expanded;
+                dropdown.setAttribute('expanded', expanded);
+            });
+            
+            on(document, 'click', function (e) {
+                expanded = false;
                 dropdown.setAttribute('expanded', expanded);
             });
         });
     }
 
-    hapi.initializeSidebars = function (sidebarID, linkID, resetCls) {
-        var sidebar = document.getElementById(sidebarID),
-            link = document.getElementById(linkID),
-            resets = document.getElementsByClassName(resetCls),
+    hapi.initializeSidebar = function (sidebarQ, linkQ) {
+        var sidebar = document.querySelector(sidebarQ),
+            link = document.querySelector(linkQ),
             expanded = false;
 
         sidebar.setAttribute('expanded', expanded);
 
         on(link, 'click', function (e) {
             e.preventDefault();
+            e.stopPropagation();
             expanded = !expanded;
             sidebar.setAttribute('expanded', expanded);
         });
 
-        Array.prototype.forEach.call(resets, function (reset) {
-            on(reset, 'click', function () {
-                expanded = false;
-                sidebar.setAttribute('expanded', expanded);
-            });
+        on(sidebar, 'click', function (e) {
+            e.stopPropagation();
+        });
+
+        on(window, 'click', function () {
+            expanded = false;
+            sidebar.setAttribute('expanded', expanded);
         });
     }
 
-    hapi.initializeSearchBar = function (searchBarID, resultsID, indexUrl, minLength, maxElements) {
-        var searchBar = document.querySelector(searchBarID),
-            results = document.querySelector(resultsID),
+    hapi.initializeSearchBar = function (searchBarQ, resultsQ, indexUrl, minLength, maxElements) {
+        var searchBar = document.querySelector(searchBarQ),
+            results = document.querySelector(resultsQ),
             minLength = minLength || 2,
             maxElements = maxElements || 15,
             members = [],

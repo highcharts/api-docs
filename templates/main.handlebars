@@ -10,7 +10,7 @@
 
         <div class="header">
             <div class="row row-1">
-                <div id="sidebar-link" class="cell">
+                <div id="sidebar-link" class="cell sidebar-link">
                     <a href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
                 </div>
                 <div id="highcharts-logo" class="cell">
@@ -131,10 +131,10 @@
         {{#unless node.meta.hasChildren}}
         hasChildren = false;
         {{/unless}}
-        hapi.createNavigation(document.getElementById('options'), {{{initial}}}, state, product);
-        hapi.createBody(document.getElementById('body'), {{{initial}}}, state, hasChildren);
-        hapi.initializeDropdowns('menu', 'dropdown-link');
-        hapi.initializeSidebars('sidebar', 'sidebar-link', 'body');
+        hapi.createNavigation('#options', '#global-options', {{{initial}}}, state, product);
+        hapi.createBody('#body', {{{initial}}}, state, hasChildren);
+        hapi.initializeDropdowns('.menu', '.dropdown-link', '.body');
+        hapi.initializeSidebar('.sidebar', '.sidebar-link', '.body');
         hapi.initializeSearchBar('.search', '.results', 'search.json');
     </script>
     </body>
