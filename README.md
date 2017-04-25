@@ -61,3 +61,7 @@ for implementing a version picker in the UI:
         }
 
 The version paths are relative to the current folder.
+
+# License
+
+Please see [LICENSE](the license file).
