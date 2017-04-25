@@ -67,7 +67,7 @@ a:hover {
 
 .navigation {
     background: #fff;
-    height: 100%;
+    height: calc(100vh - 187px);
     border-right: 1px solid silver;
     margin-top: 87px;
 }
@@ -75,6 +75,7 @@ a:hover {
 .body {
     background: #fff;
     border-left: 1px solid silver;
+    min-height: calc(100vh - 187px);
 }
 
 .footer {
@@ -226,16 +227,16 @@ a:hover {
     color: #a09fb4;
 }
 
-.dropdown-menu li.current a {
+.dropdown-menu li.highlighted a {
     font-weight: bold;
     color: #eeeaea;
 }
 
-.dropdown-menu li.current a:hover {
+.dropdown-menu li.highlighted a:hover {
     color: #90ee7e;
 }
 
-.dropdown-menu li.current a, .dropdown-menu li a:hover {
+.dropdown-menu li.highlighted a, .dropdown-menu li a:hover {
     color: #eeeaea;
 }
 
@@ -319,7 +320,14 @@ a:hover {
 .match a:hover,
 .match a:focus {
     outline: none;
+}
+
+.match a:hover {
     background: #ddd;
+}
+
+.match a:focus {
+    background: #bbb;
 }
 
 .match *,
@@ -341,7 +349,6 @@ a:hover {
     position: fixed;
     display: block;
     top: 0;
-    min-height: 100%;
     overflow-x: scroll;
     transition: left 0.2s ease;
     z-index: 99;
@@ -366,6 +373,10 @@ a:hover {
 .node {
     position: relative;
     margin: 0.2em 0;
+}
+
+.node.highlighted>.title {
+    background-color: #eefdec;
 }
 
 .node .title {
@@ -491,10 +502,6 @@ a:hover {
 .option {
     overflow-y: hidden;
     border-top: 1px solid silver;
-}
-
-.option.current {
-    background: #eefdec;
 }
 
 .option.deprecated * {

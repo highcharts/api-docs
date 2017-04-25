@@ -7,7 +7,9 @@ hapi.ajax = function(p) {
             type: p.type || 'GET',
             dataType: p.dataType || 'json',
             success: p.success || function() {},
-            error: p.error || function() {}
+            error: p.error || function(error) {
+                console.error(error);
+            }
         },
         headers = {
             json: 'application/json',
@@ -26,24 +28,15 @@ hapi.ajax = function(p) {
         if (r.readyState === 4 && r.status === 200) {
             if (props.dataType === 'json') {
                 try {
-                    var json = JSON.parse(r.responseText);
-                    if (props.success) {
-                        props.success(json);
-                    }
+                    props.success(JSON.parse(r.responseText));
                 } catch (e) {
-                    if (props.error) {
-                        props.error(e.toString(), r.responseText);
-                    }
+                    props.error(e.stack, r.responseText);
                 }
             } else {
-                if (props.success) {
-                    props.success(r.responseText);
-                }
+                props.success(r.responseText);
             }
         } else if (r.readyState === 4) {
-            if (props.error) {
-                props.error(r.status, r.statusText);
-            }
+            props.error(r.responseURL + ' ' + r.statusText, r.responseText);
         }
     };
 
@@ -52,12 +45,6 @@ hapi.ajax = function(p) {
 
 
 (function() {
-
-    function each(array, callback) {
-        for (var i = 0; i < array.length; i++) {
-            callback(array[i], i);
-        }
-    }
 
     function cr(name, className, inner) {
         var el = document.createElement(name);
@@ -101,20 +88,78 @@ hapi.ajax = function(p) {
     }
 
     function removeClass(target, cls) {
-        target.className = target.className.replace(' ' + cls, '');
+        if (target.className) {
+            target.className = target.className.replace(' ' + cls, '');
+        }
+    }
+
+    function updateTitle(member, product) {
+        return document.title = member + ' | ' + product + ' API Reference';
     }
 
     function updateHistory(def, product) {
-        if (location.href !== def.fullname + '.html') {
-            document.title = def.fullname + ' | ' + product + ' API Reference';
-            hapi.createBody(document.getElementById('body'), false, def.fullname, !def.isLeaf);
-            history.pushState(null, '', def.fullname + '.html');
+        var title,
+            currentURL = location.pathname,
+            newURL = '/' + product.toLowerCase() + '/' + def.fullname + '.html';
+        if (currentURL !== newURL) {
+            title = updateTitle(def.fullname, product);
+            history.pushState({
+                product: product,
+                member: def.fullname,
+                hasChildren: !def.isLeaf
+            }, title, def.fullname + '.html');
         }
+    }
+    
+    function buildBody(current, isParent, callback) {
+        hapi.createBody('#body', current, isParent, callback);
+    }
+
+    function scrollTo(container, target, duration) {
+        var targetY = target.getBoundingClientRect().top,
+            startingY = window.pageYOffset,
+            diff = targetY - startingY - container.getBoundingClientRect().top,
+            start;
+        function step(timestamp) {
+            if (!start) {
+                start = timestamp;
+            }
+            var time = timestamp - start,
+                percent = Math.min(time / duration, 1);
+        
+            window.scrollTo(0, startingY + diff * percent);
+        
+            if (time < duration) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+
+    function highlight(targetClass, containerClass, resetClass) {
+        var container = document.querySelector(containerClass),
+            target = container.querySelector(targetClass),
+            resets = resetClass && document.querySelectorAll(resetClass);
+        if (resets) {
+            resets.forEach(function(otherNode) {
+                removeClass(otherNode, 'highlighted');
+            });
+        }
+        if (target) {
+            addClass(target, 'highlighted');
+            scrollTo(container, target, 300);
+        }
+    }
+    
+    function toClassName (optionFullName) {
+        return 'option-' + optionFullName.replace(/\./g, '-')
     }
 
     function createNode(parent, def, state, origState, product) {
         var isCurrent = def.fullname === origState,
-            node = cr('div', 'node collapsed'),
+            optionClass = toClassName(def.fullname),
+            node = cr('div', 'node collapsed ' + optionClass),
             collArrow,
             expArrow,
             title = cr('a', 'title', def.name + ':'),
@@ -128,11 +173,6 @@ hapi.ajax = function(p) {
             hasNext = false;
 
         title.href = def.fullname + '.html'
-
-        if (isCurrent) {
-            node.className += ' current';
-            node.scrollIntoView();
-        }
 
         node.className += def.isLeaf ? ' leaf' : ' parent';
 
@@ -157,8 +197,8 @@ hapi.ajax = function(p) {
                 'default type-' + (
                     def.default && def.default !== 'undefined' &&
                     def.typeList && def.typeList.names ?
-                        def.typeList.names[0].toLowerCase() :
-                        'undefined'
+                    def.typeList.names[0].toLowerCase() :
+                    'undefined'
                 ),
                 def.default || 'undefined');
         }
@@ -179,21 +219,40 @@ hapi.ajax = function(p) {
             )
         );
 
+        function getNext(callback) {
+            hapi.ajax({
+                url: 'nav/' + def.fullname + '.json',
+                dataType: 'json',
+                success: function(data) {
+                    data.children.forEach(function(def) {
+                        createNode(children, def, state, origState, product);
+                    });
+                    hasNext = true;
+                    
+                    if (callback) {
+                        callback();
+                    }
+                }
+            })
+        }
+
         function expand() {
 
-            function slideUp() {
+            function slideDown() {
                 children.style.maxHeight =
                     (children.childNodes.length * 1.5) + 0.5 + 'em';
                 node.className = node.className.replace('collapsed', 'expanded');
             }
 
-            if (!hasNext && !def.isLeaf) {
-                getNext(slideUp);
-            } else {
-                slideUp();
+            if (!def.isLeaf) {
+                if (!hasNext) {
+                    getNext(slideDown);
+                } else {
+                    slideDown();
+                }
             }
-            updateHistory(def, product);
-            
+            updateTitle(def.fullname, product);
+
             expanded = true;
         }
 
@@ -202,7 +261,7 @@ hapi.ajax = function(p) {
 
             expanded = false;
             setTimeout(
-                function () {
+                function() {
                     node.className = node.className.replace(
                         'expanded',
                         'collapsed'
@@ -215,46 +274,41 @@ hapi.ajax = function(p) {
         }
 
         function toggle(e) {
-            e.preventDefault();
             expanded = !expanded;
             if (expanded) return expand();
             collapse();
         }
 
-        function getNext(callback) {
-            hapi.ajax({
-                url: 'nav/' + def.fullname + '.json',
-                dataType: 'json',
-                success: function(data) {
-                    data.children.forEach(function(def) {
-                        createNode(children, def, state, origState, product);
-                    });
-                    hasNext = true;
+        function loadNode() {
+            highlight('.node.' + optionClass, '.sidebar', '.node');
+            updateTitle(def.fullname, product);
+            if (!def.isLeaf) {
+                highlight('.option.' + optionClass, 'body', '.option');
+            } else {
+                buildBody(def.fullname, !def.isLeaf, function () {
+                    highlight('.option.' + optionClass, 'body', '.option');
+                });
+            }
+        }
 
-                    if (callback) {
-                        callback();
-                    }
-                }
-            })
-        }
-        if (!def.isLeaf) {
-            on(title, 'click', toggle);
-        } else {
-            on(title, 'click', function (e) {
-                e.preventDefault();
-                updateHistory(def, product);
-            });
-        }
+        on(title, 'click', function (e) {
+            e.preventDefault();
+            loadNode();
+            toggle();
+            updateHistory(def, product);
+        });
 
         if (state && state.length && state[0] === def.name) {
             expand();
             state.shift();
         }
+        if (isCurrent) {
+            loadNode();
+        }
     }
 
     function createOption(target, def, state, origState) {
-        var isCurrent = def.fullname === origState,
-            option = cr('div', 'option'),
+        var option = cr('div', 'option ' + toClassName(def.fullname)),
             title = cr('h2', 'title'),
             titleLink,
             titleText = cr('span', null, def.name),
@@ -270,11 +324,6 @@ hapi.ajax = function(p) {
             definedIn,
             definedInLink;
 
-        if (isCurrent) {
-            option.className += ' current';
-            option.scrollIntoView();
-        }
-
         if (!def.isLeaf) {
             titleLink = cr('a');
             titleLink.href = def.fullname + '.html';
@@ -282,7 +331,7 @@ hapi.ajax = function(p) {
         } else {
             if (def.typeList) {
                 types = cr('span', 'type-list', ': ');
-                def.typeList.names.forEach(function (type, index) {
+                def.typeList.names.forEach(function(type, index) {
                     typeStr = index ? ', ' + type : type;
                     ap(types, cr('span', 'type type-' + type.toLowerCase(), typeStr));
                 });
@@ -340,11 +389,13 @@ hapi.ajax = function(p) {
         );
     }
 
-
-    hapi.createNavigation = function(options, globals, initial, state, product) {
-        options = document.querySelector(options);
+    hapi.createNavigation = function(options, globals, state, product) {
         globals = document.querySelector(globals);
+        options = document.querySelector(options);
+
         function build(data) {
+            globals.innerHTML = '';
+            options.innerHTML = '';
             data.children.forEach(function(def) {
                 if (['global', 'lang'].indexOf(def.fullname) >= 0) {
                     createNode(globals, def, state.split('.'), state, product);
@@ -352,10 +403,6 @@ hapi.ajax = function(p) {
                     createNode(options, def, state.split('.'), state, product);
                 }
             });
-        }
-
-        if (initial) {
-            return build(initial);
         }
 
         hapi.ajax({
@@ -366,19 +413,21 @@ hapi.ajax = function(p) {
         });
     };
 
-    hapi.createBody = function (target, initial, state, hasChildren) {
+    hapi.createBody = function(target, state, hasChildren, callback) {
+        target = document.querySelector(target);
         if (state.length > 0) {
             var origState = state;
             if (!hasChildren) {
                 state = state.substr(0, state.lastIndexOf('.'));
             }
+
             function build(data) {
                 var optionList = document.getElementById('option-list'),
-                    option = cr('div', 'option-header'),
+                    option = cr('div', 'option option-header'),
                     title = cr('h1', 'title'),
                     description = cr('p', 'description', data.description);
 
-                each(state.split('.'), function (titlePart, i) {
+                state.split('.').forEach(function(titlePart, i) {
                     ap(title,
                         cr('span', null, (i > 0 ? '.' : '') + titlePart)
                     );
@@ -400,68 +449,67 @@ hapi.ajax = function(p) {
                 });
             }
 
-            if (initial) {
-                return build(initial);
-            }
-
             hapi.ajax({
                 url: 'nav/' + state + '.json', //undefined.json
-                success: function (data) {
+                success: function(data) {
                     build(data);
+                    if (typeof callback === 'function') {
+                        callback();
+                    }
                 }
             });
         } else {
             removeClass(target, 'loaded');
         }
-    }
+    };
 
-    hapi.initializeDropdowns = function (dropdownQ, linkQ) {
+    hapi.initializeDropdowns = function(dropdownQ, linkQ) {
         var dropdowns = document.querySelectorAll(dropdownQ);
-        dropdowns.forEach(function (dropdown) {
+        dropdowns.forEach(function(dropdown) {
             var link = dropdown.querySelector(linkQ),
                 expanded = false;
 
             dropdown.setAttribute('expanded', expanded);
 
-            on(link, 'click', function (e) {
+            on(link, 'click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 expanded = !expanded;
                 dropdown.setAttribute('expanded', expanded);
             });
-            
-            on(document, 'click', function (e) {
+
+            on(document, 'click', function(e) {
                 expanded = false;
                 dropdown.setAttribute('expanded', expanded);
             });
         });
-    }
+    };
 
-    hapi.initializeSidebar = function (sidebarQ, linkQ) {
+    hapi.initializeSidebar = function(sidebarQ, linkQ) {
         var sidebar = document.querySelector(sidebarQ),
             link = document.querySelector(linkQ),
             expanded = false;
 
         sidebar.setAttribute('expanded', expanded);
 
-        on(link, 'click', function (e) {
+        on(link, 'click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             expanded = !expanded;
             sidebar.setAttribute('expanded', expanded);
         });
 
-        on(sidebar, 'click', function (e) {
+        on(sidebar, 'click', function(e) {
             e.stopPropagation();
         });
 
-        on(window, 'click', function () {
+        on(window, 'click', function() {
             expanded = false;
             sidebar.setAttribute('expanded', expanded);
         });
-    }
+    };
 
-    hapi.initializeSearchBar = function (searchBarQ, resultsQ, indexUrl, minLength, maxElements) {
+    hapi.initializeSearchBar = function(searchBarQ, resultsQ, indexUrl, minLength, maxElements) {
         var searchBar = document.querySelector(searchBarQ),
             results = document.querySelector(resultsQ),
             minLength = minLength || 2,
@@ -496,17 +544,46 @@ hapi.ajax = function(p) {
             results.innerHTML = '';
             query = searchBar.value;
             if (query.length >= minLength) {
-                each(members, checkResult);
+                members.forEach(checkResult);
             }
         }
 
         hapi.ajax({
             url: indexUrl,
-            success: function (data) {
+            success: function(data) {
                 members = data;
                 on(searchBar, 'input', search);
             }
         });
-    }
+    };
+
+    /**
+     * Adds simulation of history navigation by detecting changes to the history
+     * state.
+     *
+     * @return [undefined] - nothing
+     */
+    hapi.simulateHistory = function() {
+
+        if (window.history !== undefined &&
+            window.history !== null &&
+            window.history.pushState !== undefined &&
+            window.history.pushState !== null) {
+            /**
+             * Updates the history with memberClick().
+             *
+             * If it is stored in the history state, the page will be used to
+             * update. If not, the global PAGE variable will be used.
+             *
+             * @param e - the event that triggered the history update
+             */
+            window.onpopstate = function(e) {
+                var state = e.state;
+                if (state !== undefined && state !== null) {
+                    hapi.createNavigation('#options', '#global-options', state.member, state.product);
+                }
+            }
+        }
+    };
 
 })();

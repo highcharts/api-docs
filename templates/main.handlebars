@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{{node.meta.fullname}}} | {{{product}}} API Reference</title>
+        <title>{{#if node.meta.fullname}}{{{node.meta.fullname}}} | {{/if}}{{{product}}} API Reference</title>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
         <script type="text/javascript" src="api.js"></script>
@@ -131,11 +131,12 @@
         {{#unless node.meta.hasChildren}}
         hasChildren = false;
         {{/unless}}
-        hapi.createNavigation('#options', '#global-options', {{{initial}}}, state, product);
-        hapi.createBody('#body', {{{initial}}}, state, hasChildren);
+        hapi.createNavigation('#options', '#global-options', state, product);
+        hapi.createBody('#body', state, hasChildren);
         hapi.initializeDropdowns('.menu', '.dropdown-link', '.body');
         hapi.initializeSidebar('.sidebar', '.sidebar-link', '.body');
         hapi.initializeSearchBar('.search', '.results', 'search.json');
+        hapi.simulateHistory();
     </script>
     </body>
 
