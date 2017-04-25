@@ -64,4 +64,4 @@ The version paths are relative to the current folder.
 
 # License
 
-Please see [LICENSE](the license file).
+Please see [the license file](LICENSE).
