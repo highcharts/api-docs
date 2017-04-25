@@ -377,12 +377,13 @@ a:hover {
 .node .title i {
     position: absolute;
     left: -12px;
-    top: 3px;
+    top: 0;
+    color: gray;
 }
 
 .children {
-    margin-left: 16px;
-    overflow: hidden;
+    padding-left: 16px;
+    overflow-y: hidden;
     transition: max-height 0.5s ease-in-out;
 }
 
@@ -393,7 +394,11 @@ a:hover {
 .node.collapsed>.bracket.end.second {
     display: none;
 }
-.node.collapsed .fa-caret-down {
+
+.node.expanded > .title > .fa-caret-right {
+    display: none;
+}
+.node.collapsed > .title > .fa-caret-down {
     display: none;
 }
 
@@ -402,10 +407,6 @@ a:hover {
 }
 
 .node.expanded>.bracket.end.first {
-    display: none;
-}
-
-.node.expanded .fa-caret-right {
     display: none;
 }
 

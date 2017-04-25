@@ -137,8 +137,8 @@ hapi.ajax = function(p) {
         node.className += def.isLeaf ? ' leaf' : ' parent';
 
         if (!def.isLeaf) {
-            collArrow = cr('i', 'fa fa-caret-right');
-            expArrow = cr('i', 'fa fa-caret-down');
+            collArrow = cr('i', 'fa fa-caret-right caret');
+            expArrow = cr('i', 'fa fa-caret-down caret');
             children = cr('div', 'children');
             dots = cr('span', 'dots', '...');
 
@@ -184,7 +184,19 @@ hapi.ajax = function(p) {
             function slideUp() {
                 children.style.maxHeight =
                     (children.childNodes.length * 1.5) + 0.5 + 'em';
-                node.className = node.className.replace('collapsed', 'expanded');
+                node.className = node.className.replace(
+                    'collapsed',
+                    'expanded'
+                );
+
+                setTimeout(
+                    function () {
+                        children.style.maxHeight = 'none';
+                    },
+                    1000 * parseFloat(
+                       getComputedStyle(children)['transitionDuration']
+                    )
+                );
             }
 
             if (!hasNext && !def.isLeaf) {
@@ -198,9 +210,12 @@ hapi.ajax = function(p) {
         }
 
         function collapse() {
-            children.style.maxHeight = 0;
 
-            expanded = false;
+            children.style.maxHeight = children.clientHeight + 'px';            
+            setTimeout(function () {
+                children.style.maxHeight = 0;
+            }, 10);
+
             setTimeout(
                 function () {
                     node.className = node.className.replace(
