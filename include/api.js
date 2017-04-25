@@ -160,8 +160,7 @@ hapi.ajax = function(p) {
         var isCurrent = def.fullname === origState,
             optionClass = toClassName(def.fullname),
             node = cr('div', 'node collapsed ' + optionClass),
-            collArrow,
-            expArrow,
+            arrow,
             title = cr('a', 'title', def.name + ':'),
             postfix,
             startBracket,
@@ -177,8 +176,7 @@ hapi.ajax = function(p) {
         node.className += def.isLeaf ? ' leaf' : ' parent';
 
         if (!def.isLeaf) {
-            collArrow = cr('i', 'fa fa-caret-right');
-            expArrow = cr('i', 'fa fa-caret-down');
+            arrow = cr('i', 'fa fa-caret-right');
             children = cr('div', 'children');
             dots = cr('span', 'dots', '...');
 
@@ -207,8 +205,7 @@ hapi.ajax = function(p) {
             ap(node,
                 ap(
                     title,
-                    collArrow,
-                    expArrow
+                    arrow
                 ),
                 postfix,
                 startBracket,

@@ -402,9 +402,6 @@ a:hover {
 .node.collapsed>.bracket.end.second {
     display: none;
 }
-.node.collapsed .fa-caret-down {
-    display: none;
-}
 
 .node.expanded>.dots {
     display: none;
@@ -414,8 +411,12 @@ a:hover {
     display: none;
 }
 
+.node .fa-caret-right {
+    transition: all 0.1s ease;
+}
+
 .node.expanded .fa-caret-right {
-    display: none;
+    transform: rotate(90deg);
 }
 
 
