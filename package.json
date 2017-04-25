@@ -1,4 +1,5 @@
 {
+    "version": "0.1.0",
     "name": "highcharts-api-doc-gen",
     "author": "",
     "private": true,
