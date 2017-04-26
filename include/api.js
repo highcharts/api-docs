@@ -101,6 +101,21 @@ hapi.ajax = function(p) {
         return defined;
     }
 
+    function mdLinkToObject(mdLink) {
+        function extractPart(mdLink, lb, rb) {
+            return mdLink.substr(
+                mdLink.indexOf(lb), mdLink.indexOf(rb)
+            );
+        }
+        function removeBrackets(mdLink, lb, rb) {
+            return mdLink.replace(lb, '').replace(rb, '');
+        }
+        return {
+            text: removeBrackets(extractPart(mdLink, '[', ']'), '[', ']'),
+            href: removeBrackets(extractPart(mdLink, '(', ')'), '(', ')'),
+        }
+    }
+
     function scrollTo(container, target, duration) {
         var targetY = target.getBoundingClientRect().top,
         startingY = window.pageYOffset,
@@ -354,8 +369,10 @@ hapi.ajax = function(p) {
             extend,
             inheritedFrom,
             since,
-            samples = cr('div', 'samples'),
-            see = cr('div', 'see'),
+            samples,
+            sampleList,
+            see,
+            seeList,
             definedIn,
             definedInLink;
 
@@ -392,6 +409,43 @@ hapi.ajax = function(p) {
 
         if (def.since) {
             since = cr('p', 'since', 'Since ' + def.since);
+        }
+
+        if (def.samples) {
+            samples = cr('div', 'samples');
+            sampleList = cr('ul');
+            ap(samples,
+                cr('h4', null, 'Try it'),
+                sampleList
+            );
+            Object.keys(def.samples).forEach(function (key) {
+                var a = cr('a', null, key);
+                a.href = def.samples[key];
+                ap(sampleList,
+                    ap(cr('li', 'sample'),
+                        a
+                    )
+                );
+            });
+        }
+
+        if (def.see) {
+            see = cr('div', 'see');
+            seeList = cr('ul');
+            ap(see,
+                cr('h4', null, 'See'),
+                seeList
+            );
+            def.see.forEach(function (seeItem) {
+                seeItem = mdLinkToObject(seeItem);
+                var a = cr('a', null, seeItem.text);
+                a.href = seeItem.href.replace('#', '') + '.html';
+                ap(seeList,
+                    ap(cr('li', 'see-item'),
+                        a
+                    )
+                );
+            });
         }
 
         if (def.filename) {
@@ -453,7 +507,11 @@ hapi.ajax = function(p) {
         if (state.length > 0) {
             var origState = state;
             if (!hasChildren) {
-                state = state.substr(0, state.lastIndexOf('.'));
+                if (state.indexOf('.') >= 0) {
+                    state = state.substr(0, state.lastIndexOf('.'));
+                } else {
+                    state = 'index';
+                }
             }
 
             function build(data) {
@@ -482,16 +540,14 @@ hapi.ajax = function(p) {
                 data.children.forEach(function(def) {
                     createOption(optionList, def, state, origState);
                 });
+                if (typeof callback === 'function') {
+                    callback();
+                }
             }
 
             hapi.ajax({
                 url: 'nav/' + state + '.json', //undefined.json
-                success: function(data) {
-                    build(data);
-                    if (typeof callback === 'function') {
-                        callback();
-                    }
-                }
+                success: build
             });
         } else {
             removeClass(target, 'loaded');
