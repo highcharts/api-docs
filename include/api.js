@@ -93,6 +93,40 @@ hapi.ajax = function(p) {
         }
     }
 
+    function isDefined(variable, stringCheck) {
+        return 
+            variable !== undefined &&
+            variable !== null &&
+            !(
+                stringCheck &&
+                (
+                    variable === 'undefined' ||
+                    variable === 'null'
+                )
+            );
+    }
+
+    function scrollTo(container, target, duration) {
+        var targetY = target.getBoundingClientRect().top,
+        startingY = window.pageYOffset,
+        diff = targetY - startingY - container.getBoundingClientRect().top,
+        start;
+        function step(timestamp) {
+            if (!start) {
+                start = timestamp;
+            }
+            var time = timestamp - start,
+            percent = Math.min(time / duration, 1);
+            
+            window.scrollTo(0, startingY + diff * percent);
+            
+            if (time < duration) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
     function updateTitle(member, product) {
         return document.title = member + ' | ' + product + ' API Reference';
     }
@@ -114,28 +148,6 @@ hapi.ajax = function(p) {
     function buildBody(current, isParent, callback) {
         hapi.createBody('#body', current, isParent, callback);
     }
-
-    function scrollTo(container, target, duration) {
-        var targetY = target.getBoundingClientRect().top,
-            startingY = window.pageYOffset,
-            diff = targetY - startingY - container.getBoundingClientRect().top,
-            start;
-        function step(timestamp) {
-            if (!start) {
-                start = timestamp;
-            }
-            var time = timestamp - start,
-                percent = Math.min(time / duration, 1);
-        
-            window.scrollTo(0, startingY + diff * percent);
-        
-            if (time < duration) {
-                window.requestAnimationFrame(step);
-            }
-        };
-        window.requestAnimationFrame(step);
-    }
-
 
     function highlight(targetClass, containerClass, resetClass) {
         var container = document.querySelector(containerClass),
@@ -193,7 +205,7 @@ hapi.ajax = function(p) {
             postfix = cr(
                 'span',
                 'default type-' + (
-                    def.default && def.default !== 'undefined' &&
+                    isDefined(def.default, true) &&
                     def.typeList && def.typeList.names ?
                     def.typeList.names[0].toLowerCase() :
                     'undefined'
@@ -235,10 +247,32 @@ hapi.ajax = function(p) {
 
         function expand() {
 
+            function getChildrenEmHeight(children) {
+                var height = (children.childNodes.length * 1.5) + 0.5;
+
+                children.childNodes.forEach(function (childNode) {
+                    var childrenOfChild = childNode.querySelector('.children');
+                    if (childrenOfChild) {
+                        height += getChildrenEmHeight(childrenOfChild);
+                    }
+                });
+
+                return height;
+            }
             function slideDown() {
-                children.style.maxHeight =
-                    (children.childNodes.length * 1.5) + 0.5 + 'em';
-                node.className = node.className.replace('collapsed', 'expanded');
+                node.className = node.className.replace(
+                    'collapsed',
+                    'expanded'
+                );
+                children.style.maxHeight = getChildrenEmHeight(children) + 'em';
+                setTimeout(
+                    function() {
+                        children.style.maxHeight = 'none';
+                    },
+                    1000 * parseFloat(
+                        getComputedStyle(children)['transitionDuration']
+                    )
+                );
             }
 
             if (!def.isLeaf) {
@@ -254,20 +288,23 @@ hapi.ajax = function(p) {
         }
 
         function collapse() {
-            children.style.maxHeight = 0;
+            node.className = node.className.replace(
+                'expanded',
+                'collapsed'
+            );
+
+            children.style.maxHeight = children.clientHeight + 'px';
 
             expanded = false;
             setTimeout(
                 function() {
-                    node.className = node.className.replace(
-                        'expanded',
-                        'collapsed'
-                    );
+                    
                 },
                 1000 * parseFloat(
                     getComputedStyle(children)['transitionDuration']
                 )
             );
+            children.style.maxHeight = 0;
         }
 
         function toggle(e) {
@@ -334,7 +371,7 @@ hapi.ajax = function(p) {
                 });
             }
 
-            if (def.default && def.default.length && def.default !== 'undefined') {
+            if (isDefined(def.default, true) && def.default.length) {
                 defaultvalue = cr(
                     'span',
                     'default type-' + (def.typeList && def.typeList.names ?
@@ -562,10 +599,7 @@ hapi.ajax = function(p) {
      */
     hapi.simulateHistory = function() {
 
-        if (window.history !== undefined &&
-            window.history !== null &&
-            window.history.pushState !== undefined &&
-            window.history.pushState !== null) {
+        if (isDefined(window.history) && isDefined(window.history.pushState)) {
             /**
              * Updates the history with memberClick().
              *
@@ -576,7 +610,7 @@ hapi.ajax = function(p) {
              */
             window.onpopstate = function(e) {
                 var state = e.state;
-                if (state !== undefined && state !== null) {
+                if (isDefined(state)) {
                     hapi.createNavigation('#options', '#global-options', state.member, state.product);
                 }
             }
