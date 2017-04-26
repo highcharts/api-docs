@@ -93,17 +93,12 @@ hapi.ajax = function(p) {
         }
     }
 
-    function isDefined(variable, stringCheck) {
-        return 
-            variable !== undefined &&
-            variable !== null &&
-            !(
-                stringCheck &&
-                (
-                    variable === 'undefined' ||
-                    variable === 'null'
-                )
-            );
+    function defined(variable, stringCheck) {
+        var defined = variable !== undefined && variable !== null;
+        if (defined && stringCheck) {
+            defined = variable !== 'undefined' && variable !== 'null';
+        }
+        return defined;
     }
 
     function scrollTo(container, target, duration) {
@@ -131,17 +126,23 @@ hapi.ajax = function(p) {
         return document.title = member + ' | ' + product + ' API Reference';
     }
 
+    function historyEnabled() {
+        return defined(window.history) && defined(window.history.pushState);
+    }
+
     function updateHistory(def, product) {
         var title,
             currentURL = location.pathname,
             newURL = '/' + product.toLowerCase() + '/' + def.fullname + '.html';
         if (currentURL !== newURL) {
             title = updateTitle(def.fullname, product);
-            history.pushState({
-                product: product,
-                member: def.fullname,
-                hasChildren: !def.isLeaf
-            }, title, def.fullname + '.html');
+            if (historyEnabled()) {
+                history.pushState({
+                    product: product,
+                    member: def.fullname,
+                    hasChildren: !def.isLeaf
+                }, title, def.fullname + '.html');
+            }
         }
     }
     
@@ -205,7 +206,7 @@ hapi.ajax = function(p) {
             postfix = cr(
                 'span',
                 'default type-' + (
-                    isDefined(def.default, true) &&
+                    defined(def.default, true) &&
                     def.typeList && def.typeList.names ?
                     def.typeList.names[0].toLowerCase() :
                     'undefined'
@@ -371,7 +372,7 @@ hapi.ajax = function(p) {
                 });
             }
 
-            if (isDefined(def.default, true) && def.default.length) {
+            if (defined(def.default, true) && def.default.length) {
                 defaultvalue = cr(
                     'span',
                     'default type-' + (def.typeList && def.typeList.names ?
@@ -599,7 +600,7 @@ hapi.ajax = function(p) {
      */
     hapi.simulateHistory = function() {
 
-        if (isDefined(window.history) && isDefined(window.history.pushState)) {
+        if (historyEnabled()) {
             /**
              * Updates the history with memberClick().
              *
@@ -610,7 +611,7 @@ hapi.ajax = function(p) {
              */
             window.onpopstate = function(e) {
                 var state = e.state;
-                if (isDefined(state)) {
+                if (state !== undefined && state !== null) {
                     hapi.createNavigation('#options', '#global-options', state.member, state.product);
                 }
             }
