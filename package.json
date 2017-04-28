@@ -4,7 +4,7 @@
     "author": "",
     "private": true,
     "bin": {
-        "hc-gen-api-docs": "node ./bin/gen.docs.js"
+        "hc-gen-api-docs": "./bin/gen.docs.js"
     },
     "dependencies": {
         "handlebars": "*",
