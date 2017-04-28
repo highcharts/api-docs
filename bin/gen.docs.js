@@ -30,7 +30,7 @@ console.log('Generating into', args[3], 'from', args[2]);
 console.log();
 
 function doGen(a, e) {
-    if (typeof e !== 'undefinefd') {
+    if (typeof e !== 'undefined') {
         console.log('Files refreshed, regenerating'.yellow);
     }
 
