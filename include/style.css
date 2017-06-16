@@ -67,16 +67,15 @@ a:hover {
 
 .navigation {
     background: #fff;
-    height: 100%;
+    height: calc(100vh - 187px);
     border-right: 1px solid silver;
     margin-top: 87px;
 }
 
 .body {
     background: #fff;
-    overflow-y: scroll;
-    max-height: 100vh;
     border-left: 1px solid silver;
+    min-height: calc(100vh - 187px);
 }
 
 .footer {
@@ -228,16 +227,16 @@ a:hover {
     color: #a09fb4;
 }
 
-.dropdown-menu li.current a {
+.dropdown-menu li.highlighted a {
     font-weight: bold;
     color: #eeeaea;
 }
 
-.dropdown-menu li.current a:hover {
+.dropdown-menu li.highlighted a:hover {
     color: #90ee7e;
 }
 
-.dropdown-menu li.current a, .dropdown-menu li a:hover {
+.dropdown-menu li.highlighted a, .dropdown-menu li a:hover {
     color: #eeeaea;
 }
 
@@ -318,14 +317,19 @@ a:hover {
     padding: 5px 10px;
 }
 
-.match a:hover,
-.match a:focus {
+.match a:hover, .match a:focus {
     outline: none;
+}
+
+.match a:hover {
     background: #ddd;
 }
 
-.match *,
-.match *:hover {
+.match a:focus {
+    background: #bbb;
+}
+
+.match *, .match *:hover {
     font-family: "Courier New", Courier, monospace;
     font-size: 14px;
     color: #222;
@@ -343,7 +347,6 @@ a:hover {
     position: fixed;
     display: block;
     top: 0;
-    min-height: 100%;
     overflow-x: scroll;
     transition: left 0.2s ease;
     z-index: 99;
@@ -370,6 +373,10 @@ a:hover {
     margin: 0.2em 0;
 }
 
+.node.highlighted>.title {
+    background-color: #eefdec;
+}
+
 .node .title {
     margin-right: 5px;
 }
@@ -377,13 +384,12 @@ a:hover {
 .node .title i {
     position: absolute;
     left: -12px;
-    top: 0;
-    color: gray;
+    top: 3px;
 }
 
 .children {
-    padding-left: 16px;
-    overflow-y: hidden;
+    margin-left: 16px;
+    overflow: hidden;
     transition: max-height 0.5s ease-in-out;
 }
 
@@ -395,13 +401,6 @@ a:hover {
     display: none;
 }
 
-.node.expanded > .title > .fa-caret-right {
-    display: none;
-}
-.node.collapsed > .title > .fa-caret-down {
-    display: none;
-}
-
 .node.expanded>.dots {
     display: none;
 }
@@ -410,14 +409,20 @@ a:hover {
     display: none;
 }
 
+.node .fa-caret-right {
+    transition: all 0.1s ease;
+}
+
+.node.expanded .fa-caret-right {
+    transform: rotate(90deg);
+}
 
 #option-trees-wrapper {
     padding: 5px 5px 5px 30px;
     margin-bottom: 87px;
 }
 
-.options-tree,
-.options-tree a {
+.options-tree, .options-tree a {
     font-family: "Courier New", Courier, monospace;
 }
 
@@ -431,27 +436,23 @@ a:hover {
 }
 
 .options-tree .default {
-	color: silver;
-	white-space: nowrap;
-	padding: 5px 0;
-	margin: 1px;
-    font-family: "Courier New", Courier, monospace;    
+    color: silver;
+    white-space: nowrap;
+    padding: 5px 0;
+    margin: 1px;
+    font-family: "Courier New", Courier, monospace;
 }
 
-.options-tree .default.type-string:before,
-.options-tree .default.type-string:after,
-.options-tree .default.type-color:before,
-.options-tree .default.type-color:after {
+.options-tree .default.type-string:before, .options-tree .default.type-string:after, .options-tree .default.type-color:before, .options-tree .default.type-color:after {
     content: '"'
 }
 
-.options-tree .default.type-string,
-.options-tree .default.type-color {
-	color: #39A832;
+.options-tree .default.type-string, .options-tree .default.type-color {
+    color: #39A832;
 }
 
 .options-tree .default.type-number {
-	color: #297EA8;
+    color: #297EA8;
 }
 
 
@@ -469,7 +470,9 @@ a:hover {
     text-align: center;
 }
 
+
 /* Hide when options are visible */
+
 .body.loaded #splashText {
     display: none;
 }
@@ -486,18 +489,14 @@ a:hover {
     float: left;
 }
 
-.option-header,
-.option {
+.option-header, .option {
     padding: 30px;
     position: relative;
 }
+
 .option {
     overflow-y: hidden;
     border-top: 1px solid silver;
-}
-
-.option.current {
-    background: #eefdec;
 }
 
 .option.deprecated * {
@@ -512,6 +511,7 @@ a:hover {
     margin-bottom: 5px;
     display: inline-block;
 }
+
 .option .title span, .option .title .type-list {
     font-family: "Courier New", Courier, monospace;
     font-size: 0.9em;
@@ -572,30 +572,24 @@ a:hover {
     #page-title h1 {
         font-size: 20px;
     }
-
     #product-selector, #product-selector .dropdown-menu {
         width: 60%;
     }
-
     #version-selector, #version-selector .dropdown-menu, #prog-lang-selector, #prog-lang-selector .dropdown-menu {
         width: 20%;
     }
-
     #product-selector .dropdown-link {
         display: none;
     }
-
     #product-selector .dropdown-menu {
         display: block;
     }
-
     #product-selector .dropdown-menu ul {
         padding: 0;
         background: none;
         border: 0;
         margin: 0;
     }
-
     #product-selector .dropdown-menu ul li {
         display: inline-block;
     }
@@ -613,7 +607,6 @@ a:hover {
     #sidebar-link {
         display: none;
     }
-
     /* If sidr sidebar is visible while scaling up,
 	the page breaks. To avoid this, we counteract
 	the effects sidr is having on the body element: */
@@ -621,53 +614,46 @@ a:hover {
         left: 0 !important;
         width: 100% !important;
     }*/
-
     .header .row {
         padding: 0 15px;
     }
-
     #highcharts-logo {
         width: 25%;
     }
-
     #highcharts-logo a {
         margin: 0;
     }
-
     #highcharts-logo img {
         height: 130%;
     }
-
     #page-title {
         width: 50%;
         text-align: center;
         float: none;
         padding: 0;
     }
-
     /* Make navigation and wrapper share width 30/70 */
-    .navigation,
-    .body {
+    .navigation, .body {
         float: left;
-        margin: 0;
         padding: 0;
-        margin-left: -1px; /* Couteract border */
+        margin-right: 0;
+        margin-left: -1px;
+        /* Couteract border */
     }
-
     .navigation {
         width: 30%;
-        position: static;
     }
-
     .body {
         width: 70%;
+        margin-left: calc(30% - 1px);
     }
-
+    .sidebar[expanded="false"] {
+        left: 0;
+    }
     /* Left-align splash page title */
     #splashText h1 {
         text-align: left;
     }
-
     #option-list {
         padding-top: 25px;
     }
