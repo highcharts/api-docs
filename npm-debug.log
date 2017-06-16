@@ -1,0 +1,249 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'link' ]
+2 info using npm@3.10.10
+3 info using node@v6.9.5
+4 verbose linkPkg /Users/torstein/GitHub/api-docs
+5 silly gentlyRm /usr/local/lib/node_modules/highcharts-api-doc-gen is being purged
+6 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/highcharts-api-doc-gen
+7 verbose link build target /usr/local/lib/node_modules/highcharts-api-doc-gen
+8 silly loadCurrentTree Starting
+9 silly install loadCurrentTree
+10 silly install readLocalPackageData
+11 silly install normalizeTree
+12 silly loadCurrentTree Finishing
+13 silly loadIdealTree Starting
+14 silly install loadIdealTree
+15 silly cloneCurrentTree Starting
+16 silly install cloneCurrentTreeToIdealTree
+17 silly cloneCurrentTree Finishing
+18 silly loadShrinkwrap Starting
+19 silly install loadShrinkwrap
+20 silly loadShrinkwrap Finishing
+21 silly loadAllDepsIntoIdealTree Starting
+22 silly install loadAllDepsIntoIdealTree
+23 silly loadAllDepsIntoIdealTree Finishing
+24 silly loadIdealTree Finishing
+25 silly currentTree highcharts-api-doc-gen@
+25 silly currentTree ├── accepts@1.3.3
+25 silly currentTree ├── align-text@0.1.4
+25 silly currentTree ├── amdefine@1.0.1
+25 silly currentTree ├── array-flatten@1.1.1
+25 silly currentTree ├── async@2.3.0
+25 silly currentTree ├── camelcase@1.2.1
+25 silly currentTree ├── center-align@0.1.3
+25 silly currentTree ├─┬ cliui@2.1.0
+25 silly currentTree │ └── wordwrap@0.0.2
+25 silly currentTree ├── colors@1.1.2
+25 silly currentTree ├── content-disposition@0.5.2
+25 silly currentTree ├── content-type@1.0.2
+25 silly currentTree ├── cookie-signature@1.0.6
+25 silly currentTree ├── cookie@0.3.1
+25 silly currentTree ├── debug@2.6.1
+25 silly currentTree ├── decamelize@1.2.0
+25 silly currentTree ├── depd@1.1.0
+25 silly currentTree ├── destroy@1.0.4
+25 silly currentTree ├── ee-first@1.1.1
+25 silly currentTree ├── encodeurl@1.0.1
+25 silly currentTree ├── escape-html@1.0.3
+25 silly currentTree ├── etag@1.8.0
+25 silly currentTree ├── express@4.15.2
+25 silly currentTree ├─┬ finalhandler@1.0.2
+25 silly currentTree │ ├── debug@2.6.4
+25 silly currentTree │ └── ms@0.7.3
+25 silly currentTree ├── forwarded@0.1.0
+25 silly currentTree ├── fresh@0.5.0
+25 silly currentTree ├─┬ handlebars@4.0.6
+25 silly currentTree │ └── async@1.5.2
+25 silly currentTree ├── http-errors@1.6.1
+25 silly currentTree ├── inherits@2.0.3
+25 silly currentTree ├── ipaddr.js@1.3.0
+25 silly currentTree ├── is-buffer@1.1.5
+25 silly currentTree ├── kind-of@3.1.0
+25 silly currentTree ├── lazy-cache@1.0.4
+25 silly currentTree ├── lodash@4.17.4
+25 silly currentTree ├── longest@1.0.1
+25 silly currentTree ├── marked@0.3.6
+25 silly currentTree ├── media-typer@0.3.0
+25 silly currentTree ├── merge-descriptors@1.0.1
+25 silly currentTree ├── methods@1.1.2
+25 silly currentTree ├── mime-db@1.27.0
+25 silly currentTree ├── mime-types@2.1.15
+25 silly currentTree ├── mime@1.3.4
+25 silly currentTree ├── minimist@0.0.10
+25 silly currentTree ├─┬ mkdirp@0.5.1
+25 silly currentTree │ └── minimist@0.0.8
+25 silly currentTree ├── ms@0.7.2
+25 silly currentTree ├── negotiator@0.6.1
+25 silly currentTree ├── on-finished@2.3.0
+25 silly currentTree ├── optimist@0.6.1
+25 silly currentTree ├── parseurl@1.3.1
+25 silly currentTree ├── path-to-regexp@0.1.7
+25 silly currentTree ├── proxy-addr@1.1.4
+25 silly currentTree ├── qs@6.4.0
+25 silly currentTree ├── range-parser@1.2.0
+25 silly currentTree ├── repeat-string@1.6.1
+25 silly currentTree ├── right-align@0.1.3
+25 silly currentTree ├── send@0.15.1
+25 silly currentTree ├── serve-static@1.12.1
+25 silly currentTree ├── setprototypeof@1.0.3
+25 silly currentTree ├── source-map@0.4.4
+25 silly currentTree ├── statuses@1.3.1
+25 silly currentTree ├── type-is@1.6.15
+25 silly currentTree ├─┬ uglify-js@2.8.22
+25 silly currentTree │ └── source-map@0.5.6
+25 silly currentTree ├── uglify-to-browserify@1.0.2
+25 silly currentTree ├── unpipe@1.0.0
+25 silly currentTree ├── utils-merge@1.0.0
+25 silly currentTree ├── vary@1.1.1
+25 silly currentTree ├── window-size@0.1.0
+25 silly currentTree ├── wordwrap@0.0.3
+25 silly currentTree └── yargs@3.10.0
+26 silly idealTree highcharts-api-doc-gen@
+26 silly idealTree ├── accepts@1.3.3
+26 silly idealTree ├── align-text@0.1.4
+26 silly idealTree ├── amdefine@1.0.1
+26 silly idealTree ├── array-flatten@1.1.1
+26 silly idealTree ├── async@2.3.0
+26 silly idealTree ├── camelcase@1.2.1
+26 silly idealTree ├── center-align@0.1.3
+26 silly idealTree ├─┬ cliui@2.1.0
+26 silly idealTree │ └── wordwrap@0.0.2
+26 silly idealTree ├── colors@1.1.2
+26 silly idealTree ├── content-disposition@0.5.2
+26 silly idealTree ├── content-type@1.0.2
+26 silly idealTree ├── cookie-signature@1.0.6
+26 silly idealTree ├── cookie@0.3.1
+26 silly idealTree ├── debug@2.6.1
+26 silly idealTree ├── decamelize@1.2.0
+26 silly idealTree ├── depd@1.1.0
+26 silly idealTree ├── destroy@1.0.4
+26 silly idealTree ├── ee-first@1.1.1
+26 silly idealTree ├── encodeurl@1.0.1
+26 silly idealTree ├── escape-html@1.0.3
+26 silly idealTree ├── etag@1.8.0
+26 silly idealTree ├── express@4.15.2
+26 silly idealTree ├─┬ finalhandler@1.0.2
+26 silly idealTree │ ├── debug@2.6.4
+26 silly idealTree │ └── ms@0.7.3
+26 silly idealTree ├── forwarded@0.1.0
+26 silly idealTree ├── fresh@0.5.0
+26 silly idealTree ├─┬ handlebars@4.0.6
+26 silly idealTree │ └── async@1.5.2
+26 silly idealTree ├── http-errors@1.6.1
+26 silly idealTree ├── inherits@2.0.3
+26 silly idealTree ├── ipaddr.js@1.3.0
+26 silly idealTree ├── is-buffer@1.1.5
+26 silly idealTree ├── kind-of@3.1.0
+26 silly idealTree ├── lazy-cache@1.0.4
+26 silly idealTree ├── lodash@4.17.4
+26 silly idealTree ├── longest@1.0.1
+26 silly idealTree ├── marked@0.3.6
+26 silly idealTree ├── media-typer@0.3.0
+26 silly idealTree ├── merge-descriptors@1.0.1
+26 silly idealTree ├── methods@1.1.2
+26 silly idealTree ├── mime-db@1.27.0
+26 silly idealTree ├── mime-types@2.1.15
+26 silly idealTree ├── mime@1.3.4
+26 silly idealTree ├── minimist@0.0.10
+26 silly idealTree ├─┬ mkdirp@0.5.1
+26 silly idealTree │ └── minimist@0.0.8
+26 silly idealTree ├── ms@0.7.2
+26 silly idealTree ├── negotiator@0.6.1
+26 silly idealTree ├── on-finished@2.3.0
+26 silly idealTree ├── optimist@0.6.1
+26 silly idealTree ├── parseurl@1.3.1
+26 silly idealTree ├── path-to-regexp@0.1.7
+26 silly idealTree ├── proxy-addr@1.1.4
+26 silly idealTree ├── qs@6.4.0
+26 silly idealTree ├── range-parser@1.2.0
+26 silly idealTree ├── repeat-string@1.6.1
+26 silly idealTree ├── right-align@0.1.3
+26 silly idealTree ├── send@0.15.1
+26 silly idealTree ├── serve-static@1.12.1
+26 silly idealTree ├── setprototypeof@1.0.3
+26 silly idealTree ├── source-map@0.4.4
+26 silly idealTree ├── statuses@1.3.1
+26 silly idealTree ├── type-is@1.6.15
+26 silly idealTree ├─┬ uglify-js@2.8.22
+26 silly idealTree │ └── source-map@0.5.6
+26 silly idealTree ├── uglify-to-browserify@1.0.2
+26 silly idealTree ├── unpipe@1.0.0
+26 silly idealTree ├── utils-merge@1.0.0
+26 silly idealTree ├── vary@1.1.1
+26 silly idealTree ├── window-size@0.1.0
+26 silly idealTree ├── wordwrap@0.0.3
+26 silly idealTree └── yargs@3.10.0
+27 silly generateActionsToTake Starting
+28 silly install generateActionsToTake
+29 silly generateActionsToTake Finishing
+30 silly diffTrees action count 0
+31 silly decomposeActions action count 0
+32 silly runTopLevelLifecycles Starting
+33 silly install runPreinstallTopLevelLifecycles
+34 silly preinstall highcharts-api-doc-gen@ /Users/torstein/GitHub/api-docs/highcharts-api-doc-gen-e8119914
+35 info lifecycle highcharts-api-doc-gen@~preinstall: highcharts-api-doc-gen@
+36 silly lifecycle highcharts-api-doc-gen@~preinstall: no script for preinstall, continuing
+37 silly executeActions Starting
+38 silly install executeActions
+39 silly doSerial global-install 0
+40 silly doParallel fetch 0
+41 verbose correctMkdir /Users/torstein/.npm/_locks correctMkdir not in flight; initializing
+42 verbose lock using /Users/torstein/.npm/_locks/staging-858d8d74abd211d6.lock for /Users/torstein/GitHub/api-docs/node_modules/.staging
+43 silly doParallel extract 0
+44 silly doParallel preinstall 0
+45 silly doReverseSerial remove 0
+46 silly doSerial move 0
+47 silly doSerial finalize 0
+48 silly doSerial build 0
+49 silly doSerial global-link 0
+50 silly doParallel update-linked 0
+51 silly doSerial install 0
+52 silly doSerial postinstall 0
+53 verbose unlock done using /Users/torstein/.npm/_locks/staging-858d8d74abd211d6.lock for /Users/torstein/GitHub/api-docs/node_modules/.staging
+54 silly executeActions Finishing
+55 silly rollbackFailedOptional Starting
+56 silly rollbackFailedOptional Finishing
+57 silly install runPostinstallTopLevelLifecycles
+58 silly build highcharts-api-doc-gen@
+59 info linkStuff highcharts-api-doc-gen@
+60 silly linkStuff highcharts-api-doc-gen@ has /Users/torstein/GitHub as its parent node_modules
+61 verbose linkBins highcharts-api-doc-gen@
+62 verbose linkMans highcharts-api-doc-gen@
+63 silly install highcharts-api-doc-gen@ /Users/torstein/GitHub/api-docs/highcharts-api-doc-gen-e8119914
+64 info lifecycle highcharts-api-doc-gen@~install: highcharts-api-doc-gen@
+65 silly lifecycle highcharts-api-doc-gen@~install: no script for install, continuing
+66 silly postinstall highcharts-api-doc-gen@ /Users/torstein/GitHub/api-docs/highcharts-api-doc-gen-e8119914
+67 info lifecycle highcharts-api-doc-gen@~postinstall: highcharts-api-doc-gen@
+68 silly lifecycle highcharts-api-doc-gen@~postinstall: no script for postinstall, continuing
+69 silly prepublish highcharts-api-doc-gen@ /Users/torstein/GitHub/api-docs/highcharts-api-doc-gen-e8119914
+70 info lifecycle highcharts-api-doc-gen@~prepublish: highcharts-api-doc-gen@
+71 silly lifecycle highcharts-api-doc-gen@~prepublish: no script for prepublish, continuing
+72 silly runTopLevelLifecycles Finishing
+73 silly install printInstalled
+74 info build /usr/local/lib/node_modules/highcharts-api-doc-gen
+75 info linkStuff highcharts-api-doc-gen@
+76 silly linkStuff highcharts-api-doc-gen@ has /usr/local/lib/node_modules as its parent node_modules
+77 silly linkStuff highcharts-api-doc-gen@ is part of a global install
+78 silly linkStuff highcharts-api-doc-gen@ is installed into a global node_modules
+79 silly linkStuff highcharts-api-doc-gen@ is installed into the top-level global node_modules
+80 verbose linkBins highcharts-api-doc-gen@
+81 verbose link bins [ { 'hc-gen-api-docs': 'node ./bin/gen.docs.js' },
+81 verbose link bins   '/usr/local/bin',
+81 verbose link bins   true ]
+82 verbose linkMans highcharts-api-doc-gen@
+83 verbose stack Error: ENOENT: no such file or directory, chmod '/usr/local/lib/node_modules/highcharts-api-doc-gen/node ./bin/gen.docs.js'
+83 verbose stack     at Error (native)
+84 verbose cwd /Users/torstein/GitHub/api-docs
+85 error Darwin 16.5.0
+86 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "link"
+87 error node v6.9.5
+88 error npm  v3.10.10
+89 error path /usr/local/lib/node_modules/highcharts-api-doc-gen/node ./bin/gen.docs.js
+90 error code ENOENT
+91 error errno -2
+92 error syscall chmod
+93 error enoent ENOENT: no such file or directory, chmod '/usr/local/lib/node_modules/highcharts-api-doc-gen/node ./bin/gen.docs.js'
+94 error enoent ENOENT: no such file or directory, chmod '/usr/local/lib/node_modules/highcharts-api-doc-gen/node ./bin/gen.docs.js'
+94 error enoent This is most likely not a problem with npm itself
+94 error enoent and is related to npm not being able to find a file.
+95 verbose exit [ -2, true ]
