@@ -426,7 +426,8 @@ hapi.ajax = function(p) {
             );
             Object.keys(def.samples).forEach(function (key) {
                 var a = cr('a', null, key);
-                a.href = def.samples[key];
+                a.href = 'http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/' +
+                    def.samples[key];
                 ap(sampleList,
                     ap(cr('li', 'sample'),
                         a
