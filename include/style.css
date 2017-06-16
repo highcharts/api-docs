@@ -393,12 +393,13 @@ a:hover {
 .node .title i {
     position: absolute;
     left: -12px;
-    top: 3px;
+    top: 0;
+    color: gray;
 }
 
 .children {
-    margin-left: 16px;
-    overflow: hidden;
+    padding-left: 16px;
+    overflow-y: hidden;
     transition: max-height 0.5s ease-in-out;
 }
 
@@ -422,9 +423,16 @@ a:hover {
     transition: all 0.1s ease;
 }
 
+
 .node.expanded .fa-caret-right {
     transform: rotate(90deg);
+    transition: transform 0.5s ease-in-out;
 }
+.node.collapsed .fa-caret-right {
+    transform: rotate(0deg);
+    transition: transform 0.5s ease-in-out;
+}
+
 
 #option-trees-wrapper {
     padding: 5px 5px 5px 30px;
