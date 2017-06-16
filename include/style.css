@@ -47,6 +47,15 @@ code, pre {
     font-family: "Courier New", Courier, monospace;
 }
 
+pre {
+    border: 1px solid silver;
+    border-radius: 3px;
+    padding: 5px;
+    overflow-x: auto;
+    color: green;
+    background: #fcfcfc;
+}
+
 a:hover {
     color: #90ee7e;
 }

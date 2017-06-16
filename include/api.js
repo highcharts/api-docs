@@ -309,18 +309,24 @@ hapi.ajax = function(p) {
                 'collapsed'
             );
 
-            children.style.maxHeight = children.clientHeight + 'px';
+            if (children) {
+                children.style.maxHeight = children.clientHeight + 'px';
+            }
 
             expanded = false;
-            setTimeout(
-                function() {
-                    
-                },
-                1000 * parseFloat(
-                    getComputedStyle(children)['transitionDuration']
-                )
-            );
-            children.style.maxHeight = 0;
+
+            if (children) {
+                setTimeout(
+                    function() {
+                        
+                    },
+                    1000 * parseFloat(
+                        getComputedStyle(children)['transitionDuration']
+                    )
+                );
+
+                children.style.maxHeight = 0;
+            }
         }
 
         function toggle(e) {
