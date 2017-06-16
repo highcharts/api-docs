@@ -553,12 +553,12 @@ a:hover {
 
 
 /*
-		Scale up
-		   /\
-		  /  \
-		 /    \
-		/      \
-	   /		\
+        Scale up
+           /\
+          /  \
+         /    \
+        /      \
+       /        \
 */
 
 
@@ -608,8 +608,8 @@ a:hover {
         display: none;
     }
     /* If sidr sidebar is visible while scaling up,
-	the page breaks. To avoid this, we counteract
-	the effects sidr is having on the body element: */
+    the page breaks. To avoid this, we counteract
+    the effects sidr is having on the body element: */
     /*body {
         left: 0 !important;
         width: 100% !important;

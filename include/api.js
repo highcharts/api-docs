@@ -263,11 +263,6 @@ hapi.ajax = function(p) {
 
         function expand() {
 
-<<<<<<< HEAD
-            function slideUp() {
-                children.style.maxHeight =
-                    (children.childNodes.length * 1.5) + 0.5 + 'em';
-=======
             function getChildrenEmHeight(children) {
                 var height = (children.childNodes.length * 1.5) + 0.5;
 
@@ -281,20 +276,10 @@ hapi.ajax = function(p) {
                 return height;
             }
             function slideDown() {
->>>>>>> 7332dd7ea481d8e69b3285d90ca38e7d41e6fe63
                 node.className = node.className.replace(
                     'collapsed',
                     'expanded'
                 );
-<<<<<<< HEAD
-
-                setTimeout(
-                    function () {
-                        children.style.maxHeight = 'none';
-                    },
-                    1000 * parseFloat(
-                       getComputedStyle(children)['transitionDuration']
-=======
                 children.style.maxHeight = getChildrenEmHeight(children) + 'em';
                 setTimeout(
                     function() {
@@ -302,7 +287,6 @@ hapi.ajax = function(p) {
                     },
                     1000 * parseFloat(
                         getComputedStyle(children)['transitionDuration']
->>>>>>> 7332dd7ea481d8e69b3285d90ca38e7d41e6fe63
                     )
                 );
             }
@@ -320,21 +304,14 @@ hapi.ajax = function(p) {
         }
 
         function collapse() {
-<<<<<<< HEAD
-=======
             node.className = node.className.replace(
                 'expanded',
                 'collapsed'
             );
 
             children.style.maxHeight = children.clientHeight + 'px';
->>>>>>> 7332dd7ea481d8e69b3285d90ca38e7d41e6fe63
 
-            children.style.maxHeight = children.clientHeight + 'px';            
-            setTimeout(function () {
-                children.style.maxHeight = 0;
-            }, 10);
-
+            expanded = false;
             setTimeout(
                 function() {
                     
