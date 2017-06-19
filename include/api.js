@@ -314,17 +314,7 @@ hapi.ajax = function(p) {
             }
 
             expanded = false;
-<<<<<<< HEAD
-            setTimeout(
-                function() {
 
-                },
-                1000 * parseFloat(
-                    getComputedStyle(children)['transitionDuration']
-                )
-            );
-            children.style.maxHeight = 0;
-=======
 
             if (children) {
                 setTimeout(
@@ -338,7 +328,7 @@ hapi.ajax = function(p) {
 
                 children.style.maxHeight = 0;
             }
->>>>>>> 931e4de4fd0243d7bc87054be1fea17209fae7ca
+
         }
 
         function toggle(e) {
