@@ -127,9 +127,9 @@ hapi.ajax = function(p) {
             }
             var time = timestamp - start,
             percent = Math.min(time / duration, 1);
-            
+
             window.scrollTo(0, startingY + diff * percent);
-            
+
             if (time < duration) {
                 window.requestAnimationFrame(step);
             }
@@ -160,7 +160,7 @@ hapi.ajax = function(p) {
             }
         }
     }
-    
+
     function buildBody(current, isParent, callback) {
         hapi.createBody('#body', current, isParent, callback);
     }
@@ -179,9 +179,9 @@ hapi.ajax = function(p) {
             scrollTo(container, target, 300);
         }
     }
-    
+
     function toClassName (optionFullName) {
-        return 'option-' + optionFullName.replace(/\./g, '-')
+        return 'option-' + (optionFullName || '').replace(/\./g, '-')
     }
 
     function createNode(parent, def, state, origState, product) {
@@ -253,7 +253,7 @@ hapi.ajax = function(p) {
                         createNode(children, def, state, origState, product);
                     });
                     hasNext = true;
-                    
+
                     if (callback) {
                         callback();
                     }
@@ -314,7 +314,7 @@ hapi.ajax = function(p) {
             expanded = false;
             setTimeout(
                 function() {
-                    
+
                 },
                 1000 * parseFloat(
                     getComputedStyle(children)['transitionDuration']
