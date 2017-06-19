@@ -309,9 +309,12 @@ hapi.ajax = function(p) {
                 'collapsed'
             );
 
-            children.style.maxHeight = children.clientHeight + 'px';
+            if (children) {
+                children.style.maxHeight = children.clientHeight + 'px';
+            }
 
             expanded = false;
+<<<<<<< HEAD
             setTimeout(
                 function() {
 
@@ -321,6 +324,21 @@ hapi.ajax = function(p) {
                 )
             );
             children.style.maxHeight = 0;
+=======
+
+            if (children) {
+                setTimeout(
+                    function() {
+                        
+                    },
+                    1000 * parseFloat(
+                        getComputedStyle(children)['transitionDuration']
+                    )
+                );
+
+                children.style.maxHeight = 0;
+            }
+>>>>>>> 931e4de4fd0243d7bc87054be1fea17209fae7ca
         }
 
         function toggle(e) {
@@ -395,7 +413,7 @@ hapi.ajax = function(p) {
                     'default type-' + (def.typeList && def.typeList.names ?
                         def.typeList.names[0].toLowerCase() :
                         'undefined'),
-                    'Defaults to ' + def.default);
+                    'Defaults to <code>' + def.default + '</code>');
             }
         }
 
@@ -420,7 +438,8 @@ hapi.ajax = function(p) {
             );
             Object.keys(def.samples).forEach(function (key) {
                 var a = cr('a', null, key);
-                a.href = def.samples[key];
+                a.href = 'http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/' +
+                    def.samples[key];
                 ap(sampleList,
                     ap(cr('li', 'sample'),
                         a
