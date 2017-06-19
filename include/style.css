@@ -547,7 +547,7 @@ a:hover {
 }
 
 .option .default {
-    display: none;
+    color: #666;
 }
 
 .option .since {

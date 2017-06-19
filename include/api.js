@@ -401,7 +401,7 @@ hapi.ajax = function(p) {
                     'default type-' + (def.typeList && def.typeList.names ?
                         def.typeList.names[0].toLowerCase() :
                         'undefined'),
-                    'Defaults to ' + def.default);
+                    'Defaults to <code>' + def.default + '</code>');
             }
         }
 
