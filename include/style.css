@@ -562,6 +562,13 @@ a:hover {
     font-size: 0.8em;
 }
 
+.option .edit {
+    float: right;
+    font-size: 0.8em;
+    color: silver;
+    padding-left: 0.6em;
+}
+
 .option .description {
     color: #666;
 }

@@ -381,8 +381,7 @@ hapi.ajax = function(p) {
             sampleList,
             see,
             seeList,
-            definedIn,
-            definedInLink;
+            editLink;
 
         if (!def.isLeaf) {
             titleLink = cr('a');
@@ -397,7 +396,7 @@ hapi.ajax = function(p) {
                 });
             }
 
-            if (defined(def.default, true) && def.default.length) {
+            if (typeof def.default === 'boolean' || (defined(def.default, true) && def.default.length)) {
                 defaultvalue = cr(
                     'span',
                     'default type-' + (def.typeList && def.typeList.names ?
@@ -453,9 +452,12 @@ hapi.ajax = function(p) {
         }
 
         if (def.filename) {
-            definedIn = cr('i', 'defined-in', 'Defined in ');
-            definedInLink = cr('a', null, def.filename + ':' + def.line);
-            definedInLink.href = 'https://github.com/highcharts/highcharts/blob/' +
+            editLink = cr('a', 'edit', '<i class="fa fa-edit"></i>');
+            editLink.setAttribute(
+                'title',
+                'Defined in ' + def.filename + ':' + def.line
+            )
+            editLink.href = 'https://github.com/highcharts/highcharts/blob/' +
                 def.version + '/' + // TODO: version (see dumpNav() version param in index.js)
                 def.filename + '#L' +
                 def.line;
@@ -468,16 +470,15 @@ hapi.ajax = function(p) {
                     titleText,
                     types
                 ),
+
+                editLink,
+                since,
                 description,
                 defaultvalue,
                 extend,
                 inheritedFrom,
-                since,
                 samples,
-                see,
-                ap(definedIn,
-                    definedInLink
-                )
+                see
             )
         );
     }
