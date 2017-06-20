@@ -403,7 +403,7 @@ hapi.ajax = function(p) {
                     'default type-' + (def.typeList && def.typeList.names ?
                         def.typeList.names[0].toLowerCase() :
                         'undefined'),
-                    'Defaults to <code>' + def.default + '</code>');
+                    'Defaults to <code>' + def.default + '</code>.');
             }
         }
 
@@ -446,13 +446,8 @@ hapi.ajax = function(p) {
                 seeList
             );
             def.see.forEach(function (seeItem) {
-                seeItem = mdLinkToObject(seeItem);
-                var a = cr('a', null, seeItem.text);
-                a.href = seeItem.href.replace('#', '') + '.html';
                 ap(seeList,
-                    ap(cr('li', 'see-item'),
-                        a
-                    )
+                    ap(cr('li', 'see-item', seeItem))
                 );
             });
         }

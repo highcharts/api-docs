@@ -44,12 +44,16 @@ a {
 }
 
 code, pre {
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
     font-family: "Courier New", Courier, monospace;
 }
 
+code {
+    padding: 0 2px;
+}
+
 pre {
-    border: 1px solid silver;
-    border-radius: 3px;
     padding: 5px;
     overflow-x: auto;
     color: green;
@@ -60,6 +64,9 @@ a:hover {
     color: #90ee7e;
 }
 
+#option-trees-wrapper code {
+    border: none;
+}
 .header {
     z-index: 999999;
     width: 100%;
