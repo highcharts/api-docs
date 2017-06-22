@@ -373,7 +373,7 @@ hapi.ajax = function(p) {
             types,
             typeStr,
             defaultvalue,
-            description = cr('p', 'description', def.description),
+            description,
             extend,
             inheritedFrom,
             since,
@@ -382,6 +382,9 @@ hapi.ajax = function(p) {
             see,
             seeList,
             editLink;
+
+
+        description = cr('p', 'description', def.description + (def.productdesc || ''));
 
         if (!def.isLeaf) {
             titleLink = cr('a');
