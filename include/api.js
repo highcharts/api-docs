@@ -365,6 +365,30 @@ hapi.ajax = function(p) {
         }
     }
 
+    function getSampleList(def) {
+        var samples,
+            sampleList;
+        if (def.samples) {
+            samples = cr('div', 'samples');
+            sampleList = cr('ul');
+            ap(samples,
+                cr('h4', null, 'Try it'),
+                sampleList
+            );
+            def.samples.forEach(function (sample) {
+                var a = cr('a', null, sample.name);
+                a.href = 'http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/' +
+                    sample.value;
+                ap(sampleList,
+                    ap(cr('li', 'sample'),
+                        a
+                    )
+                );
+            });
+        }
+        return samples;
+    }
+
     function createOption(target, def, state, origState) {
         var option = cr('div', 'option ' + toClassName(def.fullname)),
             title = cr('h2', 'title'),
@@ -378,7 +402,6 @@ hapi.ajax = function(p) {
             inheritedFrom,
             since,
             samples,
-            sampleList,
             see,
             seeList,
             editLink;
@@ -421,24 +444,7 @@ hapi.ajax = function(p) {
             since = cr('p', 'since', 'Since ' + def.since);
         }
 
-        if (def.samples) {
-            samples = cr('div', 'samples');
-            sampleList = cr('ul');
-            ap(samples,
-                cr('h4', null, 'Try it'),
-                sampleList
-            );
-            def.samples.forEach(function (sample) {
-                var a = cr('a', null, sample.name);
-                a.href = 'http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/' +
-                    sample.value;
-                ap(sampleList,
-                    ap(cr('li', 'sample'),
-                        a
-                    )
-                );
-            });
-        }
+        samples = getSampleList(def);
 
         if (def.see) {
             see = cr('div', 'see');
@@ -545,7 +551,8 @@ hapi.ajax = function(p) {
                     ap(optionList,
                         ap(option,
                             title,
-                            description
+                            description,
+                            getSampleList(data)
                         )
                     )
                 );
