@@ -526,7 +526,11 @@ hapi.ajax = function(p) {
                 var optionList = document.getElementById('option-list'),
                     option = cr('div', 'option option-header'),
                     title = cr('h1', 'title'),
-                    description = cr('p', 'description', data.description);
+                    description = cr(
+                        'p',
+                        'description',
+                        data.description + (data.productdesc ? data.productdesc.value : '')
+                    );
 
                 state.split('.').forEach(function(titlePart, i) {
                     ap(title,
