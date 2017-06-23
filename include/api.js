@@ -384,7 +384,7 @@ hapi.ajax = function(p) {
             editLink;
 
 
-        description = cr('p', 'description', def.description + (def.productdesc || ''));
+        description = cr('p', 'description', def.description + (def.productdesc ? def.productdesc.value : ''));
 
         if (!def.isLeaf) {
             titleLink = cr('a');
@@ -428,10 +428,10 @@ hapi.ajax = function(p) {
                 cr('h4', null, 'Try it'),
                 sampleList
             );
-            Object.keys(def.samples).forEach(function (key) {
-                var a = cr('a', null, key);
+            def.samples.forEach(function (sample) {
+                var a = cr('a', null, sample.name);
                 a.href = 'http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/' +
-                    def.samples[key];
+                    sample.value;
                 ap(sampleList,
                     ap(cr('li', 'sample'),
                         a
@@ -444,7 +444,7 @@ hapi.ajax = function(p) {
             see = cr('div', 'see');
             seeList = cr('ul');
             ap(see,
-                cr('h4', null, 'See'),
+                cr('h4', null, 'See also'),
                 seeList
             );
             def.see.forEach(function (seeItem) {
