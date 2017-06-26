@@ -628,7 +628,7 @@ hapi.ajax = function(p) {
       query = '';
 
     function markMatch(string, query) {
-      re = new RegExp(query, 'g');
+      re = new RegExp(query, 'gi');
       return string.replace(re, '<span class="sub-match">$&</span>');
     }
 
@@ -643,7 +643,7 @@ hapi.ajax = function(p) {
     }
 
     function checkResult(member) {
-      if (member.indexOf(query) >= 0 && results.childElementCount <= maxElements) {
+      if (member.toLowerCase().indexOf(query.toLowerCase()) >= 0 && results.childElementCount <= maxElements) {
         ap(results,
           createMatch(member, query)
         );
