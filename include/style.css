@@ -322,6 +322,7 @@ a:hover {
     min-width: 100%;
     z-index: 99;
     overflow-x: scroll;
+    display: table;
 }
 
 .match {
