@@ -83,7 +83,7 @@ a:hover {
 
 .navigation {
     background: #fff;
-    height: calc(100vh - 187px);
+    height: calc(100vh - 87px);
     border-right: 1px solid silver;
     margin-top: 87px;
 }
@@ -288,9 +288,10 @@ a:hover {
 /* Sidebar styling */
 
 .search-wrapper {
-    margin: 30px;
+    margin: 30px auto;
     border: 2px solid #ddd;
     position: relative;
+    width: 80%;
 }
 
 .search-wrapper i {
@@ -314,15 +315,14 @@ a:hover {
 .results {
     position: absolute;
     list-style: none;
-    margin: 0 0 0 -2px;
-    padding: 0;
     background: #fff;
     border: 2px solid #ddd;
     border-bottom: none;
-    min-width: 100%;
     z-index: 99;
-    overflow-x: scroll;
-    display: table;
+    padding: 0;
+    margin: 0 0 0 -2px;
+    display: block;
+    width: 100%;
 }
 
 .match {
@@ -332,6 +332,8 @@ a:hover {
 .match a {
     display: block;
     padding: 5px 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .match a:hover, .match a:focus {
@@ -367,11 +369,11 @@ a:hover {
     overflow-x: scroll;
     transition: left 0.2s ease;
     z-index: 99;
-    width: 260px;
+    width: 100%;
 }
 
 .sidebar[expanded="false"] {
-    left: -261px;
+    left: -100%;
 }
 
 .sidebar[expanded="true"] {
@@ -407,12 +409,12 @@ a:hover {
 
 .children {
     padding-left: 16px;
-    overflow-y: hidden;
     transition: max-height 0.5s ease-in-out;
 }
 
 .node.collapsed>.children {
     max-height: 0;
+    overflow-y: hidden;
 }
 
 .node.collapsed>.bracket.end.second {
