@@ -340,13 +340,9 @@ hapi.ajax = function(p) {
     function loadNode() {
       highlight('.node.' + optionClass, '.sidebar', '.node');
       updateTitle(def.fullname, product);
-      if (!def.isLeaf) {
+      buildBody(def.fullname, !def.isLeaf, function () {
         highlight('.option.' + optionClass, 'body', '.option');
-      } else {
-        buildBody(def.fullname, !def.isLeaf, function () {
-          highlight('.option.' + optionClass, 'body', '.option');
-        });
-      }
+      });
     }
 
     on(title, 'click', function (e) {
@@ -530,9 +526,9 @@ hapi.ajax = function(p) {
 
       function build(data) {
         var optionList = document.getElementById('option-list'),
-          option = cr('div', 'option option-header'),
+          option = cr('div', 'option option-header ' + toClassName(state)),
           title = cr('h1', 'title'),
-          description = cr(
+          description = data.description && cr(
             'p',
             'description',
             data.description + (data.productdesc ? data.productdesc.value : '')
