@@ -658,6 +658,35 @@ hapi.ajax = function(p) {
       }
     }
 
+    document.onkeydown = function(e) { // listen to keyboard events
+      var key = e.keyCode,
+        up = 38,
+        down = 40,
+        active = document.activeElement,
+        previous = active.parentNode.previousSibling,
+        next = active.parentNode.nextSibling,
+        first = results.firstChild;
+
+      if (key === up || key === down) {
+        e.preventDefault();
+        switch (key) {
+          case up:
+            if (previous && previous.firstChild) {
+              previous.firstChild.focus();
+            }
+          break;
+
+          case down:
+            if (active === searchBar && first && first.firstChild) {
+              first.firstChild.focus();
+            } else if (next && next.firstChild) {
+              next.firstChild.focus();
+            }
+          break;
+        }
+      }
+    }
+
     hapi.ajax({
       url: indexUrl,
       success: function(data) {
