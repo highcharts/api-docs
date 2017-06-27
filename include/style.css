@@ -412,6 +412,7 @@ a:hover {
   padding-left: 16px;
   transition: max-height 0.5s ease-in-out;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .node.collapsed>.children {
@@ -690,5 +691,8 @@ a:hover {
   }
   .footer {
     padding-left: 15%;
+  }
+  .options-tree {
+    overflow-x: auto;
   }
 }
