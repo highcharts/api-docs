@@ -128,7 +128,7 @@ hapi.ajax = function(p) {
       var time = timestamp - start,
       percent = Math.min(time / duration, 1);
 
-      window.scrollTo(0, startingY + diff * percent);
+      window.scrollTo(0, startingY + diff * percent - 100);
 
       if (time < duration) {
         window.requestAnimationFrame(step);

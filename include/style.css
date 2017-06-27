@@ -411,11 +411,11 @@ a:hover {
 .children {
   padding-left: 16px;
   transition: max-height 0.5s ease-in-out;
+  overflow-y: hidden;
 }
 
 .node.collapsed>.children {
   max-height: 0;
-  overflow-y: hidden;
 }
 
 .node.collapsed>.bracket.end.second {
@@ -687,8 +687,5 @@ a:hover {
   /* Left-align splash page title */
   #splashText h1 {
     text-align: left;
-  }
-  #option-list {
-    padding-top: 25px;
   }
 }
