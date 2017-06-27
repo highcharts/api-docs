@@ -242,6 +242,7 @@ a:hover {
   display: block;
   line-height: 20px;
   color: #a09fb4;
+  transition: color 100ms ease-in-out;
 }
 
 .dropdown-menu li.highlighted a {

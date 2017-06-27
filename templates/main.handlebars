@@ -31,7 +31,7 @@
                         <div class="dropdown-menu">
                             <ul>
                                 {{#each toc}}
-                                <li class="product">
+                                <li class="product {{#if active}}highlighted{{/if}}">
                                     <a id="{{@key}}-link" href="{{#if versions.current}}{{versions.current}}{{else}}#{{/if}}">{{displayName}}</a>
                                 </li>
                                 {{/each}}
