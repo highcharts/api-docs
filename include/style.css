@@ -688,4 +688,7 @@ a:hover {
   #splashText h1 {
     text-align: left;
   }
+  .footer {
+    padding-left: 15%;
+  }
 }
