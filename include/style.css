@@ -28,6 +28,14 @@ html, body {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
+h1 {
+  font-weight: 100;
+}
+
+h2 {
+  font-size: 1.2em;
+}
+
 h3 {
   text-transform: uppercase;
   margin-bottom: 3px;
@@ -466,10 +474,14 @@ a:hover {
 
 .options-tree .default {
   color: silver;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
   padding: 5px 0;
   margin: 1px;
   font-family: "Courier New", Courier, monospace;
+}
+
+.options-tree .default-block {
+  display: block;
 }
 
 .options-tree .default.type-string:before, .options-tree .default.type-string:after, .options-tree .default.type-color:before, .options-tree .default.type-color:after {
@@ -543,8 +555,6 @@ a:hover {
 
 .option .title span, .option .title .type-list {
   font-family: "Courier New", Courier, monospace;
-  font-size: 0.9em;
-  font-weight: bold;
 }
 
 .option .title a {
