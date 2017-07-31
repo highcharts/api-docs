@@ -80,7 +80,7 @@ a:hover {
   z-index: 999999;
   width: 100%;
   color: #eeeaea;
-  font-size: 10px;
+  font-size: 14px;
   position: fixed;
   top: 0;
 }
@@ -193,7 +193,7 @@ a:hover {
   height: 37px;
   line-height: 37px;
   float: left;
-  width: 33.33%;
+  padding: 0 1em;
 }
 
 .header .row-2 .menu a.dropdown-link {
@@ -213,7 +213,6 @@ a:hover {
 }
 
 .dropdown-link {
-  font-size: 14px;
   display: inline-block;
 }
 
@@ -285,9 +284,11 @@ a:hover {
   display: none;
 }
 
+/*
 .menu[expanded="true"] .dropdown-link i {
   transform: rotate(90deg);
 }
+*/
 
 #prog-lang-selector-list a.unavailable-prog-lang {
   text-decoration: line-through;
@@ -613,7 +614,7 @@ a:hover {
 === Fablets / Vertical tablets / Horizontal phones
 ==================================================
 */
-
+/*
 @media screen and (min-width: 550px) {
   #page-title h1 {
     font-size: 20px;
@@ -640,7 +641,7 @@ a:hover {
     display: inline-block;
   }
 }
-
+*/
 
 /*
 ==============================

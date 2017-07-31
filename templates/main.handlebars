@@ -20,14 +20,14 @@
                     </a>
                 </div>
                 <div id="page-title" class="cell">
-                    <h1>Option Reference</h1>
+                    <h1>API Reference</h1>
                 </div>
 
             </div>
             <div class="row row-2">
                 {{#if toc}}
                     <div id="product-selector" class="menu" expanded="false">
-                        <a href="#" class="dropdown-link">Products <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                        <a href="#" class="dropdown-link">Options <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
                         <div class="dropdown-menu">
                             <ul>
                                 {{#each toc}}
@@ -39,9 +39,15 @@
                         </div>
                     </div>
                 {{/if}}
+                    <div id="namespaces" class="menu">
+                        <a href="/class-reference/namespaces.list.html">Namespaces</a>
+                    </div>
+                    <div id="classes" class="menu">
+                        <a href="/class-reference/classes.list.html">Classes</a>
+                    </div>
                 {{#if toc}}
                     <div id="version-selector" class="menu" expanded="false">
-                        <a href="#" class="dropdown-link">v{{version}} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                        <a href="#" class="dropdown-link">v{{version}} <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
                         <div class="dropdown-menu">
                             <ul>
                                 {{#each toc}}
@@ -62,7 +68,7 @@
                 {{/if}}
                 {{#if progLangs}}
                     <div id="prog-lang-selector" class="menu" expanded="false">
-                        <a href="#" class="dropdown-link">Language: {{language}} <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                        <a href="#" class="dropdown-link">Language: {{language}} <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
                         <div class="dropdown-menu">
                             <ul>
                                 {{#each progLangs}}
