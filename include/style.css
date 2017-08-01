@@ -481,10 +481,14 @@ a:hover {
 
 .options-tree .default {
   color: silver;
-  /*white-space: nowrap;*/
-  padding: 5px 0;
+  white-space: nowrap;
   margin: 1px;
   font-family: "Courier New", Courier, monospace;
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .options-tree .default-block {

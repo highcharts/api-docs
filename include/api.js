@@ -409,9 +409,9 @@ hapi.ajax = function(p) {
       seeList,
       editLink;
 
-
-    description = cr('p', 'description', def.description + (def.productdesc ? def.productdesc.value : ''));
-
+    description = cr('p', 'description', (def.description || '') +
+      (def.productdesc ? def.productdesc.value : ''));
+    
     if (!def.isLeaf) {
       titleLink = cr('a');
       titleLink.href = def.fullname + '.html';
