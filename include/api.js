@@ -217,6 +217,13 @@ hapi.ajax = function(p) {
         endBracket1 = cr('span', 'bracket end first', '}');
         endBracket2 = cr('span', 'bracket end second', '}');
       }
+
+      if (/^series\.[a-z]+$/.test(def.fullname)) {
+        title.innerHTML = '{ <span class="type-item">type: "' + def.name + '",</span>';
+        startBracket.innerHTML = '';
+        endBracket1.innerHTML = ' }';
+      }
+
     } else {
       postfix = cr(
         'span',
@@ -428,9 +435,11 @@ hapi.ajax = function(p) {
       }
     }
 
+    /*
     if (def.extends) {
       extend = cr('p', 'extends', 'Extends: ' + def.extends);
     }
+    */
 
     if (def.inheritedFrom) {
       inheritedFrom = cr('p', 'inherited-from', 'Inherited from ' + def.inheritedFrom);
