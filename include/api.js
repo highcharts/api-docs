@@ -122,6 +122,15 @@ hapi.ajax = function(p) {
     })
   }
 
+  function getDefault(def) {
+    if (
+      typeof def.default === 'boolean' || typeof def.default === 'number' ||
+      (defined(def.default, true) && def.default.length)
+    ) {
+      return def.default.toString();
+    }
+  }
+
   function scrollTo(container, target, duration) {
     var targetY = target.getBoundingClientRect().top,
     startingY = window.pageYOffset,
@@ -231,6 +240,7 @@ hapi.ajax = function(p) {
       }
 
     } else {
+
       postfix = cr(
         'span',
         'default type-' + (
@@ -239,7 +249,8 @@ hapi.ajax = function(p) {
           def.typeList.names[0].toLowerCase() :
           'undefined'
         ),
-        def.default || 'undefined');
+        getDefault(def)
+      );
     }
 
     ap(parent,
@@ -413,7 +424,8 @@ hapi.ajax = function(p) {
       samples,
       see,
       seeList,
-      editLink;
+      editLink,
+      defaultStr = getDefault(def);
 
     description = (def.description || '') +
       (def.productdesc ? def.productdesc.value : '');
@@ -433,16 +445,13 @@ hapi.ajax = function(p) {
         });
       }
 
-      if (
-        typeof def.default === 'boolean' || typeof def.default === 'number' ||
-        (defined(def.default, true) && def.default.length)
-      ) {
+      if (defaultStr) {
         defaultvalue = cr(
           'span',
           'default type-' + (def.typeList && def.typeList.names ?
             def.typeList.names[0].toLowerCase() :
             'undefined'),
-          'Defaults to <code>' + def.default + '</code>.');
+          'Defaults to <code>' + defaultStr + '</code>.');
       }
     }
 
