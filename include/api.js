@@ -116,6 +116,12 @@ hapi.ajax = function(p) {
     }
   }
 
+  function autolinks(s) {
+    return s.replace(/(styled mode)/i, function (match, p1) {
+      return '<a href="(http://www.highcharts.com/docs/chart-design-and-style/style-by-css">' + p1 + '</a>';
+    })
+  }
+
   function scrollTo(container, target, duration) {
     var targetY = target.getBoundingClientRect().top,
     startingY = window.pageYOffset,
@@ -409,8 +415,10 @@ hapi.ajax = function(p) {
       seeList,
       editLink;
 
-    description = cr('p', 'description', (def.description || '') +
-      (def.productdesc ? def.productdesc.value : ''));
+    description = (def.description || '') +
+      (def.productdesc ? def.productdesc.value : '');
+    description = autolinks(description);
+    description = cr('p', 'description', description);
     
     if (!def.isLeaf) {
       titleLink = cr('a');
@@ -425,7 +433,10 @@ hapi.ajax = function(p) {
         });
       }
 
-      if (typeof def.default === 'boolean' || (defined(def.default, true) && def.default.length)) {
+      if (
+        typeof def.default === 'boolean' || typeof def.default === 'number' ||
+        (defined(def.default, true) && def.default.length)
+      ) {
         defaultvalue = cr(
           'span',
           'default type-' + (def.typeList && def.typeList.names ?
@@ -460,7 +471,7 @@ hapi.ajax = function(p) {
       );
       def.see.forEach(function (seeItem) {
         ap(seeList,
-          ap(cr('li', 'see-item', seeItem))
+          ap(cr('li', 'see-item', autolinks(seeItem)))
         );
       });
     }
