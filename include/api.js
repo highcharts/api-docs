@@ -117,9 +117,14 @@ hapi.ajax = function(p) {
   }
 
   function autolinks(s) {
-    return s.replace(/(styled mode)/i, function (match, p1) {
-      return '<a href="(http://www.highcharts.com/docs/chart-design-and-style/style-by-css">' + p1 + '</a>';
-    })
+    return s
+      .replace(/(styled mode)/i, function (match, p1) {
+        return '<a href="http://www.highcharts.com/docs/chart-design-and-style/style-by-css">' + p1 + '</a>';
+      })
+      .replace(
+        /href="#([a-zA-Z0-9\.]+)"/g,
+        'href="/' + product.toLowerCase() + '/$1.html"'
+      );
   }
 
   function getDefault(def) {
@@ -468,7 +473,7 @@ hapi.ajax = function(p) {
       context = cr(
         'p',
         'context',
-        'Context: <a href="/class-reference/Highcharts.' + def.context + '.html">' + def.context + '</a>'
+        'Context: <a href="/class-reference/Highcharts.' + def.context + '.html">' + def.context + '</a>.'
       )
     }
     /*
