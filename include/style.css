@@ -61,16 +61,19 @@ code, pre {
   border: 1px solid #e0e0e0;
   border-radius: 3px;
   font-family: "Courier New", Courier, monospace;
+  color: green;
 }
 
 code {
   padding: 0 2px;
 }
+pre code {
+  border: none;
+}
 
 pre {
   padding: 5px;
   overflow-x: auto;
-  color: green;
   background: #fcfcfc;
 }
 
@@ -595,7 +598,7 @@ a:hover {
   padding-left: 0.6em;
 }
 
-.option .description {
+.option p {
   color: #666;
 }
 

@@ -426,6 +426,7 @@ hapi.ajax = function(p) {
       typeStr,
       defaultvalue,
       description,
+      context,
       extend,
       inheritedFrom,
       since,
@@ -463,6 +464,13 @@ hapi.ajax = function(p) {
       }
     }
 
+    if (def.context) {
+      context = cr(
+        'p',
+        'context',
+        'Context: <a href="/class-reference/Highcharts.' + def.context + '.html">' + def.context + '</a>'
+      )
+    }
     /*
     if (def.extends) {
       extend = cr('p', 'extends', 'Extends: ' + def.extends);
@@ -517,6 +525,7 @@ hapi.ajax = function(p) {
         since,
         description,
         defaultvalue,
+        context,
         extend,
         inheritedFrom,
         samples,
