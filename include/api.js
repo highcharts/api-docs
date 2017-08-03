@@ -124,10 +124,18 @@ hapi.ajax = function(p) {
 
   function getDefault(def) {
     if (
-      typeof def.default === 'boolean' || typeof def.default === 'number' ||
-      (defined(def.default, true) && def.default.length)
+      typeof def.default === 'boolean' ||
+      typeof def.default === 'number' ||
+      (defined(def.default, true) && def.default.length) ||
+      def.default === null
     ) {
-      return def.default.toString();
+      if (def.default === null) {
+        return 'null';
+      }
+      return def.default.toString()
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/>/g, '&gt;');
     }
   }
 
@@ -560,7 +568,7 @@ hapi.ajax = function(p) {
           description = data.description && cr(
             'p',
             'description',
-            data.description + (data.productdesc ? data.productdesc.value : '')
+            autolinks(data.description + (data.productdesc ? data.productdesc.value : ''))
           );
 
         state.split('.').forEach(function(titlePart, i) {
