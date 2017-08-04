@@ -464,7 +464,7 @@ hapi.ajax = function(p) {
       if (typeof defaultStr !== 'undefined') {
         defaultvalue = cr(
           'span',
-          'default type-' + (def.typeList && def.typeList.names ?
+          'default type-' + (def.typeList && def.typeList.names && def.typeList.names.length ?
             def.typeList.names[0].toLowerCase() :
             'undefined'),
           'Defaults to <code>' + defaultStr + '</code>.');
