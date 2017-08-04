@@ -142,6 +142,7 @@ hapi.ajax = function(p) {
         .replace(/>/g, '&gt;')
         .replace(/>/g, '&gt;');
     }
+    return def.default;
   }
 
   function scrollTo(container, target, duration) {
@@ -445,7 +446,7 @@ hapi.ajax = function(p) {
       (def.productdesc ? def.productdesc.value : '');
     description = autolinks(description);
     description = cr('p', 'description', description);
-    
+
     if (!def.isLeaf) {
       titleLink = cr('a');
       titleLink.href = def.fullname + '.html';
