@@ -515,7 +515,8 @@ hapi.ajax = function(p) {
       editLink.href = 'https://github.com/highcharts/highcharts/blob/' +
         def.version + '/' + // TODO: version (see dumpNav() version param in index.js)
         def.filename + '#L' +
-        def.line;
+        def.line +
+        (def.lineEnd ? '-#L' + def.lineEnd : '');
     }
 
 
