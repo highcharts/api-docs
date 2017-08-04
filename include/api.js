@@ -94,7 +94,7 @@ hapi.ajax = function(p) {
   }
 
   function defined(variable, stringCheck) {
-    var defined = variable !== undefined && variable !== null;
+    var defined = typeof variable !== 'undefined' && variable !== null;
     if (defined && stringCheck) {
       defined = variable !== 'undefined' && variable !== 'null';
     }
@@ -132,7 +132,8 @@ hapi.ajax = function(p) {
       typeof def.default === 'boolean' ||
       typeof def.default === 'number' ||
       (defined(def.default, true) && def.default.length) ||
-      def.default === null
+      def.default === null ||
+      typeof def.default !== 'undefined'
     ) {
       if (def.default === null) {
         return 'null';
@@ -142,7 +143,7 @@ hapi.ajax = function(p) {
         .replace(/>/g, '&gt;')
         .replace(/>/g, '&gt;');
     }
-    return def.default;
+    return 'undefined';
   }
 
   function scrollTo(container, target, duration) {
@@ -460,7 +461,7 @@ hapi.ajax = function(p) {
         });
       }
 
-      if (defaultStr) {
+      if (typeof defaultStr !== 'undefined') {
         defaultvalue = cr(
           'span',
           'default type-' + (def.typeList && def.typeList.names ?
