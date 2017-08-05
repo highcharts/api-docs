@@ -123,7 +123,7 @@ hapi.ajax = function(p) {
       })
       .replace(
         /href="#([a-zA-Z0-9\.]+)"/g,
-        'href="/' + product.toLowerCase() + '/$1.html"'
+        'href="../' + product.toLowerCase() + '/$1.html"'
       );
   }
 
