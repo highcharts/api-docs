@@ -1,4 +1,5 @@
 var hapi = {};
+var htmlExtension = ''; // Use .html for local filesystem access
 
 
 hapi.ajax = function(p) {
@@ -123,7 +124,7 @@ hapi.ajax = function(p) {
       })
       .replace(
         /href="#([a-zA-Z0-9\.]+)"/g,
-        'href="../' + product.toLowerCase() + '/$1.html"'
+        'href="../' + product.toLowerCase() + '/$1' + htmlExtension + '"'
       );
   }
 
@@ -178,7 +179,7 @@ hapi.ajax = function(p) {
   function updateHistory(def, product) {
     var title,
       currentURL = location.pathname,
-      newURL = '/' + product.toLowerCase() + '/' + def.fullname + '.html';
+      newURL = '/' + product.toLowerCase() + '/' + def.fullname + htmlExtension;
     if (currentURL !== newURL) {
       title = updateTitle(def.fullname, product);
       if (historyEnabled()) {
@@ -186,7 +187,7 @@ hapi.ajax = function(p) {
           product: product,
           member: def.fullname,
           hasChildren: !def.isLeaf
-        }, title, def.fullname + '.html');
+        }, title, def.fullname + htmlExtension);
       }
     }
   }
@@ -229,7 +230,7 @@ hapi.ajax = function(p) {
       expanded = false,
       hasNext = false;
 
-    title.href = def.fullname + '.html'
+    title.href = def.fullname + htmlExtension
 
     node.className += def.isLeaf ? ' leaf' : ' parent';
 
@@ -450,7 +451,7 @@ hapi.ajax = function(p) {
 
     if (!def.isLeaf) {
       titleLink = cr('a');
-      titleLink.href = def.fullname + '.html';
+      titleLink.href = def.fullname + htmlExtension;
       titleText = ap(titleLink, titleText);
     } else {
       if (def.typeList) {
@@ -475,7 +476,7 @@ hapi.ajax = function(p) {
       context = cr(
         'p',
         'context',
-        'Context: <a href="/class-reference/Highcharts.' + def.context + '.html">' + def.context + '</a>.'
+        'Context: <a href="/class-reference/Highcharts.' + def.context + htmlExtension + '">' + def.context + '</a>.'
       )
     }
     /*
@@ -685,7 +686,7 @@ hapi.ajax = function(p) {
     function createMatch(member, query) {
       var a = cr('a', null, markMatch(member, query));
 
-      a.href = member + '.html';
+      a.href = member + htmlExtension;
 
       return ap(cr('li', 'match'),
         a
