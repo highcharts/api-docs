@@ -249,7 +249,7 @@ hapi.ajax = function(p) {
         endBracket2 = cr('span', 'bracket end second', '}');
       }
 
-      if (/^series\.[a-z]+$/.test(def.fullname)) {
+      if (/^series\.[a-z0-9]+$/.test(def.fullname)) {
         title.innerHTML = '{ <span class="type-item">type: "' + def.name + '",</span>';
         startBracket.innerHTML = '';
         endBracket1.innerHTML = ' }';
