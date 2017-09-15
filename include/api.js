@@ -1,6 +1,6 @@
 var hapi = {};
 var htmlExtension = ''; // Use .html for local filesystem access
-
+var isLocal = window.location.hostname === 'localhost';
 
 hapi.ajax = function(p) {
   var props = {
@@ -412,12 +412,20 @@ hapi.ajax = function(p) {
         sampleList
       );
       def.samples.forEach(function (sample) {
-        var a = cr('a', null, sample.name);
+        var a = cr('a', null, sample.name),
+          aLocal;
         a.href = 'http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/' +
           sample.value;
+
+        if (isLocal) {
+          aLocal = cr('a', null, ' [local]');
+          aLocal.href = 'http://utils.highcharts.local/samples/#view/' +
+            sample.value.replace(/\/$/, '')
+        }
         ap(sampleList,
           ap(cr('li', 'sample'),
-            a
+            a,
+            aLocal
           )
         );
       });
