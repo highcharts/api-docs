@@ -1,5 +1,6 @@
 var hapi = {};
-
+var htmlExtension = ''; // Use .html for local filesystem access
+var isLocal = window.location.hostname === 'localhost';
 
 hapi.ajax = function(p) {
   var props = {
@@ -123,7 +124,7 @@ hapi.ajax = function(p) {
       })
       .replace(
         /href="#([a-zA-Z0-9\.]+)"/g,
-        'href="../' + product.toLowerCase() + '/$1.html"'
+        'href="../' + product.toLowerCase() + '/$1' + htmlExtension + '"'
       );
   }
 
@@ -178,7 +179,7 @@ hapi.ajax = function(p) {
   function updateHistory(def, product) {
     var title,
       currentURL = location.pathname,
-      newURL = '/' + product.toLowerCase() + '/' + def.fullname + '.html';
+      newURL = '/' + product.toLowerCase() + '/' + def.fullname + htmlExtension;
     if (currentURL !== newURL) {
       title = updateTitle(def.fullname, product);
       if (historyEnabled()) {
@@ -186,7 +187,7 @@ hapi.ajax = function(p) {
           product: product,
           member: def.fullname,
           hasChildren: !def.isLeaf
-        }, title, def.fullname + '.html');
+        }, title, def.fullname + htmlExtension);
       }
     }
   }
@@ -229,7 +230,7 @@ hapi.ajax = function(p) {
       expanded = false,
       hasNext = false;
 
-    title.href = def.fullname + '.html'
+    title.href = def.fullname + htmlExtension
 
     node.className += def.isLeaf ? ' leaf' : ' parent';
 
@@ -248,7 +249,7 @@ hapi.ajax = function(p) {
         endBracket2 = cr('span', 'bracket end second', '}');
       }
 
-      if (/^series\.[a-z]+$/.test(def.fullname)) {
+      if (/^series\.[a-z0-9]+$/.test(def.fullname)) {
         title.innerHTML = '{ <span class="type-item">type: "' + def.name + '",</span>';
         startBracket.innerHTML = '';
         endBracket1.innerHTML = ' }';
@@ -411,12 +412,20 @@ hapi.ajax = function(p) {
         sampleList
       );
       def.samples.forEach(function (sample) {
-        var a = cr('a', null, sample.name);
+        var a = cr('a', null, sample.name),
+          aLocal;
         a.href = 'http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/' +
           sample.value;
+
+        if (isLocal) {
+          aLocal = cr('a', null, ' [local]');
+          aLocal.href = 'http://utils.highcharts.local/samples/#view/' +
+            sample.value.replace(/\/$/, '')
+        }
         ap(sampleList,
           ap(cr('li', 'sample'),
-            a
+            a,
+            aLocal
           )
         );
       });
@@ -450,7 +459,7 @@ hapi.ajax = function(p) {
 
     if (!def.isLeaf) {
       titleLink = cr('a');
-      titleLink.href = def.fullname + '.html';
+      titleLink.href = def.fullname + htmlExtension;
       titleText = ap(titleLink, titleText);
     } else {
       if (def.typeList) {
@@ -475,7 +484,7 @@ hapi.ajax = function(p) {
       context = cr(
         'p',
         'context',
-        'Context: <a href="/class-reference/Highcharts.' + def.context + '.html">' + def.context + '</a>.'
+        'Context: <a href="/class-reference/Highcharts.' + def.context + htmlExtension + '">' + def.context + '</a>.'
       )
     }
     /*
@@ -685,7 +694,7 @@ hapi.ajax = function(p) {
     function createMatch(member, query) {
       var a = cr('a', null, markMatch(member, query));
 
-      a.href = member + '.html';
+      a.href = member + htmlExtension;
 
       return ap(cr('li', 'match'),
         a
