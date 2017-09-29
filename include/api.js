@@ -262,7 +262,7 @@ hapi.ajax = function(p) {
         'default type-' + (
           defined(def.default, true) &&
           def.typeList && def.typeList.names ?
-          def.typeList.names[0].toLowerCase() :
+          def.typeList.names[0].toLowerCase().replace(/[\.\<\>]+/g, '-') :
           'undefined'
         ),
         getDefault(def)
@@ -466,7 +466,11 @@ hapi.ajax = function(p) {
         types = cr('span', 'type-list', ': ');
         def.typeList.names.forEach(function(type, index) {
           typeStr = index ? ', ' + type : type;
-          ap(types, cr('span', 'type type-' + type.toLowerCase(), typeStr));
+          ap(types, cr(
+            'span',
+            'type type-' + type.toLowerCase().replace(/[\.\<\>]+/g, '-'),
+            typeStr.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+          ));
         });
       }
 
@@ -474,7 +478,7 @@ hapi.ajax = function(p) {
         defaultvalue = cr(
           'span',
           'default type-' + (def.typeList && def.typeList.names && def.typeList.names.length ?
-            def.typeList.names[0].toLowerCase() :
+            def.typeList.names[0].toLowerCase().replace(/[\.\<\>]+/g, '-') :
             'undefined'),
           'Defaults to <code>' + defaultStr + '</code>.');
       }

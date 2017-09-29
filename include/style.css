@@ -436,6 +436,10 @@ a:hover {
   color: gray;
 }
 
+.node.indicator .title, .node.indicator .title i {
+  color: silver;
+}
+
 .children {
   padding-left: 16px;
   transition: max-height 0.5s ease-in-out;
