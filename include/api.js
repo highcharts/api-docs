@@ -559,14 +559,19 @@ hapi.ajax = function(p) {
     globals = document.querySelector(globals);
     options = document.querySelector(options);
 
+    function explodeState(state) {
+      state = state.replace('<', '.').replace('>.', '.');
+      return state.split('.');
+    }
+
     function build(data) {
       globals.innerHTML = '';
       options.innerHTML = '';
       data.children.forEach(function(def) {
         if (['global', 'lang'].indexOf(def.fullname) >= 0) {
-          createNode(globals, def, state.split('.'), state, product);
+          createNode(globals, def, explodeState(state), state, product);
         } else {
-          createNode(options, def, state.split('.'), state, product);
+          createNode(options, def, explodeState(state), state, product);
         }
       });
     }
