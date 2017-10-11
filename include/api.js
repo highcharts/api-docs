@@ -212,7 +212,7 @@ hapi.ajax = function(p) {
   }
 
   function toClassName (optionFullName) {
-    return 'option-' + (optionFullName || '').replace(/\./g, '-')
+    return 'option-' + (optionFullName || '').replace(/\./g, '-').replace(/\>/g, '-').replace(/\</g, '-');
   }
 
   function createNode(parent, def, state, origState, product) {
