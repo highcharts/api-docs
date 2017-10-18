@@ -201,9 +201,10 @@ hapi.ajax = function(p) {
       target = container.querySelector(targetClass),
       resets = resetClass && document.querySelectorAll(resetClass);
     if (resets) {
-      resets.forEach(function(otherNode) {
-        removeClass(otherNode, 'highlighted');
-      });
+      // IE does not support forEach on querySelectorAll returns
+      for (var i = 0; i < resets.length; i++) {
+        removeClass(resets[i], 'highlighted');
+      }
     }
     if (target) {
       addClass(target, 'highlighted');
@@ -306,12 +307,17 @@ hapi.ajax = function(p) {
       function getChildrenEmHeight(children) {
         var height = (children.childNodes.length * 1.5) + 0.5;
 
-        children.childNodes.forEach(function (childNode) {
+        function child (childNode) {
           var childrenOfChild = childNode.querySelector('.children');
           if (childrenOfChild) {
             height += getChildrenEmHeight(childrenOfChild);
           }
-        });
+        };
+
+        // IE does not support forEach on childNodes
+        for (var i = 0; i < children.childNodes.length; i++) {
+          child(children.childNodes[i]);
+        }
 
         return height;
       }
@@ -643,7 +649,8 @@ hapi.ajax = function(p) {
 
   hapi.initializeDropdowns = function(dropdownQ, linkQ) {
     var dropdowns = document.querySelectorAll(dropdownQ);
-    dropdowns.forEach(function(dropdown) {
+
+    function create(dropdown) {
       var link = dropdown.querySelector(linkQ),
         expanded = false;
 
@@ -660,7 +667,13 @@ hapi.ajax = function(p) {
         expanded = false;
         dropdown.setAttribute('expanded', expanded);
       });
-    });
+    }
+
+    // IE does not support foreach on querySelectorAll results
+    for (var i = 0; i < dropdowns.length; i++) {
+      create(dropdowns[i]);
+    }
+
   };
 
   hapi.initializeSidebar = function(sidebarQ, linkQ) {
