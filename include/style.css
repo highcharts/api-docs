@@ -479,7 +479,10 @@ a:hover {
 
 #option-trees-wrapper {
   padding: 5px 5px 5px 30px;
-  margin-bottom: 87px;
+  margin-bottom: 30px;
+}
+#members-wrapper {
+  padding: 5px 5px 5px 30px;
 }
 
 .options-tree, .options-tree a, .options-tree a span {
