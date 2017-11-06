@@ -384,11 +384,15 @@ hapi.ajax = function(p) {
     }
 
     function loadNode() {
-      dots.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+      if (dots) {
+        dots.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+      }
       highlight('.node.' + optionClass, '.sidebar', '.node');
       updateTitle(def.fullname, product);
       buildBody(def.fullname, !def.isLeaf, function () {
-        dots.innerHTML = '...';
+        if (dots) {
+          dots.innerHTML = '...';
+        }
         highlight('.option.' + optionClass, 'body', '.option');
       });
     }
