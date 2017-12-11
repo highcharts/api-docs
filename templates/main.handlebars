@@ -53,7 +53,7 @@
                             </ul>
                         </div>
                     </div>
-                    
+                  {{#if includeClassReference }}
                     <div id="namespaces" class="menu">
                         <a href="../class-reference/namespaces.list">Namespaces</a>
                     </div>
@@ -61,7 +61,7 @@
                     <div id="classes" class="menu">
                         <a href="../class-reference/classes.list">Classes</a>
                     </div>
-
+                  {{/if}}
                     <div id="version-selector" class="menu" expanded="false">
                         <a href="#" class="dropdown-link">v{{version}} <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
                         <div class="dropdown-menu">
@@ -121,11 +121,12 @@
                         <code>});</code>
                     </div>
                 </div>
-
+                {{#if includeClassReference }}
                 <div id="members-wrapper">
                     <h3>Members and properties</h3>
                     <p>For modifying the chart at runtime. See the <a href="/class-reference/classes.list">class reference</a>.</p>
                 </div>
+                {{/if}}
             </div>
 
             <div id="body" class="body">
