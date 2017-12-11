@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{#if node.meta.fullname}}{{{node.meta.fullname}}} | {{/if}}{{{product}}} API Reference</title>
+        <title>{{#if node.meta.fullname}}{{{node.meta.fullname}}} | {{/if}}{{{product}}} {{platform}} API Reference</title>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
         <script type="text/javascript" src="api.js"></script>
@@ -35,7 +35,7 @@
                     </a>
                 </div>
                 <div id="page-title" class="cell">
-                    <h1>API Reference</h1>
+                    <h1>{{product}} {{platform}} API Reference</h1>
                 </div>
 
             </div>
@@ -130,7 +130,7 @@
 
             <div id="body" class="body">
                 <div id="splashText">
-                    <h1>Welcome to the <strong>{{{product}}}</strong> Options Reference</h1>
+                    <h1>Welcome to the <strong>{{{product}}} {{platform}}</strong> Options Reference</h1>
                     <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
                     <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
                 </div>

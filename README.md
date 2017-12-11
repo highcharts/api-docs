@@ -17,6 +17,7 @@ Then run `hc-gen-api-docs <input.json> <outputpath/>` in a termnial, or `bin/gen
 
 ```
 OPTIONS:
+  --platform      Define which platform were building for. e.g 'Android', 'iOS', or 'JS' - default: 'JS'.
   --products      Define which products to build. - default: "highcharts,highstock,highmaps".
   --allVersions   Build all versions. - default: false.
 ```
