@@ -1,6 +1,6 @@
 #!/bin/env node
 
-/*        
+/*
  * Copyright (c) 2017, Highcharts
  * All rights reserved.
  *
@@ -8,7 +8,8 @@
  *
  */
 
-const args = process.argv;
+// NOTE have a look at commander as an alternative to yargs.
+const argv = require('yargs').argv;
 const generate = require('./../lib/index.js');
 const fs = require('fs');
 const express = require('express');
@@ -16,27 +17,34 @@ const app = express();
 
 console.log('API Docs Generator'.green);
 
-if (args.length < 4) {
+if (!argv._[0] || !argv._[1]) {
     console.log(
-        'Usage:'.bold, 
+        'Usage:'.bold,
         '<input file>',
-        '[output folder]'        
+        '[output folder]'
     );
 
     process.exit(1);
 }
 
-console.log('Generating into', args[3], 'from', args[2]);
+console.log('Generating into', argv._[1], 'from', argv._[0]);
 console.log();
 
 function doGen(a, e) {
     if (typeof e !== 'undefined') {
         console.log('Files refreshed, regenerating'.yellow);
     }
-
-    generate(JSON.parse(fs.readFileSync(args[2], 'utf8')), args[3], args[4] || false, function () {
-        console.log('All done!'.green);
-    });    
+    const pathTreeJSON = argv._[0];
+    const pathOutput = argv._[1];
+    const currentOnly = !argv.allVersions;
+    const cb = () => { console.log('All done!'.green) };
+    const input = JSON.parse(fs.readFileSync(pathTreeJSON, 'utf8'));
+    let products = { highcharts: true, highstock: true, highmaps: true };
+    if (argv.p) {
+      products = argv.p.split(',')
+        .reduce((obj, p) => { obj[p] = true; return obj; }, {});
+    }
+    generate(input, pathOutput, currentOnly, products, cb);
 }
 
 doGen();

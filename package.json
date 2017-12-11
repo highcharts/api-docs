@@ -12,6 +12,7 @@
         "mkdirp": "*",
         "marked": "*",
         "express": "*",
-        "async": "*"
+        "async": "*",
+        "yargs": "^10.0.3"
     }
 }

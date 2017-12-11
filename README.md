@@ -15,8 +15,11 @@ As usual:
 
 Then run `hc-gen-api-docs <input.json> <outputpath/>` in a termnial, or `bin/gen.docs.js`.
 
-Example for debugging: `node gen.docs.js ../../highcharts/tree.json ../docs/ true`.
-The `true` argument makes sure only the current version is built.
+```
+OPTIONS:
+  --products      Define which products to build. - default: "highcharts,highstock,highmaps".
+  --allVersions   Build all versions. - default: false.
+```
 
 A server is automagically started on port 9700 to serve up the docs.
 The server listens to changes on files in `include` and `templates`, and rebuilds
@@ -28,7 +31,7 @@ This is to decrease turn-around time when working on design etc.
 ## Generated files
 
 Files are generated in a hierarchy as such:
-  
+
   - product_name
     - version 1
     - version 2
@@ -42,7 +45,7 @@ in the `nav/` folder, for use with the navigation tree.
 
 Each folder also gets its own `products.json`, which contains the required information
 for implementing a version picker in the UI:
-        
+
          {
           "activeProduct": "highcharts",
           "activeVersion": "current",
