@@ -35,14 +35,14 @@
                     </a>
                 </div>
                 <div id="page-title" class="cell">
-                    <h1>{{product}} {{platform}} API Reference</h1>
+                    <h1>{{platform}} API Reference</h1>
                 </div>
 
             </div>
             <div class="row row-2">
                 {{#if toc}}
                     <div id="product-selector" class="menu" expanded="false">
-                        <a href="#" class="dropdown-link">Options <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+                        <a href="#" class="dropdown-link">{{{product}}} <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
                         <div class="dropdown-menu">
                             <ul>
                                 {{#each toc}}
@@ -53,15 +53,24 @@
                             </ul>
                         </div>
                     </div>
-                  {{#if includeClassReference }}
-                    <div id="namespaces" class="menu">
-                        <a href="../class-reference/namespaces.list">Namespaces</a>
+                    {{#if platforms }}
+                    <div id="platform-selector" class="menu" expanded="false">
+                      <a href="#" class="dropdown-link">{{platform}}<i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+                      <div class="dropdown-menu">
+                        <ul>
+                          <li class="group">
+                              <ul class="group-list">
+                                  {{#each platforms }}
+                                  <li class="version">
+                                      <a href="{{@this}}">{{@key}}</a>
+                                  </li>
+                                  {{/each}}
+                              </ul>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                    
-                    <div id="classes" class="menu">
-                        <a href="../class-reference/classes.list">Classes</a>
-                    </div>
-                  {{/if}}
+                    {{/if}}
                     <div id="version-selector" class="menu" expanded="false">
                         <a href="#" class="dropdown-link">v{{version}} <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
                         <div class="dropdown-menu">
@@ -81,6 +90,14 @@
                             </ul>
                         </div>
                     </div>
+                  {{#if includeClassReference }}
+                    <div id="namespaces" class="menu">
+                        <a href="../class-reference/namespaces.list">Namespaces</a>
+                    </div>
+                    <div id="classes" class="menu">
+                        <a href="../class-reference/classes.list">Classes</a>
+                    </div>
+                  {{/if}}
                 {{/if}}
                 {{#if progLangs}}
                     <div id="prog-lang-selector" class="menu" expanded="false">

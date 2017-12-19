@@ -198,7 +198,7 @@ a:hover {
   color: #eeeaea;
   margin: 0;
   font-weight: 300;
-  font-size: 15px;
+  font-size: 20px;
   padding: 5px 15px 0 15px;
 }
 
@@ -218,7 +218,7 @@ a:hover {
   padding: 0 15px;
 }
 
-.header .row-2 .menu#product-selector {
+/* .header .row-2 .menu#product-selector {
   text-align: left;
 }
 
@@ -228,7 +228,7 @@ a:hover {
 
 .header .row-2 .menu#prog-lang-selector {
   text-align: right;
-}
+} */
 
 .dropdown-link {
   display: inline-block;
