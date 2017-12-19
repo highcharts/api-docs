@@ -35,36 +35,22 @@ function doGen(a, e) {
         console.log('Files refreshed, regenerating'.yellow);
     }
     // NOTE use currying to include options. Only necessary to do calculation once.
-    // NOTE platform and products could perhaps be added to input._meta instead.
-    const defaults = {
-      platform: 'JS',
-      products: { highcharts: true, highstock: true, highmaps: true }
-    }
-    const platformDefaults = {
-      Android: {
-        products: { highcharts: true }
-      },
-      iOS: {
-        products: { highcharts: true }
-      }
-    }
     const pathTreeJSON = argv._[0];
     const pathOutput = argv._[1];
     const currentOnly = !argv.allVersions;
     const cb = () => { console.log('All done!'.green) };
     const input = JSON.parse(fs.readFileSync(pathTreeJSON, 'utf8'));
-    const platform = argv.platform || defaults.platform;
-    const options = Object.assign(defaults, platformDefaults[platform], {
-      platform: platform
-    });
+    if (argv.platform) {
+      input._meta.platform = argv.platform;
+    }
     if (argv.v) {
       input._meta.version = argv.v;
     }
     if (argv.products) {
-      options.products = argv.products.split(',')
+      input._meta.products = argv.products.split(',')
         .reduce((obj, p) => { obj[p] = true; return obj; }, {});
     }
-    generate(input, pathOutput, currentOnly, options, cb);
+    generate(input, pathOutput, currentOnly, cb);
 }
 
 doGen();
