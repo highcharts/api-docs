@@ -35,6 +35,7 @@ function doGen(a, e) {
         console.log('Files refreshed, regenerating'.yellow);
     }
     // NOTE use currying to include options. Only necessary to do calculation once.
+    // NOTE platform and products could perhaps be added to input._meta instead.
     const defaults = {
       platform: 'JS',
       products: { highcharts: true, highstock: true, highmaps: true }
@@ -56,6 +57,9 @@ function doGen(a, e) {
     const options = Object.assign(defaults, platformDefaults[platform], {
       platform: platform
     });
+    if (argv.v) {
+      input._meta.version = argv.v;
+    }
     if (argv.products) {
       options.products = argv.products.split(',')
         .reduce((obj, p) => { obj[p] = true; return obj; }, {});
