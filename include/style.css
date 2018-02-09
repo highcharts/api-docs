@@ -732,6 +732,7 @@ a:hover {
   }
   .footer {
     padding-left: 15%;
+    width: 85%;
   }
   .options-tree {
     overflow-x: auto;
