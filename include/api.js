@@ -2,6 +2,23 @@ var hapi = {};
 var htmlExtension = ''; // Use .html for local filesystem access
 var isLocal = window.location.hostname === 'localhost';
 
+// Support legacy links
+if (location.hash) {
+  var hash = location.hash.replace(/^#/, '');
+
+  // Options: http://api.highcharts.com/highcharts#title.text
+  if (/^[a-z]/.test(hash)) {
+    location.href = '/' + (window.product || 'highcharts').toLowerCase() + '/' + hash;
+
+  // Object members: http://api.highcharts.com/highcharts#Series.update()  
+  } else if (/^[A-Z]/.test(hash)) {
+    hash = hash
+      .replace('.', '#')
+      .replace('()', '');
+    location.href = '/class-reference/Highcharts.' + hash;
+  } 
+}
+
 hapi.ajax = function(p) {
   var props = {
       url: p.url || false,
