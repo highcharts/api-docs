@@ -1,4 +1,7 @@
-var hapi = {};
+var hapi = {
+  versionLocation: '/versions.json'
+};
+
 var htmlExtension = ''; // Use .html for local filesystem access
 var isLocal = window.location.hostname === 'localhost';
 
@@ -60,6 +63,8 @@ hapi.ajax = function(p) {
 
   r.send(true);
 };
+
+
 
 
 (function() {
@@ -824,6 +829,81 @@ hapi.ajax = function(p) {
         }
       }
     }
+  };
+
+  hapi.populateVersions = function () {
+    var body = document.getElementById('version-selector-body'),
+        vselector = document.getElementById('version-selector')
+    ;
+
+    body.innerHTML = 'Loading..';
+
+    function addGroup(oname) {
+      var gnode = cr('ul', 'group-list'),
+          name
+      ;
+
+      // Make sure the it's capitalized. Could do it with CSS,
+      // but text-transform support is a bit iffy sometimes.
+      name = oname[0].toUpperCase() + oname.substr(1);
+
+      function addChild(version) {
+        var inode = cr('li', 'version'),
+            link = cr('a', '', version)
+        ;
+
+        link.href = '/' + oname + '/' + version;
+
+        on(link, 'click', function () {
+          hapi.switchVersion(this);
+        });
+
+        ap(gnode, ap(inode, link));
+
+        return {
+          node: inode
+        };
+      }
+
+      ap(body,
+        ap(cr('li', 'group'),
+          cr('p', '', name),
+          gnode
+        )
+      );
+
+      return {
+        node: gnode,
+        addChild: addChild
+      };
+    }
+
+    var test = {
+      'highcharts': [
+        '6.0.0',
+        '6.0.1',
+        '6.0.2',
+        '6.0.3'
+      ]
+    };
+
+    function load(data) {
+      vselector.style.display = '';
+      body.innerHTML = '';
+      Object.keys(test).forEach(function (group) {
+        var groupIns = addGroup(group);
+        test[group].forEach(function (version) {
+          groupIns.addChild(version);
+        });
+      });
+    }
+
+    vselector.style.display = 'none';
+
+    hapi.ajax({
+      url: '/versions.json',
+      success: load,
+    });
   };
 
 })();
