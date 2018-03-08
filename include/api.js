@@ -13,13 +13,13 @@ if (location.hash) {
   if (/^[a-z]/.test(hash)) {
     location.href = '/' + (window.product || 'highcharts').toLowerCase() + '/' + hash;
 
-  // Object members: http://api.highcharts.com/highcharts#Series.update()  
+  // Object members: http://api.highcharts.com/highcharts#Series.update()
   } else if (/^[A-Z]/.test(hash)) {
     hash = hash
       .replace('.', '#')
       .replace('()', '');
     location.href = '/class-reference/Highcharts.' + hash;
-  } 
+  }
 }
 
 hapi.ajax = function(p) {
@@ -901,7 +901,7 @@ hapi.ajax = function(p) {
     vselector.style.display = 'none';
 
     hapi.ajax({
-      url: '/versions.json',
+      url: hapi.versionLocation,
       success: load,
     });
   };
