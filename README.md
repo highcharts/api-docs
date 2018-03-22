@@ -8,7 +8,11 @@ Generator for API documentation based on output from the Highcharts JSDoc plugin
 
 ## Usage
 
-As usual:
+#### Shortcut:
+When running the `highcharts` repo, run `gulp jsdoc --watch`. It will pull in this repo and start a local server with the docs.
+
+
+#### Detailed:
 
     npm install
     sudo npm link
