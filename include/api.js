@@ -878,21 +878,12 @@ hapi.ajax = function(p) {
       };
     }
 
-    var test = {
-      'highcharts': [
-        '6.0.0',
-        '6.0.1',
-        '6.0.2',
-        '6.0.3'
-      ]
-    };
-
     function load(data) {
       vselector.style.display = '';
       body.innerHTML = '';
-      Object.keys(test).forEach(function (group) {
+      Object.keys(data).forEach(function (group) {
         var groupIns = addGroup(group);
-        test[group].forEach(function (version) {
+        data[group].forEach(function (version) {
           groupIns.addChild(version);
         });
       });
@@ -902,7 +893,7 @@ hapi.ajax = function(p) {
 
     hapi.ajax({
       url: hapi.versionLocation,
-      success: load,
+      success: load
     });
   };
 
