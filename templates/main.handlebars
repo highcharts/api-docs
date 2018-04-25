@@ -118,9 +118,9 @@
 
         <div class="wrapper">
             <div id="sidebar" class="navigation sidebar" expanded="false">
-                <div class="search-wrapper">
+                <div id="search" class="search-wrapper">
                     <i class="fa fa-search"></i>
-                    <input class="search"/>
+                    <input id="searchBox" type="text" placeholder="search" />
                     <ul class="results"></ul>
                 </div>
                 <div id="option-trees-wrapper">
@@ -170,25 +170,33 @@
                 Generated from branch <a href="https://github.com/highcharts/highcharts/tree/{{versionProps.branch}}">{{versionProps.branch}}</a> (commit <a href="https://github.com/highcharts/highcharts/commit/{{versionProps.commit}}">{{versionProps.commit}}</a>), on {{date}}
             </p>
         </div>
-    <script>
-        var state = '{{{node.meta.fullname}}}',
-            hasChildren = true,
-            product = '{{{product}}}';
+        <script>
+            var state = '{{{node.meta.fullname}}}',
+                hasChildren = true,
+                product = '{{{product}}}';
 
-        {{#unless node.meta.hasChildren}}
-        hasChildren = false;
-        {{/unless}}
-        hapi.createNavigation('#options', '#global-options', state, product);
-        hapi.createBody('#body', state, hasChildren);
-        hapi.initializeDropdowns('.menu', '.dropdown-link', '.body');
-        hapi.initializeSidebar('.sidebar', '.sidebar-link', '.body');
-        hapi.initializeSearchBar('.search', '.results', 'search.json');
-        hapi.simulateHistory();
+            {{#unless node.meta.hasChildren}}
+            hasChildren = false;
+            {{/unless}}
+            hapi.createNavigation('#options', '#global-options', state, product);
+            hapi.createBody('#body', state, hasChildren);
+            hapi.initializeDropdowns('.menu', '.dropdown-link', '.body');
+            hapi.initializeSidebar('.sidebar', '.sidebar-link', '.body');
+            //hapi.initializeSearchBar('.search', '.results', 'search.json');
+            hapi.simulateHistory();
 
-        // Populate version
-        hapi.populateVersions();
-        
-    </script>
+            // Populate version
+            hapi.populateVersions();
+            
+        </script>
+        <script type="text/javascript">
+            var ss360Config = {
+                siteId: "www.highcharts.com",
+                searchBoxSelector: "#searchBox",
+                searchResults: {'contentBlock':'#search'}
+            };
+        </script>
+        <script src="https://sitesearch360.com/cdn/sitesearch360-v10.min.js"></script>
     </body>
 
 </html>
