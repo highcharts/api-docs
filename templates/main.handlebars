@@ -191,10 +191,44 @@
         </script>
         <script type="text/javascript">
             var ss360Config = {
-                siteId: "www.highcharts.com",
+                siteId: "api.highcharts.com",
                 searchBoxSelector: "#searchBox",
-                searchResults: {'contentBlock':'#search'}
+                searchButton: undefined,
+                postSearchCallback: function () {
+                    searchResultSearchCallback.search = '';
+                },
+                // Appearance
+                animationSpeed: 300,
+                autofocus: true,
+                defaultCss: true,
+                navigation: 'top',
+                themeColor: '#3A3A4F',
+                // Suggestions
+                extraHtml: undefined,
+                highlight: true,
+                minChars: 1,
+                noSuggests: '<i>Sorry, we have no suggestions for you.</i>',
+                numSuggestions: 10,
+                showImageSuggestions: false,
+                showSearchSuggestions: true,
+                // Results
+                highlightQueryTerms: false,
+                moreResultsButton: 'Show more results',
+                moreResultsPagingSize: 10,
+                noResultsText: '<i>Sorry, we have not found any entries for "#QUERY#".</i>',
+                numResults: 10,
+                searchResults: {'contentBlock':'#body'},
+                searchResultsCaption: 'Search results for "#QUERY#"',
+                showImageResults: false,
             };
+            (function (window) {
+                window.ss360Config.includeContentGroups = [
+                    'Highcharts',
+                    'Highstock',
+                    'Highmaps',
+                    'Class Reference',
+                ]
+            }(this));
         </script>
         <script src="https://sitesearch360.com/cdn/sitesearch360-v10.min.js"></script>
     </body>
