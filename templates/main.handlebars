@@ -146,14 +146,30 @@
                 {{/if}}
             </div>
 
-            <div id="body" class="body">
-                <div id="splashText">
-                    <h1>Welcome to the <strong>{{{product}}} {{platform}}</strong> Options Reference</h1>
-                    <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
-                    <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
+            {{#if node.meta.fullname}}
+                <div id="body" class="body loaded">
+                    <div id="splashText">
+                        <h1>Welcome to the <strong>{{{product}}} {{platform}}</strong> Options Reference</h1>
+                        <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
+                        <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
+                    </div>
+                    <div id="option-list">
+                        <div class="option highlighted">
+                            <h1 class="title">{{{node.meta.fullname}}}</h1>
+                            <p class="description">{{{node.doclet.description}}}</p>
+                         </div>
+                    </div>
                 </div>
-                <div id="option-list"></div>
-            </div>
+            {{else}}
+                <div id="body" class="body">
+                    <div id="splashText">
+                        <h1>Welcome to the <strong>{{{product}}} {{platform}}</strong> Options Reference</h1>
+                        <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
+                        <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
+                    </div>
+                    <div id="option-list"></div>
+                </div>
+            {{/if}}
         </div>
 
         <div class="footer">
