@@ -409,6 +409,26 @@ a:hover {
   left: 0;
 }
 
+/* New search styling */
+
+#unibox-suggest-box {
+  border: 2px solid #DDD !important;
+  left: -2px !important;
+  width: 100%;
+}
+
+#unibox-suggest-box .unibox-suggest-heading {
+  background: #DDD;
+  font-size: 1em;
+  margin: 0 !important;
+  padding: 0.25em 0.5em;
+}
+
+#unibox-suggest-box .unibox-selectable {
+  border-top: 1px solid #DDD;
+  font-size: 1em;
+  padding: 0.25em 0.5em;
+}
 
 /* Navigation styling */
 
