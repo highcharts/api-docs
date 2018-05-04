@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{#if node.meta.fullname}}{{{node.meta.fullname}}} | {{/if}}{{{product}}} {{platform}} API Reference</title>
+        <title>{{#if node.meta.fullname}}{{node.meta.fullname}} | {{/if}}{{product}} {{platform}} API Reference</title>
         <link rel="stylesheet" href="style.css" type="text/css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
@@ -21,7 +21,8 @@
         <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
         <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
 
-        <meta name="searchboost" content="{{{searchBoost}}}">
+        <meta name="searchboost" content="{{searchBoost}}">
+        <meta name="title" content="{{#if node.meta.fullname}}{{node.meta.fullname}}{{else}}{{product}} {{platform}} API Reference{{/if}}">
         <script type="text/javascript" src="api.js"></script>
     </head>
     <body>
@@ -44,7 +45,7 @@
             <div class="row row-2">
                 {{#if toc}}
                     <div id="product-selector" class="menu" expanded="false">
-                        <a href="#" class="dropdown-link">{{{product}}} <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+                        <a href="#" class="dropdown-link">{{product}} <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
                         <div class="dropdown-menu">
                             <ul>
                                 {{#each toc}}
@@ -122,22 +123,70 @@
             <div id="sidebar" class="navigation sidebar" expanded="false">
                 <div id="search" class="search-wrapper">
                     <i class="fa fa-search"></i>
-                    <input class="search" />
-                    <!--input id="searchBox" type="text" placeholder="search" /-->
+                    <!--input class="search" /-->
+                    <input id="searchBox" type="text" placeholder="search" />
                     <ul class="results"></ul>
                 </div>
                 <div id="option-trees-wrapper">
                     <h3 id="options-header">Configuration options</h3>
                     <p>For initial declarative chart setup. View as <a href="tree.json">JSON</a>.</p>
                     <div class="global-options options-tree">
-                        <code>{{{product}}}.setOptions({</code>
+                        <code>{{product}}.setOptions({</code>
                         <div id="global-options" class="tree"></div>
-                        <code>});
-                        </code>
+                        <code>});</code>
                     </div>
                     <div class="options-tree">
-                        <code>{{{product}}}.{{constr}}({</code>
-                        <div id="options" class="tree"></div>
+                        <code>{{product}}.{{constr}}({</code>
+                        <div id="options" class="tree">
+                            {{#if node.meta.name}}
+                                <div class="node expanded option-{{node.meta.name}} parent">
+                                    <a class="title" href=".">
+                                        {{node.meta.name}}:{{#if node.children}}<i class="fa fa-caret-right"></i>{{/if}}
+                                    </a>
+                                    {{#if node.children}}
+                                        <span class="bracket start">{</span>
+                                        <div class="children" style="max-height:none;">
+                                    {{/if}}
+                            {{/if}}
+                            {{#if node.children}}
+                                {{#each node.children}}
+                                    <div class="node expanded option-{{this.shortName}} {{#if node.meta.name}}leaf{{else}}parent{{/if}}">
+                                        <a class="title" href="{{this.name}}">
+                                            {{this.shortName}}:{{#if this.node.children}}<i class="fa fa-caret-right"></i>{{/if}}
+                                        </a>
+                                        {{#if this.node.children}}
+                                            <span class="bracket start">{</span>
+                                            <div class="children" style="max-height:none;">
+                                                {{#each this.node.children}}
+                                                    <div class="node collapsed option-{{this.shortName}} leaf">
+                                                        <a class="title" href="{{this.name}}">
+                                                            {{this.shortName}}:{{#if this.node.children}}<i class="fa fa-caret-right"></i>{{/if}}
+                                                        </a>
+                                                        {{#if this.node.children}}
+                                                            <span class="bracket start">{</span>
+                                                            <span class="dots">...</span>
+                                                            <span class="bracket end first">}</span>
+                                                        {{/if}}
+                                                    </div>
+                                                {{/each}}
+                                            </div>
+                                            <span class="bracket end second">}</span>
+                                        {{else}}
+                                            <span class="default type-undefined">{{this.node.doclet.defaultvalue}}</span>
+                                        {{/if}}
+                                    </div>
+                                {{/each}}
+                            {{else}}
+                                <span class="default type-undefined">{{node.doclet.defaultvalue}}</span>
+                            {{/if}}
+                            {{#if node.meta.name}}
+                                    {{#if node.children}}
+                                        </div>
+                                        <span class="bracket end second">}</span>
+                                    {{/if}}
+                                </div>
+                            {{/if}}
+                        </div>
                         <code>});</code>
                     </div>
                 </div>
@@ -152,13 +201,13 @@
             {{#if node.meta.fullname}}
                 <div id="body" class="body loaded">
                     <div id="splashText">
-                        <h1>Welcome to the <strong>{{{product}}} {{platform}}</strong> Options Reference</h1>
+                        <h1>Welcome to the <strong>{{product}} {{platform}}</strong> Options Reference</h1>
                         <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
                         <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
                     </div>
                     <div id="option-list">
                         <div class="option highlighted">
-                            <h1 class="title">{{{node.meta.fullname}}}</h1>
+                            <h1 class="title">{{node.meta.fullname}}</h1>
                             <p class="description">{{{node.doclet.description}}}</p>
                          </div>
                     </div>
@@ -166,7 +215,7 @@
             {{else}}
                 <div id="body" class="body">
                     <div id="splashText">
-                        <h1>Welcome to the <strong>{{{product}}} {{platform}}</strong> Options Reference</h1>
+                        <h1>Welcome to the <strong>{{product}} {{platform}}</strong> Options Reference</h1>
                         <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
                         <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
                     </div>
@@ -185,7 +234,7 @@
             </div>
 
             <p>
-                {{{product}}} v{{version}} -
+                {{product}} v{{version}} -
                 Generated from branch <a href="https://github.com/highcharts/highcharts/tree/{{versionProps.branch}}">{{versionProps.branch}}</a> (commit <a href="https://github.com/highcharts/highcharts/commit/{{versionProps.commit}}">{{versionProps.commit}}</a>), on {{date}}
             </p>
         </div>
@@ -208,7 +257,7 @@
             hapi.populateVersions();
             
         </script>
-        <!--script type="text/javascript">
+        <script type="text/javascript">
             var ss360Config = {
                 siteId: "api.highcharts.com",
                 searchBoxSelector: "#searchBox",
@@ -248,8 +297,8 @@
                     'Class Reference',
                 ]
             }(this));
-        </script-->
-        <!--script src="https://sitesearch360.com/cdn/sitesearch360-v10.min.js"></script-->
+        </script>
+        <script src="https://sitesearch360.com/cdn/sitesearch360-v10.min.js"></script>
 
     </body>
 
