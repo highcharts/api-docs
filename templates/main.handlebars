@@ -22,7 +22,7 @@
         <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
 
         <meta name="searchboost" content="{{searchBoost}}">
-        <meta name="title" content="{{#if node.meta.fullname}}{{node.meta.fullname}}{{else}}{{product}} {{platform}} API Reference{{/if}}">
+        <meta name="searchtitle" content="{{searchTitle}}">
         <script type="text/javascript" src="api.js"></script>
     </head>
     <body>
@@ -123,8 +123,8 @@
             <div id="sidebar" class="navigation sidebar" expanded="false">
                 <div id="search" class="search-wrapper">
                     <i class="fa fa-search"></i>
-                    <!--input class="search" /-->
-                    <input id="searchBox" type="text" placeholder="search" />
+                    <input class="search" />
+                    <!--input id="searchBox" type="text" placeholder="search" /-->
                     <ul class="results"></ul>
                 </div>
                 <div id="option-trees-wrapper">
@@ -150,34 +150,21 @@
                             {{/if}}
                             {{#if node.children}}
                                 {{#each node.children}}
-                                    <div class="node expanded option-{{this.shortName}} {{#if node.meta.name}}leaf{{else}}parent{{/if}}">
+                                    <div class="node collapsed option-{{this.shortName}} {{#if node.meta.name}}leaf{{else}}parent{{/if}}">
                                         <a class="title" href="{{this.name}}">
                                             {{this.shortName}}:{{#if this.node.children}}<i class="fa fa-caret-right"></i>{{/if}}
                                         </a>
                                         {{#if this.node.children}}
                                             <span class="bracket start">{</span>
-                                            <div class="children" style="max-height:none;">
-                                                {{#each this.node.children}}
-                                                    <div class="node collapsed option-{{this.shortName}} leaf">
-                                                        <a class="title" href="{{this.name}}">
-                                                            {{this.shortName}}:{{#if this.node.children}}<i class="fa fa-caret-right"></i>{{/if}}
-                                                        </a>
-                                                        {{#if this.node.children}}
-                                                            <span class="bracket start">{</span>
-                                                            <span class="dots">...</span>
-                                                            <span class="bracket end first">}</span>
-                                                        {{/if}}
-                                                    </div>
-                                                {{/each}}
-                                            </div>
-                                            <span class="bracket end second">}</span>
+                                            <span class="dots">...</span>
+                                            <span class="bracket end first">}</span>
                                         {{else}}
-                                            <span class="default type-undefined">{{this.node.doclet.defaultvalue}}</span>
+                                            <span class="default type-undefined">{{#if this.node.doclet.defaultvalue}}{{this.node.doclet.defaultvalue}}{{else}}undefined{{/if}}</span>
                                         {{/if}}
                                     </div>
                                 {{/each}}
                             {{else}}
-                                <span class="default type-undefined">{{node.doclet.defaultvalue}}</span>
+                                <span class="default type-undefined">{{#if node.doclet.defaultvalue}}{{node.doclet.defaultvalue}}{{else}}undefined{{/if}}</span>
                             {{/if}}
                             {{#if node.meta.name}}
                                     {{#if node.children}}
@@ -257,7 +244,7 @@
             hapi.populateVersions();
             
         </script>
-        <script type="text/javascript">
+        <!--script type="text/javascript">
             var ss360Config = {
                 siteId: "api.highcharts.com",
                 searchBoxSelector: "#searchBox",
@@ -298,7 +285,7 @@
                 ]
             }(this));
         </script>
-        <script src="https://sitesearch360.com/cdn/sitesearch360-v10.min.js"></script>
+        <script src="https://sitesearch360.com/cdn/sitesearch360-v10.min.js"></script-->
 
     </body>
 
