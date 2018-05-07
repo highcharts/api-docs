@@ -430,6 +430,10 @@ a:hover {
   padding: 0.25em 0.5em;
 }
 
+#searchResults .ss360-suggests header span {
+  word-break: break-all;
+}
+
 /* Navigation styling */
 
 .tree {

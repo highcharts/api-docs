@@ -123,8 +123,8 @@
             <div id="sidebar" class="navigation sidebar" expanded="false">
                 <div id="search" class="search-wrapper">
                     <i class="fa fa-search"></i>
-                    <input class="search" />
-                    <!--input id="searchBox" type="text" placeholder="search" /-->
+                    <!--input class="search" /-->
+                    <input id="searchBox" type="text" placeholder="search" />
                     <ul class="results"></ul>
                 </div>
                 <div id="option-trees-wrapper">
@@ -187,6 +187,7 @@
 
             {{#if node.meta.fullname}}
                 <div id="body" class="body loaded">
+                    <div id="searchResults"></div>
                     <div id="splashText">
                         <h1>Welcome to the <strong>{{product}} {{platform}}</strong> Options Reference</h1>
                         <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
@@ -237,23 +238,20 @@
             hapi.createBody('#body', state, hasChildren);
             hapi.initializeDropdowns('.menu', '.dropdown-link', '.body');
             hapi.initializeSidebar('.sidebar', '.sidebar-link', '.body');
-            hapi.initializeSearchBar('.search', '.results', 'search.json');
+            // hapi.initializeSearchBar('.search', '.results', 'search.json');
             hapi.simulateHistory();
 
             // Populate version
-            hapi.populateVersions();
+            // hapi.populateVersions();
             
         </script>
-        <!--script type="text/javascript">
+        <script type="text/javascript">
             var ss360Config = {
                 siteId: "api.highcharts.com",
                 searchBoxSelector: "#searchBox",
                 searchButton: undefined,
-                postSearchCallback: function () {
-                    searchResultSearchCallback.search = '';
-                },
                 // Appearance
-                animationSpeed: 300,
+                animationSpeed: 0,
                 autofocus: true,
                 defaultCss: true,
                 navigation: 'top',
@@ -263,7 +261,7 @@
                 highlight: true,
                 minChars: 1,
                 noSuggests: '<i>Sorry, we have no suggestions for you.</i>',
-                numSuggestions: 10,
+                numSuggestions: 11,
                 showImageSuggestions: false,
                 showSearchSuggestions: true,
                 // Results
@@ -271,8 +269,8 @@
                 moreResultsButton: 'Show more results',
                 moreResultsPagingSize: 10,
                 noResultsText: '<i>Sorry, we have not found any entries for "#QUERY#".</i>',
-                numResults: 10,
-                searchResults: {'contentBlock':'#body'},
+                numResults: 50,
+                searchResults: {'contentBlock':'#searchResults'},
                 searchResultsCaption: 'Search results for "#QUERY#"',
                 showImageResults: false,
             };
@@ -285,7 +283,7 @@
                 ]
             }(this));
         </script>
-        <script src="https://sitesearch360.com/cdn/sitesearch360-v10.min.js"></script-->
+        <script src="https://sitesearch360.com/cdn/sitesearch360-v10.min.js"></script>
 
     </body>
 
