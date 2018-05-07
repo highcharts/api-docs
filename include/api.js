@@ -385,14 +385,14 @@ hapi.ajax = function(p) {
 
 
       if (children) {
-        setTimeout(
+        /*setTimeout(
           function() {
 
           },
           1000 * parseFloat(
             getComputedStyle(children)['transitionDuration']
           )
-        );
+        );*/
 
         children.style.maxHeight = 0;
       }
@@ -759,7 +759,17 @@ hapi.ajax = function(p) {
       }
     }
 
+    var smTimeout;
+
     function search() {
+      window.clearTimeout(smTimeout)
+      smTimeout = window.setTimeout(function () {
+        let sm = document.createElement('img');
+        sm.setAttribute('src', 'favicon-16x16.png?search=' + encodeURIComponent(searchBar.value));
+        sm.style.height = '1px !important';
+        sm.style.width = '1px !important';
+        document.body.appendChild(sm);
+      }, 500);
       results.innerHTML = '';
       query = searchBar.value;
       if (query.length >= minLength) {
@@ -824,7 +834,11 @@ hapi.ajax = function(p) {
        */
       window.onpopstate = function(e) {
         var state = e.state;
-        if (state !== undefined && state !== null) {
+        if (state !== undefined &&
+            state !== null &&
+            typeof state.member !== 'undefined' &&
+            typeof state.product !== 'undefined'
+        ) {
           hapi.createNavigation('#options', '#global-options', state.member, state.product);
         }
       }
