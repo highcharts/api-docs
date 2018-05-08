@@ -771,8 +771,10 @@ hapi.ajax = function(p) {
         document.body.appendChild(sm);
       }, 500);
       results.innerHTML = '';
+      results.style.display = 'none';
       query = searchBar.value;
       if (query.length >= minLength) {
+        results.style.display = 'block';
         members.forEach(checkResult);
       }
     }
@@ -792,6 +794,8 @@ hapi.ajax = function(p) {
           case up:
             if (previous && previous.firstChild) {
               previous.firstChild.focus();
+            } else {
+              searchBar.focus();
             }
           break;
 
