@@ -797,15 +797,14 @@ hapi.ajax = function(p) {
             } else {
               searchBar.focus();
             }
-          break;
-
+            break;
           case down:
             if (active === searchBar && first && first.firstChild) {
               first.firstChild.focus();
             } else if (next && next.firstChild) {
               next.firstChild.focus();
             }
-          break;
+            break;
         }
       }
     }
