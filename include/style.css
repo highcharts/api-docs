@@ -355,36 +355,38 @@ a:hover {
   overflow: auto;  
 }
 
-.match {
+.results .match {
   border-bottom: 1px solid #ddd;
 }
 
-.match a {
+.results .match a {
   display: block;
   padding: 5px 10px;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.match a:hover, .match a:focus {
+.results .match a:hover,
+.results .match a:focus {
   outline: none;
 }
 
-.match a:hover {
+.results .match a:hover {
   background: #ddd;
 }
 
-.match a:focus {
+.results .match a:focus {
   background: #bbb;
 }
 
-.match *, .match *:hover {
+.results .match *, 
+.results .match *:hover {
   font-family: "Courier New", Courier, monospace;
   font-size: 14px;
   color: #222;
 }
 
-.match .sub-match {
+.results .match .sub-match {
   background: #eefdec;
 }
 
@@ -544,6 +546,20 @@ a:hover {
   display: none;
 }
 
+/* Text search */
+
+#search-text-results {
+  padding: 15px 30px;
+}
+
+#search-text-results .match {
+  padding: 15px 0;
+}
+
+#search-text-results .match h2,
+#search-text-results .match p {
+  margin: 0;
+}
 
 /* Option styling */
 
