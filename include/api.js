@@ -773,6 +773,15 @@ hapi.ajax = function(p) {
       results.innerHTML = '';
       results.style.display = 'none';
       query = searchBar.value;
+      if (members.length === 0) {
+        hapi.ajax({
+          url: indexUrl,
+          success: function(data) {
+            members = data;
+            search();
+          }
+        });
+      }
       if (query.length >= minLength) {
         results.style.display = 'block';
         members.forEach(checkResult);
@@ -781,14 +790,16 @@ hapi.ajax = function(p) {
 
     document.onkeydown = function(e) { // listen to keyboard events
       var key = e.keyCode,
+        //enter = 13,
         up = 38,
         down = 40,
+        keys = [up, down],
         active = document.activeElement,
         previous = active.parentNode.previousSibling,
         next = active.parentNode.nextSibling,
         first = results.firstChild;
 
-      if (key === up || key === down) {
+      if (keys.indexOf(key) >= 0) {
         e.preventDefault();
         switch (key) {
           case up:
@@ -809,13 +820,8 @@ hapi.ajax = function(p) {
       }
     }
 
-    hapi.ajax({
-      url: indexUrl,
-      success: function(data) {
-        members = data;
-        on(searchBar, 'input', search);
-      }
-    });
+    on(searchBar, 'input', search);
+
   };
 
   /**
