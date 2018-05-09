@@ -136,7 +136,7 @@
             <div id="sidebar" class="navigation sidebar" expanded="false">
                 <div id="search" class="search-wrapper">
                     <i class="fa fa-search"></i>
-                    <input class="search" />
+                    <input class="search" placeholder="Search in navigation tree" />
                     <ul class="results" style="display: none;"></ul>
                 </div>
                 <div id="option-trees-wrapper">
@@ -171,12 +171,12 @@
                                             <span class="dots">...</span>
                                             <span class="bracket end first">}</span>
                                         {{else}}
-                                            <span class="default type-undefined">{{#if this.node.doclet.defaultvalue}}{{this.node.doclet.defaultvalue}}{{else}}undefined{{/if}}</span>
+                                            <span class="default type-undefined">{{#if this.node.doclet.defaultvalue}}{{this.node.doclet.defaultvalue}}{{else}}null{{/if}}</span>
                                         {{/if}}
                                     </div>
                                 {{/each}}
                             {{else}}
-                                <span class="default type-undefined">{{#if node.doclet.defaultvalue}}{{node.doclet.defaultvalue}}{{else}}undefined{{/if}}</span>
+                                <span class="default type-undefined">{{#if node.doclet.defaultvalue}}{{node.doclet.defaultvalue}}{{else}}null{{/if}}</span>
                             {{/if}}
                             {{#if node.meta.name}}
                                     {{#if node.children}}
@@ -190,37 +190,29 @@
                     </div>
                 </div>
                 {{#if includeClassReference }}
-                <div id="members-wrapper">
-                    <h3>Members and properties</h3>
-                    <p>For modifying the chart at runtime. See the <a href="/class-reference/classes.list">class reference</a>.</p>
-                </div>
+                    <div id="members-wrapper">
+                        <h3>Members and properties</h3>
+                        <p>For modifying the chart at runtime. See the <a href="/class-reference/classes.list">class reference</a>.</p>
+                    </div>
                 {{/if}}
             </div>
 
-            {{#if node.meta.fullname}}
-                <div id="body" class="body loaded">
-                    <div id="splashText">
-                        <h1>Welcome to the <strong>{{product}} {{platform}}</strong> Options Reference</h1>
-                        <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
-                        <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
-                    </div>
-                    <div id="option-list">
+            <div id="body" class="body{{#if node.meta.fullname}} loaded{{/if}}">
+                <div id="splashText">
+                    <h1>Welcome to the <strong>{{product}} {{platform}}</strong> Options Reference</h1>
+                    <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
+                    <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
+                </div>
+                <div id="search-text-results" style="display:none;"></div>
+                <div id="option-list">
+                    {{#if node.meta.fullname}}
                         <div class="option highlighted">
                             <h1 class="title">{{node.meta.fullname}}</h1>
                             <p class="description">{{{node.doclet.description}}}</p>
-                         </div>
-                    </div>
+                        </div>
+                    {{/if}}
                 </div>
-            {{else}}
-                <div id="body" class="body">
-                    <div id="splashText">
-                        <h1>Welcome to the <strong>{{product}} {{platform}}</strong> Options Reference</h1>
-                        <p>These pages outline the chart configuration options, and the methods and properties of Highcharts objects.</p>
-                        <p>Feel free to search this <a target="_blank" href="https://en.wikipedia.org/wiki/Application_programming_interface">API</a> through the search bar or the navigation tree in the sidebar.</p>
-                    </div>
-                    <div id="option-list"></div>
-                </div>
-            {{/if}}
+            </div>
         </div>
 
         <div class="footer">
@@ -249,7 +241,7 @@
             hapi.createBody('#body', state, hasChildren);
             hapi.initializeDropdowns('.menu', '.dropdown-link', '.body');
             hapi.initializeSidebar('.sidebar', '.sidebar-link', '.body');
-            hapi.initializeSearchBar('.search', '.results', 'search.json', 2, 50);
+            hapi.initializeSearchBar('.search', '.results', '#search-text-results', 'search.json', 2, 50);
             //hapi.simulateHistory();
 
             // Populate version

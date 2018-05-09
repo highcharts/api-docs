@@ -27,12 +27,13 @@ hapi.ajax = function(p) {
       url: p.url || false,
       type: p.type || 'GET',
       dataType: p.dataType || 'json',
+      headers: p.headers || {},
       success: p.success || function() {},
       error: p.error || function(error) {
         console.error(error);
       }
     },
-    headers = {
+    mime = {
       json: 'application/json',
       xml: 'application/xml',
       text: 'text/plain',
@@ -43,7 +44,17 @@ hapi.ajax = function(p) {
   if (!props.url) return false;
 
   r.open(props.type, props.url, true);
-  r.setRequestHeader('Content-Type', headers[props.dataType] || headers.text);
+
+  if (typeof props.headers['Content-Type'] === 'undefined'){
+    props.headers['Content-Type'] = (
+      mime[props.dataType] ||
+      mime.text
+    );
+  }
+
+  for (var header in props.headers) {
+    r.setRequestHeader( header, props.headers[header]);
+  }
 
   r.onreadystatechange = function() {
     if (r.readyState === 4 && r.status === 200) {
@@ -69,24 +80,23 @@ hapi.ajax = function(p) {
 
 (function() {
 
-  function cr(name, className, inner) {
+  function cr(name, className, inner, asHTML) {
     var el = document.createElement(name);
-    el.className = className || '';
-    el.innerHTML = inner || '';
+    if (className) {
+      el.setAttribute('class', className);
+    }
+    el[asHTML ? 'innerHTML' : 'innerText'] = inner || '';
     return el;
   }
 
-  function on(target, event, callback) {
-    var s = [];
-
+  function on(target, event, callback, bubble) {
     if (!target) {
-      return function() {};
+      return;
     }
-
     if (target.addEventListener) {
-      target.addEventListener(event, callback, false);
+      target.addEventListener(event, callback, (bubble === true));
     } else {
-      target.attachEvent('on' + event, callback, false);
+      target.attachEvent('on' + event, callback, (bubble === true));
     }
   }
 
@@ -114,6 +124,14 @@ hapi.ajax = function(p) {
     if (target.className) {
       target.className = target.className.replace(' ' + cls, '');
     }
+  }
+
+  function encodeHTML(html) {
+    return html
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
   }
 
   function defined(variable, stringCheck) {
@@ -161,10 +179,7 @@ hapi.ajax = function(p) {
       if (def.default === null) {
         return 'null';
       }
-      return def.default.toString()
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/>/g, '&gt;');
+      return  encodeHTML(def.default.toString());
     }
     return 'undefined';
   }
@@ -288,7 +303,8 @@ hapi.ajax = function(p) {
           def.typeList.names[0].toLowerCase().replace(/[\.\<\>]+/g, '-') :
           'undefined'
         ),
-        getDefault(def)
+        getDefault(def),
+        true
       );
     }
 
@@ -484,12 +500,11 @@ hapi.ajax = function(p) {
       see,
       seeList,
       editLink,
-      defaultStr = getDefault(def);
+      defaultHTML = getDefault(def);
 
     description = (def.description || '') +
       (def.productdesc ? def.productdesc.value : '');
-    description = autolinks(description);
-    description = cr('p', 'description', description);
+    description = cr('p', 'description', autolinks(description), true);
 
     if (!def.isLeaf) {
       titleLink = cr('a');
@@ -503,18 +518,21 @@ hapi.ajax = function(p) {
           ap(types, cr(
             'span',
             'type type-' + type.toLowerCase().replace(/[\.\<\>]+/g, '-'),
-            typeStr.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            encodeHTML(typeStr),
+            true
           ));
         });
       }
 
-      if (typeof defaultStr !== 'undefined') {
+      if (typeof defaultHTML !== 'undefined') {
         defaultvalue = cr(
           'span',
           'default type-' + (def.typeList && def.typeList.names && def.typeList.names.length ?
             def.typeList.names[0].toLowerCase().replace(/[\.\<\>]+/g, '-') :
             'undefined'),
-          'Defaults to <code>' + defaultStr + '</code>.');
+          'Defaults to <code>' + defaultHTML + '</code>.',
+          true
+        );
       }
     }
 
@@ -550,7 +568,7 @@ hapi.ajax = function(p) {
       );
       def.see.forEach(function (seeItem) {
         ap(seeList,
-          ap(cr('li', 'see-item', autolinks(seeItem)))
+          ap(cr('li', 'see-item', autolinks(seeItem), true))
         );
       });
     }
@@ -637,7 +655,8 @@ hapi.ajax = function(p) {
           description = data.description && cr(
             'p',
             'description',
-            autolinks(data.description + (data.productdesc ? data.productdesc.value : ''))
+            autolinks(data.description + (data.productdesc ? data.productdesc.value : '')),
+            true
           );
 
         state.split('.').forEach(function(titlePart, i) {
@@ -728,99 +747,182 @@ hapi.ajax = function(p) {
     });
   };
 
-  hapi.initializeSearchBar = function(searchBarQ, resultsQ, indexUrl, minLength, maxElements) {
+  hapi.initializeSearchBar = function(
+    searchBarQ, resultsQ, textResultsQ, indexUrl, minLength, maxElements
+  ) {
     var searchBar = document.querySelector(searchBarQ),
-      results = document.querySelector(resultsQ),
+      sideResults = document.querySelector(resultsQ),
+      textResults = document.querySelector(textResultsQ),
       minLength = minLength || 2,
       maxElements = maxElements || 15,
       members = [],
       query = '';
 
-    function markMatch(string, query) {
-      re = new RegExp(query, 'gi');
-      return string.replace(re, '<span class="sub-match">$&</span>');
-    }
+    function navigateSearch(e) { // listen to keyboard events
+      var key = e.keyCode,
+        up = 38,
+        down = 40,
+        active = document.activeElement,
+        previous = active.parentNode.previousSibling,
+        next = active.parentNode.nextSibling,
+        first = sideResults.firstChild;
 
-    function createMatch(member, query) {
-      var a = cr('a', null, markMatch(member, query));
-
-      a.href = member + htmlExtension;
-
-      return ap(cr('li', 'match'),
-        a
-      );
-    }
-
-    function checkResult(member) {
-      if (member.toLowerCase().indexOf(query.toLowerCase()) >= 0 && results.childElementCount <= maxElements) {
-        ap(results,
-          createMatch(member, query)
-        );
+      switch (key) {
+        case up:
+          e.preventDefault();
+          if (previous && previous.firstChild) {
+            previous.firstChild.focus();
+          } else {
+            searchBar.focus();
+          }
+          break;
+        case down:
+          e.preventDefault();
+          if (active === searchBar && first && first.firstChild) {
+            first.firstChild.focus();
+          } else if (next && next.firstChild) {
+            next.firstChild.focus();
+          }
+          break;
       }
     }
 
-    var smTimeout;
-
-    function search() {
-      window.clearTimeout(smTimeout)
-      smTimeout = window.setTimeout(function () {
-        let sm = document.createElement('img');
+    var mqTimeout;
+    function measureQuery() {
+      window.clearTimeout(mqTimeout)
+      mqTimeout = window.setTimeout(function () {
+        let sm = cr('img');
         sm.setAttribute('src', 'favicon-16x16.png?search=' + encodeURIComponent(searchBar.value));
         sm.style.height = '1px !important';
         sm.style.width = '1px !important';
-        document.body.appendChild(sm);
+        ap(document.body, sm);
       }, 500);
-      results.innerHTML = '';
-      results.style.display = 'none';
-      query = searchBar.value;
+    }
+
+    function searchSide(e) {
+      //console.log('search', e.keyCode);
       if (members.length === 0) {
         hapi.ajax({
           url: indexUrl,
           success: function(data) {
             members = data;
-            search();
+            searchSide();
           }
         });
+        return;
       }
+      //measureQuery();
+      query = searchBar.value;      
       if (query.length >= minLength) {
-        results.style.display = 'block';
-        members.forEach(checkResult);
+        showSideResults();
+      } else {
+        clearSideResults();
+        clearTextResults();
       }
     }
 
-    document.onkeydown = function(e) { // listen to keyboard events
-      var key = e.keyCode,
-        //enter = 13,
-        up = 38,
-        down = 40,
-        keys = [up, down],
-        active = document.activeElement,
-        previous = active.parentNode.previousSibling,
-        next = active.parentNode.nextSibling,
-        first = results.firstChild;
+    function searchText(e) {
+      if (e.keyCode !== 13) {
+        return;
+      }
+      hapi.ajax({
+        dataType: 'json',
+        headers: {
+          'Ocp-Apim-Subscription-Key': 'fa4d42448a074ba2bf392f3f2fb0fcf7'
+        },
+        url: (
+          'https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/' +
+          'search?customconfig=1554546297&mkt=en-US&safesearch=Off' + 
+          '&count=' + maxElements + '&offset=0&q=' + encodeURIComponent(query)
+        ),
+        success: function(json) {
+          if (!json.queryContext ||
+            json.queryContext.originalQuery !== query
+          ) {
+            showTextResults(null);
+          } else {
+            showTextResults(json.webPages || {
+              totalEstimatedMatches: 0,
+              value: []
+            });
+          }
+        }
+      });
+    }
 
-      if (keys.indexOf(key) >= 0) {
-        e.preventDefault();
-        switch (key) {
-          case up:
-            if (previous && previous.firstChild) {
-              previous.firstChild.focus();
-            } else {
-              searchBar.focus();
-            }
+    function clearSideResults() {
+      console.log('clearSideResults');
+      sideResults.innerHTML = '';
+      sideResults.style.display = 'none';
+    }
+
+    function showSideResults() {
+      console.log('showSideResults');
+      var a,
+        marker = new RegExp(query, 'gi'),
+        member,
+        queryLC = query.toLowerCase();
+      sideResults.innerHTML = '';
+      for (var i = 0, ie = members.length; i < ie; ++i) {
+        member = members[i];
+        if (member.toLowerCase().indexOf(queryLC) >= 0) {
+          a = cr('a', null, member.replace(
+            marker, '<span class="sub-match">$&</span>'
+          ), true);
+          a.setAttribute('href', member + htmlExtension);
+          ap(sideResults, ap(cr('li', 'match'), a));
+          if (sideResults.childElementCount >= maxElements) {
             break;
-          case down:
-            if (active === searchBar && first && first.firstChild) {
-              first.firstChild.focus();
-            } else if (next && next.firstChild) {
-              next.firstChild.focus();
-            }
-            break;
+          }
         }
       }
+      if (sideResults.hasChildNodes()) {
+        sideResults.style.display = 'block';
+        sideResults.scrollTo(1, 0);
+      } else {
+        sideResults.style.display = 'none';
+      }
     }
 
-    on(searchBar, 'input', search);
+    function clearTextResults() {
+      console.log('clearTextResults');
+      textResults.innerHTML = '';
+      textResults.style.display = 'none';
+    }
+
+    function showTextResults(json) {
+      console.log('showTextResults', json);
+      var a,
+        entries = json.value,
+        entry,
+        name;
+      for (var i = 0, ie = entries.length; i < ie; ++i) {
+        entry = entries[i];
+        name = (entry.name || '');
+        if (name.indexOf('|') > 0) {
+          name = name.substr(0, name.indexOf('|'));
+        }
+        a = cr('a', null, name);
+        a.setAttribute('href', entry.url);
+        ap(textResults, ap(cr('div', 'match'),
+          ap(cr('h2'), a),
+          ap(cr('p', null, (entry.snippet || '')))
+        ));
+        if (textResults.childElementCount >= maxElements) {
+          break;
+        }
+      }
+      if (textResults.hasChildNodes()) {
+        textResults.style.display = 'block';
+        scrollTo(textResults, textResults.firstChild, 200);
+      } else {
+        textResults.style.display = 'none';
+      }
+    }
+
+    on(document, 'keydown', navigateSearch, true);
+    on(searchBar, 'input', searchSide);
+    on(searchBar, 'keydown', searchText);
 
   };
 
