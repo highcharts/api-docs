@@ -549,7 +549,7 @@ a:hover {
 /* Text search */
 
 #search-text-results {
-  padding: 15px 30px;
+  padding: 30px;
 }
 
 #search-text-results .match {
@@ -559,6 +559,22 @@ a:hover {
 #search-text-results .match h2,
 #search-text-results .match p {
   margin: 0;
+}
+
+#search-text-results .more {
+  border: 1px solid #ddd;
+  cursor: pointer;
+  display: block;
+  line-height: 2em;
+  margin: 2em auto;
+  max-width: 10em;
+  padding: 0 1em;
+  text-align: center;
+}
+
+#search-text-results .more:hover {
+  background-color: #eee;
+  border-color: #bbb;
 }
 
 /* Option styling */
