@@ -57,17 +57,25 @@ hapi.ajax = function(p) {
   }
 
   r.onreadystatechange = function() {
-    if (r.readyState === 4 && r.status === 200) {
-      if (props.dataType === 'json') {
-        try {
-          props.success(JSON.parse(r.responseText));
-        } catch (e) {
-          props.error(e.stack, r.responseText);
-        }
-      } else {
-        props.success(r.responseText);
+    if (r.readyState !== 4) {
+      return;
+    }
+    if (r.status === 429) {
+      window.setTimeout(hapi.ajax, 1000, p);
+      return;
+    }
+    if (props.dataType === 'json') {
+      var json;
+      try {
+        json = JSON.parse(r.responseText);
+      } catch (e) {
+        props.error(e.stack, r.responseText);
+        return;
       }
-    } else if (r.readyState === 4) {
+      props.success(json);
+    } else if (r.status === 200) {
+      props.success(r.responseText);
+    } else {
       props.error(r.responseURL + ' ' + r.statusText, r.responseText);
     }
   };
@@ -132,6 +140,10 @@ hapi.ajax = function(p) {
       .replace(/"/g, '&quot;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
+  }
+
+  function pluralize(value, singular, plural) {
+    return (value.toString() + (value === 1 ? singular : plural));
   }
 
   function defined(variable, stringCheck) {
@@ -574,7 +586,7 @@ hapi.ajax = function(p) {
     }
 
     if (def.filename) {
-      editLink = cr('a', 'edit', '<i class="fa fa-edit"></i>');
+      editLink = cr('a', 'edit', '<i class="fa fa-edit"></i>', true);
       editLink.setAttribute(
         'title',
         'Defined in ' + def.filename + ':' + def.line
@@ -812,18 +824,25 @@ hapi.ajax = function(p) {
         return;
       }
       //measureQuery();
-      query = searchBar.value;      
+      query = searchBar.value;
       if (query.length >= minLength) {
         showSideResults();
       } else {
         clearSideResults();
         clearTextResults();
+        loadSideSuggestions();
       }
     }
 
-    function searchText(e) {
-      if (e.keyCode !== 13) {
+    function searchText(e, offset) {
+      if (e.keyCode !== 13 &&
+        typeof offset === 'undefined'
+      ) {
         return;
+      }
+      offset = (offset || 0);
+      if (offset <= 0) {
+        clearTextResults();
       }
       hapi.ajax({
         dataType: 'json',
@@ -832,20 +851,21 @@ hapi.ajax = function(p) {
         },
         url: (
           'https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/' +
-          'search?customconfig=1554546297&mkt=en-US&safesearch=Off' + 
-          '&count=' + maxElements + '&offset=0&q=' + encodeURIComponent(query)
+          'search?customconfig=1554546297&mkt=en-US' +
+          '&safesearch=Moderate' +
+          '&count=' + maxElements +
+          '&offset=' + offset +
+          '&q=' + encodeURIComponent(query)
         ),
         success: function(json) {
           if (!json.queryContext ||
             json.queryContext.originalQuery !== query
           ) {
-            showTextResults(null);
-          } else {
-            showTextResults(json.webPages || {
-              totalEstimatedMatches: 0,
-              value: []
-            });
+            return;
           }
+          showTextResults(
+            (json.webPages || { totalEstimatedMatches: 0, value: [] }), query
+          );
         }
       });
     }
@@ -881,6 +901,61 @@ hapi.ajax = function(p) {
         sideResults.scrollTo(1, 0);
       } else {
         sideResults.style.display = 'none';
+        loadSideSuggestions();
+      }
+    }
+
+    var loadSideSuggestionsTimeout;
+    function loadSideSuggestions() {
+      console.log('loadSideSuggestions');
+      window.clearTimeout(loadSideSuggestionsTimeout);
+      if (query === '') {
+        return;
+      }
+      loadSideSuggestionsTimeout = window.setTimeout(hapi.ajax, 500, {
+        dataType: 'json',
+        headers: {
+          'Ocp-Apim-Subscription-Key': 'fa4d42448a074ba2bf392f3f2fb0fcf7'
+        },
+        url: (
+          'https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/' +
+          'suggestions/search?customconfig=1554546297' + 
+          '&q=' + encodeURIComponent(query)
+        ),
+        success: function(json) {
+          if (json.suggestionGroups &&
+            json.suggestionGroups.length > 0
+          ) {
+            showSideSuggestions(json.suggestionGroups[0].searchSuggestions);
+          }
+        }
+      });
+    }
+
+    function showSideSuggestions(suggestions) {
+      console.log('showSideSuggestions', suggestions);
+      var a,
+        suggestion;
+      for (var i = 0, ie = suggestions.length; i < ie; ++i) {
+        suggestion = suggestions[i];
+        a = cr('a', null, suggestion.displayText);
+        a.setAttribute('href', '#');
+        on(a, 'click', function (e) {
+          e.preventDefault();
+          clearTextResults();
+          query = this.innerText;
+          searchText(e, 0);
+        });
+        ap(sideResults, ap(cr('li', 'match'), a));
+        if (sideResults.childElementCount >= maxElements) {
+          break;
+        }
+      }
+      if (sideResults.hasChildNodes()) {
+        sideResults.style.display = 'block';
+        sideResults.scrollTo(1, 0);
+      } else {
+        sideResults.style.display = 'none';
       }
     }
 
@@ -890,13 +965,14 @@ hapi.ajax = function(p) {
       textResults.style.display = 'none';
     }
 
-    function showTextResults(json) {
-      console.log('showTextResults', json);
+    function showTextResults(json, query) {
+      console.log('showTextResults', json, query);
+      window.clearTimeout(loadSideSuggestionsTimeout);
       var a,
         entries = json.value,
         entry,
         name;
-      for (var i = 0, ie = entries.length; i < ie; ++i) {
+      for (var i = 0, ie = entries.length; i < ie && i < maxElements; ++i) {
         entry = entries[i];
         name = (entry.name || '');
         if (name.indexOf('|') > 0) {
@@ -904,19 +980,36 @@ hapi.ajax = function(p) {
         }
         a = cr('a', null, name);
         a.setAttribute('href', entry.url);
+        a.setAttribute('title', entry.snippet);
         ap(textResults, ap(cr('div', 'match'),
           ap(cr('h2'), a),
-          ap(cr('p', null, (entry.snippet || '')))
+          cr('p', null, (entry.snippet || ''))
         ));
-        if (textResults.childElementCount >= maxElements) {
-          break;
-        }
       }
-      if (textResults.hasChildNodes()) {
+      if (!textResults.firstChild ||
+        textResults.firstChild.nodeName !== 'H1'
+      ) {
+        textResults.insertBefore(
+          cr('h1', 'title', 'Search results for "' + encodeHTML(query) + '"'),
+          textResults.firstChild
+        );
         textResults.style.display = 'block';
         scrollTo(textResults, textResults.firstChild, 200);
+      }
+      var foundText = 'Found ' + pluralize(
+        json.totalEstimatedMatches, ' result', ' results'
+      );
+      if (json.totalEstimatedMatches > textResults.childNodes.length) {
+        a = cr('span', 'more', 'Show more results');
+        a.setAttribute('title', foundText);
+        on(a, 'click', function (e) {
+          e.preventDefault();
+          textResults.removeChild(a);
+          searchText(e, textResults.childNodes.length);
+        });
+        ap(textResults, a)
       } else {
-        textResults.style.display = 'none';
+        ap(textResults, cr('p', null, foundText));
       }
     }
 
