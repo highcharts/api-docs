@@ -61,7 +61,8 @@ hapi.ajax = function(p) {
       return;
     }
     if (r.status === 429) {
-      window.setTimeout(hapi.ajax, 1000, p);
+      let retryAfter = parseInt(r.getResponseHeader('Retry-After'));
+      window.setTimeout(hapi.ajax, ((retryAfter || 1) * 1000), p);
       return;
     }
     if (props.dataType === 'json') {
@@ -852,7 +853,9 @@ hapi.ajax = function(p) {
         url: (
           'https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/' +
           'search?customconfig=1554546297&mkt=en-US' +
-          '&safesearch=Moderate' +
+          '&textFormat=HTML' +
+          '&textDecorations=true' +
+          '&safesearch=Strict' +
           '&count=' + maxElements +
           '&offset=' + offset +
           '&q=' + encodeURIComponent(query)
@@ -897,6 +900,7 @@ hapi.ajax = function(p) {
         }
       }
       if (sideResults.hasChildNodes()) {
+        stopSideSuggestions();
         sideResults.style.display = 'block';
         sideResults.scrollTo(1, 0);
       } else {
@@ -906,9 +910,15 @@ hapi.ajax = function(p) {
     }
 
     var loadSideSuggestionsTimeout;
+
+    function stopSideSuggestions() {
+      console.log('stopSideSuggestions');
+      window.clearTimeout(loadSideSuggestionsTimeout);
+    }
+
     function loadSideSuggestions() {
       console.log('loadSideSuggestions');
-      window.clearTimeout(loadSideSuggestionsTimeout);
+      stopSideSuggestions();
       if (query === '') {
         return;
       }
@@ -978,12 +988,12 @@ hapi.ajax = function(p) {
         if (name.indexOf('|') > 0) {
           name = name.substr(0, name.indexOf('|'));
         }
-        a = cr('a', null, name);
+        a = cr('a', null, name, true);
         a.setAttribute('href', entry.url);
         a.setAttribute('title', entry.snippet);
         ap(textResults, ap(cr('div', 'match'),
           ap(cr('h2'), a),
-          cr('p', null, (entry.snippet || ''))
+          cr('p', null, (entry.snippet || ''), true)
         ));
       }
       if (!textResults.firstChild ||
