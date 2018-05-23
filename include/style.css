@@ -565,20 +565,28 @@ a:hover {
   background-color: #eefdec;  
 }
 
+#search-text-results .close ,
 #search-text-results .more {
   border: 1px solid #ddd;
   cursor: pointer;
-  display: block;
+  display: inline-block;
   line-height: 2em;
-  margin: 2em auto;
-  max-width: 10em;
   padding: 0 1em;
   text-align: center;
 }
 
+#search-text-results .close:hover ,
 #search-text-results .more:hover {
   background-color: #eee;
   border-color: #bbb;
+}
+
+#search-text-results .close {
+  float: right;
+}
+
+#search-text-results .options {
+  margin: 2em auto;
 }
 
 /* Option styling */

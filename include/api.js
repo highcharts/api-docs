@@ -89,6 +89,8 @@ hapi.ajax = function(p) {
 
 (function() {
 
+  var clearSearch;
+
   function cr(name, className, inner, asHTML) {
     var el = document.createElement(name);
     if (className) {
@@ -679,6 +681,7 @@ hapi.ajax = function(p) {
         });
 
         optionList.innerHTML = '';
+        clearSearch();
         addClass(target, 'loaded');
 
         ap(target,
@@ -773,6 +776,7 @@ hapi.ajax = function(p) {
 
     function navigateSearch(e) { // listen to keyboard events
       var key = e.keyCode,
+        escape = 27,
         up = 38,
         down = 40,
         active = document.activeElement,
@@ -781,6 +785,12 @@ hapi.ajax = function(p) {
         first = sideResults.firstChild;
 
       switch (key) {
+        case escape:
+          e.preventDefault();
+          clearSearch();
+          query = '';
+          searchBar.value = query;
+          break;
         case up:
           e.preventDefault();
           if (previous && previous.firstChild) {
@@ -813,7 +823,6 @@ hapi.ajax = function(p) {
     }
 
     function searchSide(e) {
-      //console.log('search', e.keyCode);
       if (members.length === 0) {
         hapi.ajax({
           url: indexUrl,
@@ -874,13 +883,11 @@ hapi.ajax = function(p) {
     }
 
     function clearSideResults() {
-      console.log('clearSideResults');
       sideResults.innerHTML = '';
       sideResults.style.display = 'none';
     }
 
     function showSideResults() {
-      console.log('showSideResults');
       var a,
         marker = new RegExp(query, 'gi'),
         member,
@@ -912,12 +919,10 @@ hapi.ajax = function(p) {
     var loadSideSuggestionsTimeout;
 
     function stopSideSuggestions() {
-      console.log('stopSideSuggestions');
       window.clearTimeout(loadSideSuggestionsTimeout);
     }
 
     function loadSideSuggestions() {
-      console.log('loadSideSuggestions');
       stopSideSuggestions();
       if (query === '') {
         return;
@@ -943,7 +948,6 @@ hapi.ajax = function(p) {
     }
 
     function showSideSuggestions(suggestions) {
-      console.log('showSideSuggestions', suggestions);
       var a,
         suggestion;
       for (var i = 0, ie = suggestions.length; i < ie; ++i) {
@@ -970,14 +974,12 @@ hapi.ajax = function(p) {
     }
 
     function clearTextResults() {
-      console.log('clearTextResults');
       textResults.innerHTML = '';
       textResults.style.display = 'none';
     }
 
     function showTextResults(json, query) {
-      console.log('showTextResults', json, query);
-      window.clearTimeout(loadSideSuggestionsTimeout);
+      stopSideSuggestions();
       var a,
         entries = json.value,
         entry,
@@ -997,12 +999,18 @@ hapi.ajax = function(p) {
         ));
       }
       if (!textResults.firstChild ||
-        textResults.firstChild.nodeName !== 'H1'
+        textResults.firstChild.nodeName !== 'SPAN'
       ) {
         textResults.insertBefore(
           cr('h1', 'title', 'Search results for "' + encodeHTML(query) + '"'),
           textResults.firstChild
         );
+        a = cr('span', 'close', 'Close results');
+        on(a, 'click', function (e) {
+          e.preventDefault();
+          clearTextResults();
+        });
+        textResults.insertBefore(a, textResults.firstChild);
         textResults.style.display = 'block';
         scrollTo(textResults, textResults.firstChild, 200);
       }
@@ -1010,17 +1018,28 @@ hapi.ajax = function(p) {
         json.totalEstimatedMatches, ' result', ' results'
       );
       if (json.totalEstimatedMatches > textResults.childNodes.length) {
-        a = cr('span', 'more', 'Show more results');
-        a.setAttribute('title', foundText);
-        on(a, 'click', function (e) {
+        var divOptions = cr('div', 'options')
+        var aClose = cr('span', 'close', 'Close results');
+        on(aClose, 'click', function (e) {
           e.preventDefault();
-          textResults.removeChild(a);
+          clearTextResults();
+        });
+        var aMore = cr('span', 'more', 'Show more results');
+        aMore.setAttribute('title', foundText);
+        on(aMore, 'click', function (e) {
+          e.preventDefault();
+          textResults.removeChild(divOptions);
           searchText(e, textResults.childNodes.length);
         });
-        ap(textResults, a)
+        ap(textResults, ap(divOptions, aClose, aMore));
       } else {
         ap(textResults, cr('p', null, foundText));
       }
+    }
+
+    clearSearch = function () {
+      clearSideResults();
+      clearTextResults();
     }
 
     on(document, 'keydown', navigateSearch, true);
