@@ -552,11 +552,10 @@ hapi.ajax = function(p) {
     }
 
     if (def.context) {
-      context = cr(
-        'p',
-        'context',
-        'Context: <a href="/class-reference/Highcharts.' + def.context + htmlExtension + '">' + def.context + '</a>.'
-      )
+      context = cr('p', 'context', (
+        'Context: <a href="/class-reference/Highcharts.' + def.context +
+        htmlExtension + '">' + def.context + '</a>.'
+      ), true);
     }
     /*
     if (def.extends) {
