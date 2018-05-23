@@ -561,6 +561,10 @@ a:hover {
   margin: 0;
 }
 
+#search-text-results .match p b {
+  background-color: #eefdec;  
+}
+
 #search-text-results .more {
   border: 1px solid #ddd;
   cursor: pointer;
