@@ -89,7 +89,9 @@ hapi.ajax = function(p) {
 
 (function() {
 
-  var clearSearch;
+  var clearSearch,
+    contentNode,
+    splashNode;
 
   function cr(name, className, inner, asHTML) {
     var el = document.createElement(name);
@@ -145,10 +147,6 @@ hapi.ajax = function(p) {
       .replace(/>/g, '&gt;');
   }
 
-  function pluralize(value, singular, plural) {
-    return (value.toString() + (value === 1 ? singular : plural));
-  }
-
   function defined(variable, stringCheck) {
     var defined = typeof variable !== 'undefined' && variable !== null;
     if (defined && stringCheck) {
@@ -170,6 +168,10 @@ hapi.ajax = function(p) {
       text: removeBrackets(extractPart(mdLink, '[', ']'), '[', ']'),
       href: removeBrackets(extractPart(mdLink, '(', ')'), '(', ')'),
     }
+  }
+
+  function pluralize(value, singular, plural) {
+    return (value.toString() + (value === 1 ? singular : plural));
   }
 
   function autolinks(s) {
@@ -197,6 +199,14 @@ hapi.ajax = function(p) {
       return  encodeHTML(def.default.toString());
     }
     return 'undefined';
+  }
+
+  function hideContent() {
+    splashNode.style.display = contentNode.style.display = 'none';
+  }
+
+  function showContent() {
+    splashNode.style.display = contentNode.style.display = '';
   }
 
   function scrollTo(container, target, duration) {
@@ -652,6 +662,10 @@ hapi.ajax = function(p) {
 
   hapi.createBody = function(target, state, hasChildren, callback) {
     target = document.querySelector(target);
+
+    contentNode = document.getElementById('option-list');
+    splashNode = document.getElementById('splashText');
+
     if (state.length > 0) {
       var origState = state;
       if (!hasChildren) {
@@ -975,27 +989,43 @@ hapi.ajax = function(p) {
     function clearTextResults() {
       textResults.innerHTML = '';
       textResults.style.display = 'none';
+      showContent();
     }
 
     function showTextResults(json, query) {
       stopSideSuggestions();
       var a,
+        div,
         entries = json.value,
         entry,
-        name;
+        name,
+        url;
       for (var i = 0, ie = entries.length; i < ie && i < maxElements; ++i) {
         entry = entries[i];
         name = (entry.name || '');
+        url = (entry.url || '/');
         if (name.indexOf('|') > 0) {
           name = name.substr(0, name.indexOf('|'));
         }
         a = cr('a', null, name, true);
-        a.setAttribute('href', entry.url);
-        a.setAttribute('title', entry.snippet);
-        ap(textResults, ap(cr('div', 'match'),
-          ap(cr('h2'), a),
-          cr('p', null, (entry.snippet || ''), true)
-        ));
+        a.setAttribute('href', url);
+        a.setAttribute('title', 'Go to ' + url.substr(url.indexOf('//') + 2));
+        a.setAttribute('data-crawl',
+          entry.dateLastCrawled.substr(0, entry.dateLastCrawled.indexOf('T'))
+        );
+        div = cr('div', 'match');
+        if (url.lastIndexOf('/') === (url.length - 1)) {
+            div.setAttribute('style', 'display: none;');
+        }
+        ap(textResults,
+          ap(div,
+            ap(
+              cr('h2'),
+              a
+            ),
+            cr('p', null, (entry.snippet || ''), true),
+          )
+        );
       }
       if (!textResults.firstChild ||
         textResults.firstChild.nodeName !== 'SPAN'
@@ -1030,10 +1060,21 @@ hapi.ajax = function(p) {
           textResults.removeChild(divOptions);
           searchText(e, textResults.childNodes.length);
         });
-        ap(textResults, ap(divOptions, aClose, aMore));
+        ap(
+          textResults,
+          ap(
+            divOptions,
+            aClose,
+            aMore
+          )
+        );
       } else {
-        ap(textResults, cr('p', null, foundText));
+        ap(
+          textResults,
+          cr('p', null, foundText)
+        );
       }
+      hideContent();
     }
 
     clearSearch = function () {
