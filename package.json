@@ -1,8 +1,9 @@
 {
-    "version": "0.1.2",
     "name": "highcharts-api-doc-gen",
-    "author": "",
+    "version": "0.1.2",
+    "author": "Highsoft AS",
     "private": true,
+    "main": "libs/index.js",
     "bin": {
         "hc-gen-api-docs": "./bin/gen.docs.js"
     },
