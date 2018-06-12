@@ -1,11 +1,11 @@
 {
-    "name": "highcharts-api-doc-gen",
+    "name": "highcharts-api-docs",
     "version": "0.1.2",
     "author": "Highsoft AS",
     "private": true,
     "main": "lib/index.js",
     "bin": {
-        "hc-gen-api-docs": "./bin/gen.docs.js"
+        "highcharts-api-docs": "./bin/generator.js"
     },
     "dependencies": {
         "handlebars": "*",
