@@ -341,6 +341,22 @@ a:hover {
   color: #252530;
 }
 
+.search-wrapper button {
+  background-color: transparent;
+  border: 2px solid #252530;
+  color: #252530;
+  float: right;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9em;
+  font-weight: bold;
+  height: 20px;
+  line-height: 20px;
+  margin: 2px;
+  padding: 0;
+  text-align: center;
+  width: 20px;
+}
+
 .results {
   position: absolute;
   list-style: none;

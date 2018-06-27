@@ -777,9 +777,11 @@ hapi.ajax = function(p) {
   };
 
   hapi.initializeSearchBar = function(
-    searchBarQ, resultsQ, textResultsQ, indexUrl, minLength, maxElements
+    searchBarQ, searchButtonQ, resultsQ, textResultsQ, indexUrl, minLength,
+    maxElements
   ) {
     var searchBar = document.querySelector(searchBarQ),
+      searchButton = document.querySelector(searchButtonQ),
       sideResults = document.querySelector(resultsQ),
       textResults = document.querySelector(textResultsQ),
       minLength = minLength || 2,
@@ -999,13 +1001,18 @@ hapi.ajax = function(p) {
         entries = json.value,
         entry,
         name,
-        url;
+        url,
+        snippet;
       for (var i = 0, ie = entries.length; i < ie && i < maxElements; ++i) {
         entry = entries[i];
         name = (entry.name || '');
         url = (entry.url || '/');
+        snippet = (entry.snippet || '');
         if (name.indexOf('|') > 0) {
           name = name.substr(0, name.indexOf('|'));
+        }
+        if (snippet.indexOf('Welcome') === 0) {
+          snippet = '';
         }
         a = cr('a', null, name, true);
         a.setAttribute('href', url);
@@ -1015,7 +1022,7 @@ hapi.ajax = function(p) {
         );
         div = cr('div', 'match');
         if (url.lastIndexOf('/') === (url.length - 1)) {
-            div.setAttribute('style', 'display: none;');
+          div.setAttribute('style', 'display: none;');
         }
         ap(textResults,
           ap(div,
@@ -1023,7 +1030,7 @@ hapi.ajax = function(p) {
               cr('h2'),
               a
             ),
-            cr('p', null, (entry.snippet || ''), true),
+            cr('p', null, snippet, true),
           )
         );
       }
@@ -1085,6 +1092,7 @@ hapi.ajax = function(p) {
     on(document, 'keydown', navigateSearch, true);
     on(searchBar, 'input', searchSide);
     on(searchBar, 'keydown', searchText);
+    on(searchButton, 'click', function (e) { searchText(e, 0); });
 
   };
 
