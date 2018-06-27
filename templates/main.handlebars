@@ -136,7 +136,8 @@
             <div id="sidebar" class="navigation sidebar" expanded="false">
                 <div id="search" class="search-wrapper">
                     <i class="fa fa-search"></i>
-                    <input class="search" placeholder="Search - Press return for full results" />
+                    <input class="search" placeholder="Search - Return for full results" />
+                    <button title="Full results">&crarr;</button>
                     <ul class="results" style="display: none;"></ul>
                 </div>
                 <div id="option-trees-wrapper">
@@ -241,7 +242,7 @@
             hapi.createBody('#body', state, hasChildren);
             hapi.initializeDropdowns('.menu', '.dropdown-link', '.body');
             hapi.initializeSidebar('.sidebar', '.sidebar-link', '.body');
-            hapi.initializeSearchBar('.search', '.results', '#search-text-results', 'search.json', 2, 20);
+            hapi.initializeSearchBar('.search', '#search button', '.results', '#search-text-results', 'search.json', 2, 20);
             //hapi.simulateHistory();
 
             // Populate version
