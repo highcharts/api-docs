@@ -513,11 +513,14 @@ a:hover {
 }
 
 .options-tree .default.type-string:before,
-.options-tree .default.type-string:after {
+.options-tree .default.type-string:after,
+.options-tree .default.type-color:before,
+.options-tree .default.type-color:after {
   content: '"'
 }
 
 .options-tree .default.type-string,
+.options-tree .default.type-color,
 .options-tree .default.type-highcharts-colorstring {
   color: #39A832;
 }
