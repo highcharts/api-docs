@@ -5,7 +5,7 @@
     "private": true,
     "main": "lib/index.js",
     "bin": {
-        "hc-gen-api-docs": "./bin/gen.docs.js"
+        "highcharts-api-docs": "./bin/generator.js"
     },
     "dependencies": {
         "handlebars": "*",
