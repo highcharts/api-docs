@@ -317,10 +317,9 @@ a:hover {
 /* Sidebar styling */
 
 .search-wrapper {
-  margin: 30px auto;
-  border: 2px solid #ddd;
+  margin: 30px;
+  border: 1px solid #ddd;
   position: relative;
-  width: 80%;
 }
 
 .search-wrapper i {
@@ -330,15 +329,30 @@ a:hover {
 }
 
 .search-wrapper input {
-  width: 80%;
-  margin: 0;
-  height: 18px;
+  width: calc(100% - 60px);
+  height: 32px;
   font-family: "Courier New", Courier, monospace;
   font-size: 0.9em;
-  background-color: transparent;
   border: none;
   outline: none;
   color: #252530;
+  background: rgba(27,31,35,0.05);
+  padding: 0 10px;
+}
+
+.search-wrapper button {
+  background-color: rgba(27,31,35,0.1);
+  float: right;
+  font-size: 0.9em;
+  font-weight: bold;
+  height: 34px;
+  line-height: 30px;
+  margin: -1px;
+  padding: 0;
+  text-align: center;
+  width: 40px;
+  border: none;
+  border-left: 1px solid #ddd;
 }
 
 .search-wrapper button {
@@ -528,11 +542,16 @@ a:hover {
   display: block;
 }
 
-.options-tree .default.type-string:before, .options-tree .default.type-string:after, .options-tree .default.type-color:before, .options-tree .default.type-color:after {
+.options-tree .default.type-string:before,
+.options-tree .default.type-string:after,
+.options-tree .default.type-color:before,
+.options-tree .default.type-color:after {
   content: '"'
 }
 
-.options-tree .default.type-string, .options-tree .default.type-color {
+.options-tree .default.type-string,
+.options-tree .default.type-color,
+.options-tree .default.type-highcharts-colorstring {
   color: #39A832;
 }
 
