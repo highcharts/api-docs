@@ -329,7 +329,7 @@ a:hover {
 }
 
 .search-wrapper input {
-  width: calc(100% - 60px);
+  width: calc(100% - 61px);
   height: 32px;
   font-family: "Courier New", Courier, monospace;
   font-size: 0.9em;
