@@ -874,7 +874,7 @@ hapi.ajax = function(p) {
       hapi.ajax({
         dataType: 'json',
         headers: {
-          'Ocp-Apim-Subscription-Key': 'fa4d42448a074ba2bf392f3f2fb0fcf7'
+          'Ocp-Apim-Subscription-Key': '314d6e6779774a37b53283ae129418a3'
         },
         url: (
           'https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/' +
@@ -1023,7 +1023,9 @@ hapi.ajax = function(p) {
           entry.dateLastCrawled.substr(0, entry.dateLastCrawled.indexOf('T'))
         );
         div = cr('div', 'match');
-        if (url.lastIndexOf('/') === (url.length - 1)) {
+        if (url.lastIndexOf('/') === (url.length - 1) ||
+          url.indexOf('.json') >= 0
+        ) {
           div.setAttribute('style', 'display: none;');
         }
         ap(textResults,
