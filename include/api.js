@@ -491,9 +491,11 @@ hapi.ajax = function(p) {
           aLocal;
         a.href = 'http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/' +
           sample.value;
+        a.target = '_blank';
 
         if (isLocal) {
           aLocal = cr('a', null, ' [local]');
+          aLocal.target = '_blank';
           aLocal.href = 'http://utils.highcharts.local/samples/#view/' +
             sample.value.replace(/\/$/, '')
         }
