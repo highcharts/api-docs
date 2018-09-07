@@ -630,7 +630,7 @@ a:hover {
 }
 
 .option.deprecated * {
-  color: silver !important;
+  color: #999 !important;
 }
 
 .option.highlighted {
@@ -659,6 +659,12 @@ a:hover {
 
 .option .default {
   color: #666;
+}
+
+.option .deprecated {
+  color: #C66 !important;
+  float: right;
+  font-size: 0.8em;
 }
 
 .option .since {

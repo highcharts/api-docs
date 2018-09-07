@@ -522,6 +522,7 @@ hapi.ajax = function(p) {
       context,
       extend,
       inheritedFrom,
+      deprecated,
       since,
       samples,
       see,
@@ -579,6 +580,13 @@ hapi.ajax = function(p) {
       inheritedFrom = cr('p', 'inherited-from', 'Inherited from ' + def.inheritedFrom);
     }
 
+    if (def.deprecated) {
+      deprecated = cr('p', 'deprecated', 'Deprecated');
+      option.setAttribute(
+        'class', option.getAttribute('class') + ' deprecated'
+      );
+    }
+
     if (def.since) {
       since = cr('p', 'since', 'Since ' + def.since);
     }
@@ -619,8 +627,8 @@ hapi.ajax = function(p) {
           titleText,
           types
         ),
-
         editLink,
+        deprecated,
         since,
         description,
         defaultvalue,
