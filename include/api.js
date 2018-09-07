@@ -791,6 +791,8 @@ hapi.ajax = function(p) {
       members = [],
       query = '';
 
+    searchBar.focus();
+
     function navigateSearch(e) { // listen to keyboard events
       var key = e.keyCode,
         escape = 27,
