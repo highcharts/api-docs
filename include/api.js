@@ -566,7 +566,8 @@ hapi.ajax = function(p) {
 
     if (def.context) {
       context = cr('p', 'context', (
-        'Context: <a href="/class-reference/Highcharts.' + def.context +
+        'Context: <a href="/class-reference/' +
+        (def.context.indexOf('.') === -1 ? 'Highcharts.' : '') + def.context +
         htmlExtension + '">' + def.context + '</a>.'
       ), true);
     }
