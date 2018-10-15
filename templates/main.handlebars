@@ -143,12 +143,12 @@
                     <h3 id="options-header">Configuration options</h3>
                     <p>For initial declarative chart setup. View as <a href="tree.json">JSON</a>.</p>
                     <div class="global-options options-tree">
-                        <code>{{product}}.setOptions({</code>
+                        <code>Highcharts.setOptions({</code>
                         <div id="global-options" class="tree"></div>
                         <code>});</code>
                     </div>
                     <div class="options-tree">
-                        <code>{{product}}.{{constr}}({</code>
+                        <code>Highcharts.{{constr}}({</code>
                         <div id="options" class="tree">
                             {{#if node.meta.name}}
                                 <div class="node expanded option-{{node.meta.name}} parent">
