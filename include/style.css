@@ -101,14 +101,14 @@ a:hover {
 
 .wrapper {
   background: #fff;
-  margin-top: 87px;
+  margin-top: 108px;
 }
 
 .navigation {
   background: #fff;
   height: calc(100vh - 87px);
   border-right: 1px solid silver;
-  margin-top: 87px;
+  margin-top: 108px;
 }
 
 .body {
@@ -203,19 +203,18 @@ a:hover {
 }
 
 .header .row-2 {
-  height: 37px;
+  height: 58px;
   background: #373648;
 }
 
 .header .row-2 .menu {
-  height: 37px;
-  line-height: 37px;
+  height: 58px;
+  line-height: 58px;
   float: left;
-  padding: 0 1em;
 }
 
-.header .row-2 .menu a.dropdown-link {
-  padding: 0 15px;
+.header .row-2 .menu a {
+  padding: 0 20px;
 }
 
 /* .header .row-2 .menu#product-selector {
@@ -755,7 +754,7 @@ a:hover {
         left: 0 !important;
         width: 100% !important;
     }*/
-  .header .row {
+  .header .row-1 {
     padding: 0 15px;
   }
   #highcharts-logo {
