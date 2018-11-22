@@ -587,8 +587,7 @@ hapi.ajax = function(p) {
         'class', option.getAttribute('class') + ' deprecated'
       );
     }
-
-    if (def.since) {
+    else if (def.since) {
       since = cr('p', 'since', 'Since ' + def.since);
     }
 
