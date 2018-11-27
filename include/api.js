@@ -668,6 +668,25 @@ hapi.ajax = function(p) {
         build(data);
       }
     });
+
+    /**
+     * TODO: Update the versions on api.highcharts.com abd fix the version
+     * selector. Then remove the following code.
+     */
+    var elSelect = document.querySelector('#version-selector');
+    var elLink = elSelect.children[0];
+    var removeElements = [{
+      parent: elLink,
+      el: elLink.children[0]
+    }, {
+      parent: elSelect,
+      el: elSelect.children[1]
+    }];
+    removeElements.forEach(function (x) {
+      if (x.el && x.parent) {
+        x.parent.removeChild(x.el);
+      }
+    });
   };
 
   hapi.createBody = function(target, state, hasChildren, callback) {
