@@ -211,7 +211,12 @@
                     {{#if node.meta.fullname}}
                         <div class="option highlighted">
                             <h1 class="title">{{node.meta.fullname}}</h1>
-                            <p class="description">{{{node.doclet.description}}}</p>
+                            <p class="description">
+                                <p>{{{node.doclet.description}}}</p>
+                                {{#if node.doclet.productdesc}}
+                                    <p>{{{node.doclet.productdesc.value}}}</p>
+                                {{/if}}
+                            </p>
                         </div>
                     {{/if}}
                 </div>

@@ -670,7 +670,7 @@ hapi.ajax = function(p) {
     });
 
     /**
-     * TODO: Update the versions on api.highcharts.com abd fix the version
+     * TODO: Update the versions on api.highcharts.com and fix the version
      * selector. Then remove the following code.
      */
     var elSelect = document.querySelector('#version-selector');
