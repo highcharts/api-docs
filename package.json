@@ -1,6 +1,6 @@
 {
     "name": "highcharts-api-docs",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "author": "Highsoft AS",
     "private": true,
     "main": "lib/index.js",
