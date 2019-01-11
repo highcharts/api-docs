@@ -641,8 +641,13 @@ a:hover {
   display: inline-block;
 }
 
-.option .title span, .option .title .type-list {
+.option .title span, .option .title .type-list, .option .title .type-list a {
   font-family: "Courier New", Courier, monospace;
+}
+
+.option .title .type-list a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .option .title a {

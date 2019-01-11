@@ -9,11 +9,11 @@ var isLocal = window.location.hostname === 'localhost';
 if (location.hash) {
   var hash = location.hash.replace(/^#/, '');
 
-  // Options: http://api.highcharts.com/highcharts#title.text
+  // Options: https://api.highcharts.com/highcharts#title.text
   if (/^[a-z]/.test(hash)) {
     location.href = '/' + (window.product || 'highcharts').toLowerCase() + '/' + hash;
 
-  // Object members: http://api.highcharts.com/highcharts#Series.update()
+  // Object members: https://api.highcharts.com/highcharts#Series.update()
   } else if (/^[A-Z]/.test(hash)) {
     hash = hash
       .replace('.', '#')
@@ -93,6 +93,10 @@ hapi.ajax = function(p) {
     contentNode,
     splashNode;
 
+  function tx(text, asHTML) {
+    return document.createTextNode(text);
+  }
+
   function cr(name, className, inner, asHTML) {
     var el = document.createElement(name);
     if (className) {
@@ -155,21 +159,6 @@ hapi.ajax = function(p) {
     return defined;
   }
 
-  function mdLinkToObject(mdLink) {
-    function extractPart(mdLink, lb, rb) {
-      return mdLink.substr(
-        mdLink.indexOf(lb), mdLink.indexOf(rb)
-      );
-    }
-    function removeBrackets(mdLink, lb, rb) {
-      return mdLink.replace(lb, '').replace(rb, '');
-    }
-    return {
-      text: removeBrackets(extractPart(mdLink, '[', ']'), '[', ']'),
-      href: removeBrackets(extractPart(mdLink, '(', ')'), '(', ')'),
-    }
-  }
-
   function pluralize(value, singular, plural) {
     return (value.toString() + (value === 1 ? singular : plural));
   }
@@ -177,10 +166,10 @@ hapi.ajax = function(p) {
   function autolinks(s) {
     return s
       .replace(/(styled mode)/i, function (match, p1) {
-        return '<a href="http://www.highcharts.com/docs/chart-design-and-style/style-by-css">' + p1 + '</a>';
+        return '<a href="https://www.highcharts.com/docs/chart-design-and-style/style-by-css">' + p1 + '</a>';
       })
       .replace(
-        /href="#([a-zA-Z0-9\.]+)"/g,
+        /href="#([\w\.]+)"/g,
         'href="../' + product.toLowerCase() + '/$1' + htmlExtension + '"'
       );
   }
@@ -489,7 +478,7 @@ hapi.ajax = function(p) {
       def.samples.forEach(function (sample) {
         var a = cr('a', null, sample.name),
           aLocal;
-        a.href = 'http://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/' +
+        a.href = 'https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/' +
           sample.value;
         a.target = '_blank';
 
@@ -515,8 +504,10 @@ hapi.ajax = function(p) {
       title = cr('h2', 'title'),
       titleLink,
       titleText = cr('span', null, def.name),
+      typeHTML,
+      typeHTMLClass,
+      typeHTMLPath,
       types,
-      typeStr,
       defaultvalue,
       description,
       context,
@@ -542,13 +533,30 @@ hapi.ajax = function(p) {
       if (def.typeList) {
         types = cr('span', 'type-list', ': ');
         def.typeList.names.forEach(function(type, index) {
-          typeStr = index ? ', ' + type : type;
-          ap(types, cr(
-            'span',
-            'type type-' + type.toLowerCase().replace(/[\.\<\>]+/g, '-'),
-            encodeHTML(typeStr),
-            true
-          ));
+          if (index) {
+            ap(types, tx(', '));
+          }
+          typeHTMLClass = (
+            'type type-' + type.toLowerCase().replace(/[\.\<\>]+/g, '-')
+          );
+          if (type.indexOf('.') !== -1 &&
+            type.indexOf('Array.') !== 0
+          ) {
+              typeHTML = cr('a', typeHTMLClass, type);
+              typeHTMLPath = (
+                '/class-reference/' +
+                type.replace(/[^0-9A-Z\.]+/gi, '_')
+              );
+              if (!/\>|Attributes|Object$/.test(type)) {
+                typeHTMLPath = typeHTMLPath.replace(
+                  'Highcharts.', 'Highcharts#.'
+                );
+              }
+              typeHTML.setAttribute('href', typeHTMLPath);
+          } else {
+              typeHTML = cr('span', typeHTMLClass, type);
+          }
+          ap(types, typeHTML);
         });
       }
 
