@@ -829,14 +829,22 @@ hapi.ajax = function(p) {
     searchBar.focus();
 
     function navigateSearch(e) { // listen to keyboard events
+
       var key = e.keyCode,
         escape = 27,
-        up = 38,
-        down = 40,
+        space = 32,
+        pageUp = 33,
+        pageDown = 34,
+        arrowUp = 38,
+        arrowDown = 40,
         active = document.activeElement,
         previous = active.parentNode.previousSibling,
         next = active.parentNode.nextSibling,
         first = sideResults.firstChild;
+
+      if (key === space) {
+        key = (e.shiftKey ? pageUp : pageDown);
+      }
 
       switch (key) {
         case escape:
@@ -845,7 +853,8 @@ hapi.ajax = function(p) {
           query = '';
           searchBar.value = query;
           break;
-        case up:
+        case pageUp:
+        case arrowUp:
           e.preventDefault();
           if (previous && previous.firstChild) {
             previous.firstChild.focus();
@@ -853,7 +862,8 @@ hapi.ajax = function(p) {
             searchBar.focus();
           }
           break;
-        case down:
+        case pageDown:
+        case arrowDown:
           e.preventDefault();
           if (active === searchBar && first && first.firstChild) {
             first.firstChild.focus();
@@ -1130,7 +1140,7 @@ hapi.ajax = function(p) {
       clearTextResults();
     }
 
-    on(document, 'keydown', navigateSearch, true);
+    on(searchBar.parentNode, 'keydown', navigateSearch, true);
     on(searchBar, 'input', searchSide);
     on(searchBar, 'keydown', searchText);
     on(searchButton, 'click', function (e) { searchText(e, 0); });
