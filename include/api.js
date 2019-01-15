@@ -921,17 +921,19 @@ hapi.ajax = function(p) {
       hapi.ajax({
         dataType: 'json',
         headers: {
-          'Ocp-Apim-Subscription-Key': '314d6e6779774a37b53283ae129418a3'
+          'Ocp-Apim-Subscription-Key': 'fa4d42448a074ba2bf392f3f2fb0fcf7'
         },
         url: (
-          'https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/' +
-          'search?customconfig=1554546297&mkt=en-US' +
-          '&textFormat=HTML' +
-          '&textDecorations=true' +
-          '&safesearch=Strict' +
+          'https://api.cognitive.microsoft.com' +
+          '/bingcustomsearch/v7.0/search' +
+          '?q=' + encodeURIComponent(query) +
           '&count=' + maxElements +
+          '&customconfig=1554546297' +
+          '&mkt=en-US' +
           '&offset=' + offset +
-          '&q=' + encodeURIComponent(query)
+          '&safesearch=Strict' +
+          '&textDecorations=true' +
+          '&textFormat=HTML'
         ),
         success: function(json) {
           if (!json.queryContext ||
@@ -994,12 +996,13 @@ hapi.ajax = function(p) {
       loadSideSuggestionsTimeout = window.setTimeout(hapi.ajax, 500, {
         dataType: 'json',
         headers: {
-          'Ocp-Apim-Subscription-Key': 'fa4d42448a074ba2bf392f3f2fb0fcf7'
+          'Ocp-Apim-Subscription-Key': '6fb649994719477cb3985abe16439175'
         },
         url: (
-          'https://api.cognitive.microsoft.com/bingcustomsearch/v7.0/' +
-          'suggestions/search?customconfig=1554546297' + 
-          '&q=' + encodeURIComponent(query)
+          'https://api.cognitive.microsoft.com' +
+          '/bingcustomsearch/v7.0/suggestions/search' +
+          '?q=' + encodeURIComponent(query) +
+          '&customconfig=1554546297'
         ),
         success: function(json) {
           if (json.suggestionGroups &&
