@@ -717,12 +717,20 @@ hapi.ajax = function(p) {
         var optionList = document.getElementById('option-list'),
           option = cr('div', 'option option-header ' + toClassName(state)),
           title = cr('h1', 'title'),
+          deprecated,
           description = data.description && cr(
             'p',
             'description',
             autolinks(data.description + (data.productdesc ? data.productdesc.value : '')),
             true
           );
+
+        if (data.deprecated) {
+          deprecated = cr('p', 'deprecated', 'Deprecated');
+          option.setAttribute(
+            'class', option.getAttribute('class') + ' deprecated'
+          );
+        }
 
         state.split('.').forEach(function(titlePart, i) {
           ap(title,
@@ -738,6 +746,7 @@ hapi.ajax = function(p) {
           ap(optionList,
             ap(option,
               title,
+              deprecated,
               description,
               getSampleList(data)
             )
@@ -921,7 +930,7 @@ hapi.ajax = function(p) {
       hapi.ajax({
         dataType: 'json',
         headers: {
-          'Ocp-Apim-Subscription-Key': 'ed2ddf96772449289c39352f10f99020'
+          'Ocp-Apim-Subscription-Key': '-'
         },
         url: (
           'https://api.cognitive.microsoft.com' +
@@ -996,7 +1005,7 @@ hapi.ajax = function(p) {
       loadSideSuggestionsTimeout = window.setTimeout(hapi.ajax, 500, {
         dataType: 'json',
         headers: {
-          'Ocp-Apim-Subscription-Key': 'aa63e69cd37a48ac96d282db77bf99b9'
+          'Ocp-Apim-Subscription-Key': '-'
         },
         url: (
           'https://api.cognitive.microsoft.com' +
