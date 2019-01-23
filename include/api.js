@@ -921,7 +921,7 @@ hapi.ajax = function(p) {
       hapi.ajax({
         dataType: 'json',
         headers: {
-          'Ocp-Apim-Subscription-Key': 'fa4d42448a074ba2bf392f3f2fb0fcf7'
+          'Ocp-Apim-Subscription-Key': 'ed2ddf96772449289c39352f10f99020'
         },
         url: (
           'https://api.cognitive.microsoft.com' +
@@ -996,7 +996,7 @@ hapi.ajax = function(p) {
       loadSideSuggestionsTimeout = window.setTimeout(hapi.ajax, 500, {
         dataType: 'json',
         headers: {
-          'Ocp-Apim-Subscription-Key': '6fb649994719477cb3985abe16439175'
+          'Ocp-Apim-Subscription-Key': 'aa63e69cd37a48ac96d282db77bf99b9'
         },
         url: (
           'https://api.cognitive.microsoft.com' +
