@@ -539,13 +539,16 @@ hapi.ajax = function(p) {
           typeHTMLClass = (
             'type type-' + type.toLowerCase().replace(/[\.\<\>]+/g, '-')
           );
-          if (type.indexOf('.') !== -1 &&
-            type.indexOf('Array.') !== 0
-          ) {
+          typeHTMLPath = (
+            type.indexOf('<') === -1 ?
+              type :
+              type.replace(/^.+\<([^\<\>]+)\>.*$/gi, '$1')
+          );
+          if (typeHTMLPath.indexOf('Highcharts.') === 0) {
               typeHTML = cr('a', typeHTMLClass, type);
               typeHTMLPath = (
                 '/class-reference/' +
-                type.replace(/[^0-9A-Z\.]+/gi, '_')
+                typeHTMLPath.replace(/[^0-9A-Z\.]+/gi, '_')
               );
               if (!/\>|Attributes|Object$/.test(type)) {
                 typeHTMLPath = typeHTMLPath.replace(
