@@ -540,22 +540,22 @@ hapi.ajax = function(p) {
             'type type-' + type.toLowerCase().replace(/[\.\<\>]+/g, '-')
           );
           typeHTMLPath = (
-            type.indexOf('<') === -1 ?
-              type :
-              type.replace(/^.+\<([^\<\>]+)\>.*$/gi, '$1')
+            (/(?:\<|\, )(Highcharts\..+?)[\,\>]/.exec(type) || [])[1] || type
           );
           if (typeHTMLPath.indexOf('Highcharts.') === 0) {
               typeHTML = cr('a', typeHTMLClass, type);
-              typeHTMLPath = (
-                '/class-reference/' +
-                typeHTMLPath.replace(/[^0-9A-Z\.]+/gi, '_')
-              );
-              if (!/\>|Attributes|Object$/.test(type)) {
+              if (
+                /(?:Array|Dictionary|Function|Options|String|Type|Values)$/
+                .test(typeHTMLPath)
+              ) {
                 typeHTMLPath = typeHTMLPath.replace(
                   'Highcharts.', 'Highcharts#.'
                 );
               }
-              typeHTML.setAttribute('href', typeHTMLPath);
+              typeHTMLPath = typeHTMLPath
+                .replace(/\<.*\>/g, '<T>')
+                .replace(/[^\w\.\#]+|\.\</gi, '_');
+              typeHTML.setAttribute('href', '/class-reference/' + typeHTMLPath);
           } else {
               typeHTML = cr('span', typeHTMLClass, type);
           }
