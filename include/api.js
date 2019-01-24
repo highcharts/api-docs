@@ -683,7 +683,7 @@ hapi.ajax = function(p) {
     /**
      * TODO: Update the versions on api.highcharts.com and fix the version
      * selector. Then remove the following code.
-     */
+     *
     var elSelect = document.querySelector('#version-selector');
     var elLink = elSelect.children[0];
     var removeElements = [{
@@ -698,6 +698,7 @@ hapi.ajax = function(p) {
         x.parent.removeChild(x.el);
       }
     });
+     */
   };
 
   hapi.createBody = function(target, state, hasChildren, callback) {

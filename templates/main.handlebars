@@ -86,6 +86,7 @@
                       </div>
                     </div>
                     {{/if}}
+                    {{!--
                     <div id="version-selector" class="menu" expanded="false">
                         <a href="#" class="dropdown-link">v{{version}} <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
                         <div class="dropdown-menu">
@@ -104,6 +105,10 @@
                                 {{/each}}
                             </ul>
                         </div>
+                    </div>
+                    --}}
+                    <div id="version" class="menu">
+                        <a href="https://www.highcharts.com/changelog/" target="_blank">v{{version}}</a>
                     </div>
                   {{#if includeClassReference }}
                     <div id="namespaces" class="menu">
