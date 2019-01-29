@@ -887,18 +887,6 @@ hapi.ajax = function(p) {
       }
     }
 
-    var mqTimeout;
-    function measureQuery() {
-      window.clearTimeout(mqTimeout)
-      mqTimeout = window.setTimeout(function () {
-        let sm = cr('img');
-        sm.setAttribute('src', 'favicon-16x16.png?search=' + encodeURIComponent(searchBar.value));
-        sm.style.height = '1px !important';
-        sm.style.width = '1px !important';
-        ap(document.body, sm);
-      }, 500);
-    }
-
     function searchSide(e) {
       if (members.length === 0) {
         hapi.ajax({
@@ -910,14 +898,13 @@ hapi.ajax = function(p) {
         });
         return;
       }
-      //measureQuery();
       query = searchBar.value;
       if (query.length >= minLength) {
         showSideResults();
       } else {
         clearSideResults();
         clearTextResults();
-        // loadSideSuggestions();
+        loadSideSuggestions();
       }
     }
 
@@ -983,7 +970,7 @@ hapi.ajax = function(p) {
         sideResults.scrollTo(1, 0);
       } else {
         sideResults.style.display = 'none';
-        // loadSideSuggestions();
+        loadSideSuggestions();
       }
     }
 
