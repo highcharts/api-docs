@@ -1,6 +1,6 @@
 {
     "name": "highcharts-api-docs",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "author": "Highsoft AS",
     "private": true,
     "main": "lib/index.js",
@@ -8,12 +8,12 @@
         "highcharts-api-docs": "./bin/generator.js"
     },
     "dependencies": {
-        "handlebars": "*",
-        "colors": "*",
-        "mkdirp": "*",
-        "marked": "*",
-        "express": "*",
-        "async": "*",
-        "yargs": "^10.0.3"
+        "handlebars": "latest",
+        "colors": "latest",
+        "mkdirp": "latest",
+        "marked": "latest",
+        "express": "latest",
+        "async": "latest",
+        "yargs": "latest"
     }
 }
