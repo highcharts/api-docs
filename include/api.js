@@ -70,7 +70,7 @@ hapi.ajax = function(p) {
       try {
         json = JSON.parse(/[\[\{].*[\]\}]/.exec(r.responseText)[0]);
       } catch (e) {
-        props.error(e.stack, r.responseText);
+        props.error(e, r.responseText);
         return;
       }
       props.success(json);
@@ -91,6 +91,7 @@ hapi.ajax = function(p) {
 
   var clearSearch,
     contentNode,
+    sidebar,
     splashNode;
 
   function tx(text, asHTML) {
@@ -451,6 +452,7 @@ hapi.ajax = function(p) {
 
     on(title, 'click', function (e) {
       e.preventDefault();
+      sidebar.setAttribute('expanded', false);
       loadNode();
       toggle();
       updateHistory(def, product);
@@ -803,10 +805,10 @@ hapi.ajax = function(p) {
   };
 
   hapi.initializeSidebar = function(sidebarQ, linkQ) {
-    var sidebar = document.querySelector(sidebarQ),
-      link = document.querySelector(linkQ),
+    var link = document.querySelector(linkQ),
       expanded = false;
 
+    sidebar = document.querySelector(sidebarQ);
     sidebar.setAttribute('expanded', expanded);
 
     on(link, 'click', function(e) {
@@ -855,7 +857,7 @@ hapi.ajax = function(p) {
         next = active.parentNode.nextSibling,
         first = sideResults.firstChild;
 
-      if (key === space) {
+      if (key === space && active === searchBar) {
         key = (e.shiftKey ? pageUp : pageDown);
       }
 
@@ -863,8 +865,6 @@ hapi.ajax = function(p) {
         case escape:
           e.preventDefault();
           clearSearch();
-          query = '';
-          searchBar.value = query;
           break;
         case pageUp:
         case arrowUp:
@@ -916,7 +916,7 @@ hapi.ajax = function(p) {
       }
       page = (page || 1);
       if (page < 2) {
-        clearTextResults();
+        clearSearch();
       }
       hapi.ajax({
         dataType: 'json',
@@ -998,22 +998,25 @@ hapi.ajax = function(p) {
           ) {
             showSideSuggestions(json);
           }
-        }
+        },
+        error: function() {}
       });
     }
 
     function showSideSuggestions(suggestions) {
       var a,
         suggestion;
+
       for (var i = 0, ie = suggestions.length; i < ie; ++i) {
         suggestion = suggestions[i][0];
-        a = cr('a', null, suggestion.displayText);
+        a = cr('a', null, suggestion);
         a.setAttribute('href', '#');
         on(a, 'click', function (e) {
           e.preventDefault();
-          clearTextResults();
+          sidebar.setAttribute('expanded', false);
           query = this.innerText;
-          searchText(e);
+          clearSearch();
+          searchText(e, 1);
         });
         ap(sideResults, ap(cr('li', 'match'), a));
         if (sideResults.childElementCount >= maxElements) {
@@ -1128,6 +1131,7 @@ hapi.ajax = function(p) {
     }
 
     clearSearch = function () {
+      searchBar.value = '';
       clearSideResults();
       clearTextResults();
     }
