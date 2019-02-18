@@ -70,7 +70,7 @@ hapi.ajax = function(p) {
       try {
         json = JSON.parse(/[\[\{].*[\]\}]/.exec(r.responseText)[0]);
       } catch (e) {
-        props.error(e.stack, r.responseText);
+        props.error(e, r.responseText);
         return;
       }
       props.success(json);
@@ -998,22 +998,24 @@ hapi.ajax = function(p) {
           ) {
             showSideSuggestions(json);
           }
-        }
+        },
+        error: function() {}
       });
     }
 
     function showSideSuggestions(suggestions) {
       var a,
         suggestion;
+
       for (var i = 0, ie = suggestions.length; i < ie; ++i) {
         suggestion = suggestions[i][0];
-        a = cr('a', null, suggestion.displayText);
+        a = cr('a', null, suggestion);
         a.setAttribute('href', '#');
         on(a, 'click', function (e) {
           e.preventDefault();
           clearTextResults();
           query = this.innerText;
-          searchText(e);
+          searchText(e, 1);
         });
         ap(sideResults, ap(cr('li', 'match'), a));
         if (sideResults.childElementCount >= maxElements) {
