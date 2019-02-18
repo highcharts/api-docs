@@ -91,6 +91,7 @@ hapi.ajax = function(p) {
 
   var clearSearch,
     contentNode,
+    sidebar,
     splashNode;
 
   function tx(text, asHTML) {
@@ -451,6 +452,7 @@ hapi.ajax = function(p) {
 
     on(title, 'click', function (e) {
       e.preventDefault();
+      sidebar.setAttribute('expanded', false);
       loadNode();
       toggle();
       updateHistory(def, product);
@@ -803,10 +805,10 @@ hapi.ajax = function(p) {
   };
 
   hapi.initializeSidebar = function(sidebarQ, linkQ) {
-    var sidebar = document.querySelector(sidebarQ),
-      link = document.querySelector(linkQ),
+    var link = document.querySelector(linkQ),
       expanded = false;
 
+    sidebar = document.querySelector(sidebarQ);
     sidebar.setAttribute('expanded', expanded);
 
     on(link, 'click', function(e) {
@@ -855,7 +857,7 @@ hapi.ajax = function(p) {
         next = active.parentNode.nextSibling,
         first = sideResults.firstChild;
 
-      if (key === space) {
+      if (key === space && active === searchBar) {
         key = (e.shiftKey ? pageUp : pageDown);
       }
 
@@ -863,8 +865,6 @@ hapi.ajax = function(p) {
         case escape:
           e.preventDefault();
           clearSearch();
-          query = '';
-          searchBar.value = query;
           break;
         case pageUp:
         case arrowUp:
@@ -916,7 +916,7 @@ hapi.ajax = function(p) {
       }
       page = (page || 1);
       if (page < 2) {
-        clearTextResults();
+        clearSearch();
       }
       hapi.ajax({
         dataType: 'json',
@@ -1013,8 +1013,9 @@ hapi.ajax = function(p) {
         a.setAttribute('href', '#');
         on(a, 'click', function (e) {
           e.preventDefault();
-          clearTextResults();
+          sidebar.setAttribute('expanded', false);
           query = this.innerText;
+          clearSearch();
           searchText(e, 1);
         });
         ap(sideResults, ap(cr('li', 'match'), a));
@@ -1130,6 +1131,7 @@ hapi.ajax = function(p) {
     }
 
     clearSearch = function () {
+      searchBar.value = '';
       clearSideResults();
       clearTextResults();
     }
