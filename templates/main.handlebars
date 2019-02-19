@@ -69,22 +69,22 @@
                         </div>
                     </div>
                     {{#if platforms }}
-                    <div id="platform-selector" class="menu" expanded="false">
-                      <a href="#" class="dropdown-link">{{platform}}<i class="fa fa-chevron-down" aria-hidden="true"></i></a>
-                      <div class="dropdown-menu">
-                        <ul>
-                          <li class="group">
-                              <ul class="group-list">
-                                  {{#each platforms }}
-                                  <li class="version">
-                                      <a href="{{@this}}">{{@key}}</a>
-                                  </li>
-                                  {{/each}}
-                              </ul>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+                        <div id="platform-selector" class="menu" expanded="false">
+                            <a href="#" class="dropdown-link">{{platform}}<i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+                            <div class="dropdown-menu">
+                                <ul>
+                                <li class="group">
+                                    <ul class="group-list">
+                                        {{#each platforms }}
+                                        <li class="version">
+                                            <a href="{{@this}}">{{@key}}</a>
+                                        </li>
+                                        {{/each}}
+                                    </ul>
+                                </li>
+                                </ul>
+                            </div>
+                        </div>
                     {{/if}}
                     {{!--
                     <div id="version-selector" class="menu" expanded="false">
@@ -110,17 +110,17 @@
                     <div id="version" class="menu">
                         <a href="https://www.highcharts.com/changelog/" target="_blank">v{{version}}</a>
                     </div>
-                  {{#if includeClassReference }}
-                    <div id="namespaces" class="menu">
-                        <a href="../class-reference/Highcharts">Namespaces</a>
-                    </div>
-                    <div id="classes" class="menu">
-                        <a href="../class-reference/classes.list">Classes</a>
-                    </div>
-                    <div id="interfaces" class="menu">
-                        <a href="../class-reference/interfaces.list">Interfaces</a>
-                    </div>
-                  {{/if}}
+                    {{#if includeClassReference }}
+                        <div id="namespaces" class="menu">
+                            <a href="../class-reference/Highcharts">Namespaces</a>
+                        </div>
+                        <div id="classes" class="menu">
+                            <a href="../class-reference/classes.list">Classes</a>
+                        </div>
+                        <div id="interfaces" class="menu">
+                            <a href="../class-reference/interfaces.list">Interfaces</a>
+                        </div>
+                    {{/if}}
                 {{/if}}
                 {{#if progLangs}}
                     <div id="prog-lang-selector" class="menu" expanded="false">
